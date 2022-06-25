@@ -21,6 +21,9 @@ from untanglepyut.Untangler import DocumentTitle
 
 from untanglepyut.Untangler import UnTangler
 
+DIAGRAM_NAME_1: DocumentTitle = DocumentTitle('Diagram-1')
+DIAGRAM_NAME_2: DocumentTitle = DocumentTitle('Diagram-2')
+
 
 class DummyApp(App):
     def OnInit(self):
@@ -82,14 +85,23 @@ class TestUnTangler(TestBase):
 
     def testCreateOglClassesForDiagram1(self):
 
-        self._testCreateClassesForDiagram(DocumentTitle('Diagram-1'), expectedCount=2)
+        self._testCreateClassesForDiagram(DIAGRAM_NAME_1, expectedCount=2)
 
     def testCreateOglClassesForDiagram2(self):
 
-        self._testCreateClassesForDiagram(DocumentTitle('Diagram-2'), expectedCount=7)
+        self._testCreateClassesForDiagram(DIAGRAM_NAME_2, expectedCount=7)
 
-    def testNonZeroSizeForClasses(self):
-        pass
+    def testNonZeroSizeForClassesInDiagram1(self):
+        self._testNonZeroSizeForClassesInDiagram(DIAGRAM_NAME_1)
+
+    def testNonZeroSizeForClassesInDiagram2(self):
+        self._testNonZeroSizeForClassesInDiagram(DIAGRAM_NAME_2)
+
+    def testNonZeroPositionsForClassesInDiagram1(self):
+        self._testNonZeroPositionsForClassesInDiagram(DIAGRAM_NAME_1)
+
+    def testNonZeroPositionsForClassesInDiagram2(self):
+        self._testNonZeroPositionsForClassesInDiagram(DIAGRAM_NAME_2)
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
@@ -100,6 +112,30 @@ class TestUnTangler(TestBase):
         oglClasses: List[OglClass] = document.oglClasses
 
         self.assertEqual(expectedCount, len(oglClasses), f'Incorrect number of classes generated for: {title}')
+
+    def _testNonZeroSizeForClassesInDiagram(self, title: DocumentTitle):
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+        document: Document = untangler.documents[title]
+        oglClasses: List[OglClass] = document.oglClasses
+
+        for oglClass in oglClasses:
+            size = oglClass.GetSize()
+            self.assertNotEqual(0, size[0], 'Width should be non-zero')
+            self.assertNotEqual(0, size[1], 'Height should be non-zero')
+
+    def _testNonZeroPositionsForClassesInDiagram(self, title: DocumentTitle):
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+        document: Document = untangler.documents[title]
+        oglClasses: List[OglClass] = document.oglClasses
+
+        for oglClass in oglClasses:
+            pos = oglClass.GetPosition()
+            self.assertNotEqual(0, pos[0], 'x should be non-zero')
+            self.assertNotEqual(0, pos[1], 'y should be non-zero')
 
 
 def suite() -> TestSuite:
