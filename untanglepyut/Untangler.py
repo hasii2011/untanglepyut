@@ -1,3 +1,5 @@
+
+from typing import List
 from typing import NewType
 from typing import cast
 
@@ -5,6 +7,9 @@ from logging import Logger
 from logging import getLogger
 
 from dataclasses import dataclass
+from dataclasses import field
+
+from ogl.OglClass import OglClass
 
 from untangle import parse
 from untangle import Element
@@ -17,17 +22,18 @@ class ProjectInformation:
 
 
 @dataclass
-class DocumentInformation:
-    documentType:  str = ''
-    documentTitle: str = ''
+class Document:
+    documentType:    str = ''
+    documentTitle:   str = ''
     scrollPositionX: int = -1
     scrollPositionY: int = -1
     pixelsPerUnitX:  int = -1
     pixelsPerUnitY:  int = -1
+    oglClasses:      List[OglClass] = field(default_factory=list)
 
 
 DocumentTitle = NewType('DocumentTitle', str)
-Documents     = NewType('Documents', dict[DocumentTitle, DocumentInformation])    # The Key is the document title
+Documents     = NewType('Documents', dict[DocumentTitle, Document])
 
 
 class UnTangler:
@@ -54,6 +60,10 @@ class UnTangler:
         """
         return self._projectInformation
 
+    @property
+    def documents(self) -> Documents:
+        return self._documents
+
     def untangle(self):
 
         xmlString:   str     = self._getRawXml()
@@ -63,19 +73,20 @@ class UnTangler:
         self._populateProjectInformation(pyutProject=pyutProject)
 
         for pyutDocument in pyutProject.PyutDocument:
-            documentInformation: DocumentInformation = self._updateCurrentDocumentInformation(pyutDocument=pyutDocument)
+            document: Document = self._updateCurrentDocumentInformation(pyutDocument=pyutDocument)
 
-            self._documents[documentInformation.documentTitle] = documentInformation
+            self._documents[document.documentTitle] = document
 
-            self.logger.debug(f'{documentInformation=}')
+            self.logger.debug(f'{document=}')
+            document.oglClasses = self._graphicClassesToOglClasses(pyutDocument=pyutDocument)
 
     def _populateProjectInformation(self, pyutProject: Element):
         self._projectInformation.version  = pyutProject['version']
         self._projectInformation.codePath = pyutProject['CodePath']
 
-    def _updateCurrentDocumentInformation(self, pyutDocument: Element) -> DocumentInformation:
+    def _updateCurrentDocumentInformation(self, pyutDocument: Element) -> Document:
 
-        documentInformation: DocumentInformation = DocumentInformation()
+        documentInformation: Document = Document()
 
         documentTitle: DocumentTitle = DocumentTitle(pyutDocument['title'])
 
@@ -89,6 +100,23 @@ class UnTangler:
         self.logger.debug(f'{documentInformation=}')
 
         return documentInformation
+
+    def _graphicClassesToOglClasses(self, pyutDocument: Element) -> List[OglClass]:
+
+        oglClasses: List[OglClass] = []
+        for graphicClass in pyutDocument.GraphicClass:
+            self.logger.debug(f'{graphicClass=}')
+
+            x: int = int(graphicClass['x'])
+            y: int = int(graphicClass['y'])
+            width:  int = int(graphicClass['width'])
+            height: int = int(graphicClass['height'])
+            oglClass: OglClass = OglClass(w=width, h=height)
+            oglClass.SetPosition(x=x, y=y)
+
+            oglClasses.append(oglClass)
+
+        return oglClasses
 
     def _getRawXml(self) -> str:
 

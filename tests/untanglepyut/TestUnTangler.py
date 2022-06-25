@@ -1,4 +1,4 @@
-
+from typing import List
 from typing import cast
 
 from logging import Logger
@@ -7,14 +7,33 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from miniogl.DiagramFrame import DiagramFrame
+from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
 
+from wx import App
+from wx import Frame
+from wx import ID_ANY
+
 from tests.TestBase import TestBase
+from untanglepyut.Untangler import Document
+from untanglepyut.Untangler import DocumentTitle
 
 from untanglepyut.Untangler import UnTangler
 
 
-class TestTemplate(TestBase):
+class DummyApp(App):
+    def OnInit(self):
+        #  Create frame
+        baseFrame: Frame = Frame(None, ID_ANY, "", size=(10, 10))
+        # noinspection PyTypeChecker
+        umlFrame = DiagramFrame(baseFrame)
+        umlFrame.Show(True)
+
+        return True
+
+
+class TestUnTangler(TestBase):
     """
     You need to change the name of this class to Test`xxxx`
     Where `xxxx' is the name of the class that you want to test.
@@ -26,15 +45,17 @@ class TestTemplate(TestBase):
     @classmethod
     def setUpClass(cls):
         TestBase.setUpLogging()
-        TestTemplate.clsLogger = getLogger(__name__)
+        TestUnTangler.clsLogger = getLogger(__name__)
 
     def setUp(self):
-        self.logger: Logger = TestTemplate.clsLogger
+        self.logger: Logger = TestUnTangler.clsLogger
+        self.app:    App    = DummyApp(redirect=True)
 
         self._fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiDocumentProject.xml')
 
     def tearDown(self):
-        pass
+        self.app.OnExit()
+        del self.app
 
     def testNoProjectInformation(self):
         untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
@@ -51,6 +72,35 @@ class TestTemplate(TestBase):
         self.assertEqual('',   untangler.projectInformation.codePath)
         self.assertEqual('10', untangler.projectInformation.version)
 
+    def testCreateDocuments(self):
+
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        self.assertEqual(2, len(untangler.documents), 'Incorrect number of documents created')
+
+    def testCreateOglClassesForDiagram1(self):
+
+        self._testCreateClassesForDiagram(DocumentTitle('Diagram-1'), expectedCount=2)
+
+    def testCreateOglClassesForDiagram2(self):
+
+        self._testCreateClassesForDiagram(DocumentTitle('Diagram-2'), expectedCount=7)
+
+    def testNonZeroSizeForClasses(self):
+        pass
+    
+    def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
+
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+        document: Document = untangler.documents[title]
+        oglClasses: List[OglClass] = document.oglClasses
+
+        self.assertEqual(expectedCount, len(oglClasses), f'Incorrect number of classes generated for: {title}')
+
 
 def suite() -> TestSuite:
     """You need to change the name of the test class here also."""
@@ -58,7 +108,7 @@ def suite() -> TestSuite:
 
     testSuite: TestSuite = TestSuite()
     # noinspection PyUnresolvedReferences
-    testSuite.addTest(unittest.makeSuite(TestTemplate))
+    testSuite.addTest(unittest.makeSuite(TestUnTangler))
 
     return testSuite
 
