@@ -21,6 +21,18 @@ class ProjectInformation:
     codePath: str = cast(str, None)
 
 
+UntangledClasses = NewType('UntangledClasses', List[OglClass])
+
+
+def createUntangledClassesFactory() -> UntangledClasses:
+    """
+    Factory method to create  the UntangledClasses data structure;
+
+    Returns:  A new data structure
+    """
+    return UntangledClasses([])
+
+
 @dataclass
 class Document:
     documentType:    str = ''
@@ -29,7 +41,10 @@ class Document:
     scrollPositionY: int = -1
     pixelsPerUnitX:  int = -1
     pixelsPerUnitY:  int = -1
-    oglClasses:      List[OglClass] = field(default_factory=list)
+    oglClasses: UntangledClasses = field(default_factory=createUntangledClassesFactory)
+
+    def __post_init__(self):
+        self.oglClasses = UntangledClasses([])
 
 
 DocumentTitle = NewType('DocumentTitle', str)
@@ -101,9 +116,9 @@ class UnTangler:
 
         return documentInformation
 
-    def _graphicClassesToOglClasses(self, pyutDocument: Element) -> List[OglClass]:
+    def _graphicClassesToOglClasses(self, pyutDocument: Element) -> UntangledClasses:
 
-        oglClasses: List[OglClass] = []
+        oglClasses: UntangledClasses = createUntangledClassesFactory()
         for graphicClass in pyutDocument.GraphicClass:
             self.logger.debug(f'{graphicClass=}')
 

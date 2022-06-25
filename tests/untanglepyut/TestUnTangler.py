@@ -90,7 +90,7 @@ class TestUnTangler(TestBase):
 
     def testNonZeroSizeForClasses(self):
         pass
-    
+
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
         untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
