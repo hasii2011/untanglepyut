@@ -14,11 +14,12 @@ language: python
 cache: pip
 
 python:
-  - "3.9.7"
+  - "3.10.0"
 
 # command to install dependencies
 install:
-  - pip3 install click
+  - pip3 install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
+  - pip3 install ogl
 
 
 # command to run tests

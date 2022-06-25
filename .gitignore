@@ -7,6 +7,6 @@ __pycache__/
 build/
 dist/
 /untanglepyut.egg-info/
-/pyenv-3.`0.0/
+/pyenv-3.10.0/
 .python-version
 .envrc
