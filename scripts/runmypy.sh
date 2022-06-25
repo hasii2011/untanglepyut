@@ -11,7 +11,7 @@ function changeToProjectRoot {
 changeToProjectRoot
 
 mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes untanglepyut tests
-# mypy --config-file .mypi.ini --pretty  --show-error-codes org
+# mypy --config-file .mypi.ini --pretty  --show-error-codes untanglepyut tests
 status=$?
 
 echo "Exit with status: ${status}"

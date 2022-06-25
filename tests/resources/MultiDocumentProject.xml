@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Diagram-1" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="76" height="41" x="225" y="275">
+			<Class id="1" name="SubClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Field visibility="PRIVATE">
+					<Param name="name" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="79" height="43" x="225" y="75">
+			<Class id="2" name="BaseClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Field visibility="PRIVATE">
+					<Param name="id" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicLink srcX="264" srcY="275" dstX="264" dstY="117" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
+		</GraphicLink>
+	</PyutDocument>
+	<PyutDocument type="CLASS_DIAGRAM" title="Diagram-2" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="77" height="40" x="150" y="150">
+			<Class id="3" name="Folder" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Field visibility="PRIVATE">
+					<Param name="permissions" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="88" height="50" x="150" y="325">
+			<Class id="4" name="File" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Field visibility="PRIVATE">
+					<Param name="size" type=""/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="name" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicLink srcX="186" srcY="189" dstX="187" dstY="325" spline="False">
+			<LabelCenter x="579" y="300"/>
+			<LabelSrc x="579" y="300"/>
+			<LabelDst x="579" y="300"/>
+			<Link name="organizes" type="COMPOSITION" cardSrc="1" cardDestination="*" bidir="False" sourceId="3" destId="4"/>
+		</GraphicLink>
+		<GraphicClass width="129" height="70" x="517" y="125">
+			<Class id="5" name="Car" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Field visibility="PRIVATE">
+					<Param name="make" type=""/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="model" type=""/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="vin" type=""/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="modelYear" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="81" height="50" x="550" y="325">
+			<Class id="6" name="Wheel" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Field visibility="PRIVATE">
+					<Param name="size" type=""/>
+				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="width" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicLink srcX="573" srcY="194" dstX="574" dstY="325" spline="False">
+			<LabelCenter x="579" y="300"/>
+			<LabelSrc x="579" y="300"/>
+			<LabelDst x="579" y="300"/>
+			<Link name="has" type="AGGREGATION" cardSrc="1" cardDestination="4" bidir="False" sourceId="5" destId="6"/>
+		</GraphicLink>
+		<GraphicText width="221" height="73" x="125" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
+			<Text id="7" content="Aggregation associates two objects describes the “have a” relationship."/>
+		</GraphicText>
+		<GraphicText width="206" height="74" x="550" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
+			<Text id="8" content="Composition is a specific type of Aggregation which implies ownership."/>
+		</GraphicText>
+		<GraphicClass width="172" height="75" x="850" y="175">
+			<Class id="9" name="Interface" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="floatMethod" visibility="PUBLIC">
+					<Return type="float"/>
+					<SourceCode/>
+				</Method>
+				<Method name="intMethod" visibility="PUBLIC">
+					<Return type="int"/>
+					<SourceCode/>
+				</Method>
+				<Method name="stringMethod" visibility="PUBLIC">
+					<Return type="str"/>
+					<SourceCode/>
+				</Method>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="99" height="44" x="875" y="350">
+			<Class id="10" name="Implementor" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLink srcX="924" srcY="350" dstX="922" dstY="249" spline="False">
+			<Link name="" type="INTERFACE" cardSrc="" cardDestination="" bidir="False" sourceId="10" destId="9"/>
+		</GraphicLink>
+		<GraphicClass width="140" height="48" x="325" y="625">
+			<Class id="11" name="LollipopImplementor" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLollipop attachmentPoint="EAST" x="465" y="649">
+			<Interface id="12" name="IClassInterface" description="">
+				<Method name="methodWithParameters" visibility="PUBLIC">
+					<Return type=""/>
+					<Param name="strParam" type="str" defaultValue="''"/>
+					<Param name="intParam" type="int" defaultValue="1"/>
+					<Param name="floatParam" type="float" defaultValue="1.0"/>
+					<SourceCode/>
+				</Method>
+				<Implementor implementingClassName="LollipopImplementor"/>
+			</Interface>
+		</GraphicLollipop>
+	</PyutDocument>
+</PyutProject>

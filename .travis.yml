@@ -24,7 +24,8 @@ python:
 # command to install dependencies
 install:
   - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
-  - pip install ogl
+  - pip install untangle==1.1.1
+  - pip install ogl==0.53.1
 
 
 # command to run tests

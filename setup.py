@@ -18,5 +18,9 @@ setup(
     packages=[
         'untanglepyut'
     ],
+    package_data={
+        'untanglepyut': ['py.typed'],
+    },
+
     install_requires=['ogl', 'untangle'],
 )
