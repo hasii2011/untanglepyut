@@ -19,12 +19,11 @@ services:
   - xvfb
 
 python:
-  - "3.10.0"
+  - "3.9.1"
 
 # command to install dependencies
 install:
-  # - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
-  - pip install --pre -f https://wxpython.org/Phoenix/snapshot-builds/ wxpython
+  - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
   - pip install ogl
 
 
