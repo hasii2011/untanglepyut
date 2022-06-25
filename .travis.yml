@@ -15,13 +15,17 @@ language: python
 
 cache: pip
 
+services:
+  - xvfb
+
 python:
   - "3.10.0"
 
 # command to install dependencies
 install:
-  - pip3 install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
-  - pip3 install ogl
+  # - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython
+  - pip install --pre -f https://wxpython.org/Phoenix/snapshot-builds/ wxpython
+  - pip install ogl
 
 
 # command to run tests
