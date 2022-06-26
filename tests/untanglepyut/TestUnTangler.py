@@ -23,8 +23,9 @@ from untanglepyut.Untangler import DocumentTitle
 from untanglepyut.Untangler import UnTangler
 from untanglepyut.Untangler import UntangledOglClasses
 
-DIAGRAM_NAME_1: DocumentTitle = DocumentTitle('Diagram-1')
-DIAGRAM_NAME_2: DocumentTitle = DocumentTitle('Diagram-2')
+DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
+DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
+TEST_XML_FILENAME: str = 'MultiDocumentProject.xml'
 
 
 class DummyApp(App):
@@ -56,7 +57,7 @@ class TestUnTangler(TestBase):
         self.logger: Logger = TestUnTangler.clsLogger
         self.app:    App    = DummyApp(redirect=True)
 
-        self._fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiDocumentProject.xml')
+        self._fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, TEST_XML_FILENAME)
 
     def tearDown(self):
         self.app.OnExit()
@@ -116,7 +117,20 @@ class TestUnTangler(TestBase):
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             possibleDescriptions: List[str] = ['I am crybaby Gen Z', 'I am a righteous boomer']
-            self.assertIn(pyutClass.description, possibleDescriptions, "I don't see any of those")
+            self.assertIn(pyutClass.description, possibleDescriptions, "I don't see that description")
+
+    def testPyutClassesHaveNames(self):
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        title: DocumentTitle = DIAGRAM_NAME_2
+        document: Document = untangler.documents[title]
+        oglClasses: UntangledOglClasses = document.oglClasses
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            possibleNames: List[str] = ['File', 'Folder', 'Car', 'Wheel', 'Interface', 'Implementor', 'LollipopImplementor']
+            self.assertIn(pyutClass.name, possibleNames, "I don't see that name")
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

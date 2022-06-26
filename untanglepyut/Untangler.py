@@ -12,6 +12,8 @@ from dataclasses import field
 from ogl.OglClass import OglClass
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodel.PyutMethod import PyutMethod
+from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from untangle import parse
 from untangle import Element
@@ -24,6 +26,8 @@ class ProjectInformation:
 
 
 UntangledOglClasses  = NewType('UntangledOglClasses', List[OglClass])
+
+UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
 
 
 def createUntangledOglClassesFactory() -> UntangledOglClasses:
@@ -138,26 +142,49 @@ class UnTangler:
         return oglClasses
 
     def _classToPyutClass(self, graphicClass: Element) -> PyutClass:
-        pyutElement: Element = graphicClass.Class
+        classElement: Element = graphicClass.Class
 
-        pyutClass: PyutClass = PyutClass(name=pyutElement['name'])
+        pyutClass: PyutClass = PyutClass(name=classElement['name'])
 
-        displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(pyutElement['displayParameters'])
+        displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(classElement['displayParameters'])
 
-        showStereotype:    bool = bool(pyutElement['showStereotype'])
-        showFields:        bool = bool(pyutElement['showFields'])
-        showMethods:       bool = bool(pyutElement['showMethods'])
+        showStereotype:    bool = bool(classElement['showStereotype'])
+        showFields:        bool = bool(classElement['showFields'])
+        showMethods:       bool = bool(classElement['showMethods'])
         pyutClass.displayParameters = displayParameters
 
         pyutClass.setStereotype(showStereotype)     # This is bogus;  How did I forget this
         pyutClass.showFields     = showFields
         pyutClass.showMethods    = showMethods
 
-        pyutClass.description = pyutElement['description']
-        pyutClass.fileName    = pyutElement['fileName']
-        pyutClass.id          = int(pyutElement['id'])      # TODO revisit this when we start using UUIDs
+        pyutClass.description = classElement['description']
+        pyutClass.fileName    = classElement['fileName']
+        pyutClass.id          = int(classElement['id'])      # TODO revisit this when we start using UUIDs
 
+        self._methodToPyutMethods(classElement=classElement)
         return pyutClass
+
+    def _methodToPyutMethods(self, classElement: Element) -> UntangledPyutMethods:
+        """
+        The pyutClass may not have methods;
+        Args:
+            classElement:  The pyutClassElement
+
+        Returns:  May return an empty list
+        """
+
+        untangledPyutMethods: UntangledPyutMethods = UntangledPyutMethods([])
+
+        methodElements = classElement.get_elements('Method')
+        for methodElement in methodElements:
+            methodName: str                = methodElement['name']
+            visibility: PyutVisibilityEnum = PyutVisibilityEnum.toEnum(methodElement['visibility'])
+            self.logger.info(f"{methodName=} - {visibility=}")
+            pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
+
+            untangledPyutMethods.append(pyutMethod)
+
+        return untangledPyutMethods
 
     def _getRawXml(self) -> str:
 
