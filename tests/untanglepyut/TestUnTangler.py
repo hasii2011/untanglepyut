@@ -10,6 +10,7 @@ from unittest import main as unitTestMain
 from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
+from pyutmodel.PyutClass import PyutClass
 
 from wx import App
 from wx import Frame
@@ -20,6 +21,7 @@ from untanglepyut.Untangler import Document
 from untanglepyut.Untangler import DocumentTitle
 
 from untanglepyut.Untangler import UnTangler
+from untanglepyut.Untangler import UntangledOglClasses
 
 DIAGRAM_NAME_1: DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2: DocumentTitle = DocumentTitle('Diagram-2')
@@ -102,6 +104,19 @@ class TestUnTangler(TestBase):
 
     def testNonZeroPositionsForClassesInDiagram2(self):
         self._testNonZeroPositionsForClassesInDiagram(DIAGRAM_NAME_2)
+
+    def testPyutClassesDescription(self):
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        title: DocumentTitle = DIAGRAM_NAME_1
+        document: Document = untangler.documents[title]
+        oglClasses: UntangledOglClasses = document.oglClasses
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            possibleDescriptions: List[str] = ['I am crybaby Gen Z', 'I am a righteous boomer']
+            self.assertIn(pyutClass.description, possibleDescriptions, "I don't see any of those")
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

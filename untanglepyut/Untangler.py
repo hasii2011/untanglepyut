@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from dataclasses import field
 
 from ogl.OglClass import OglClass
+from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 
 from untangle import parse
 from untangle import Element
@@ -21,16 +23,16 @@ class ProjectInformation:
     codePath: str = cast(str, None)
 
 
-UntangledClasses = NewType('UntangledClasses', List[OglClass])
+UntangledOglClasses  = NewType('UntangledOglClasses', List[OglClass])
 
 
-def createUntangledClassesFactory() -> UntangledClasses:
+def createUntangledOglClassesFactory() -> UntangledOglClasses:
     """
     Factory method to create  the UntangledClasses data structure;
 
     Returns:  A new data structure
     """
-    return UntangledClasses([])
+    return UntangledOglClasses([])
 
 
 @dataclass
@@ -41,10 +43,10 @@ class Document:
     scrollPositionY: int = -1
     pixelsPerUnitX:  int = -1
     pixelsPerUnitY:  int = -1
-    oglClasses: UntangledClasses = field(default_factory=createUntangledClassesFactory)
+    oglClasses: UntangledOglClasses = field(default_factory=createUntangledOglClassesFactory)
 
     def __post_init__(self):
-        self.oglClasses = UntangledClasses([])
+        self.oglClasses = UntangledOglClasses([])
 
 
 DocumentTitle = NewType('DocumentTitle', str)
@@ -116,9 +118,9 @@ class UnTangler:
 
         return documentInformation
 
-    def _graphicClassesToOglClasses(self, pyutDocument: Element) -> UntangledClasses:
+    def _graphicClassesToOglClasses(self, pyutDocument: Element) -> UntangledOglClasses:
 
-        oglClasses: UntangledClasses = createUntangledClassesFactory()
+        oglClasses: UntangledOglClasses = createUntangledOglClassesFactory()
         for graphicClass in pyutDocument.GraphicClass:
             self.logger.debug(f'{graphicClass=}')
 
@@ -129,9 +131,33 @@ class UnTangler:
             oglClass: OglClass = OglClass(w=width, h=height)
             oglClass.SetPosition(x=x, y=y)
 
+            pyutClass: PyutClass = self._classToPyutClass(graphicClass=graphicClass)
+            oglClass.pyutObject = pyutClass
             oglClasses.append(oglClass)
 
         return oglClasses
+
+    def _classToPyutClass(self, graphicClass: Element) -> PyutClass:
+        pyutElement: Element = graphicClass.Class
+
+        pyutClass: PyutClass = PyutClass(name=pyutElement['name'])
+
+        displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(pyutElement['displayParameters'])
+
+        showStereotype:    bool = bool(pyutElement['showStereotype'])
+        showFields:        bool = bool(pyutElement['showFields'])
+        showMethods:       bool = bool(pyutElement['showMethods'])
+        pyutClass.displayParameters = displayParameters
+
+        pyutClass.setStereotype(showStereotype)     # This is bogus;  How did I forget this
+        pyutClass.showFields     = showFields
+        pyutClass.showMethods    = showMethods
+
+        pyutClass.description = pyutElement['description']
+        pyutClass.fileName    = pyutElement['fileName']
+        pyutClass.id          = int(pyutElement['id'])      # TODO revisit this when we start using UUIDs
+
+        return pyutClass
 
     def _getRawXml(self) -> str:
 
