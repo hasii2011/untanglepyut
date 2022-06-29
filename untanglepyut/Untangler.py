@@ -13,6 +13,9 @@ from ogl.OglClass import OglClass
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutMethod import PyutMethod
+from pyutmodel.PyutMethod import PyutParameters
+from pyutmodel.PyutParameter import PyutParameter
+from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from untangle import parse
@@ -27,7 +30,7 @@ class ProjectInformation:
 
 UntangledOglClasses  = NewType('UntangledOglClasses', List[OglClass])
 
-UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
+UntangledPyutMethods          = NewType('UntangledPyutMethods', List[PyutMethod])
 
 
 def createUntangledOglClassesFactory() -> UntangledOglClasses:
@@ -161,7 +164,7 @@ class UnTangler:
         pyutClass.fileName    = classElement['fileName']
         pyutClass.id          = int(classElement['id'])      # TODO revisit this when we start using UUIDs
 
-        self._methodToPyutMethods(classElement=classElement)
+        pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
         return pyutClass
 
     def _methodToPyutMethods(self, classElement: Element) -> UntangledPyutMethods:
@@ -180,11 +183,37 @@ class UnTangler:
             methodName: str                = methodElement['name']
             visibility: PyutVisibilityEnum = PyutVisibilityEnum.toEnum(methodElement['visibility'])
             self.logger.info(f"{methodName=} - {visibility=}")
+
             pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
 
+            returnElement = methodElement.get_elements('Return')
+            if len(returnElement) > 0:
+                pyutType: PyutType = PyutType(value=returnElement[0]['type'])
+                pyutMethod.returnType = pyutType
+
+            # <Modifier name="static"/>
+            parameters = self._paramToPyutParameters(methodElement)
+            pyutMethod.parameters = parameters
             untangledPyutMethods.append(pyutMethod)
 
         return untangledPyutMethods
+
+    def _paramToPyutParameters(self, methodElement: Element) -> PyutParameters:
+
+        parameterElements = methodElement.get_elements('Param')     # TODO:  https://github.com/hasii2011/PyUt/issues/326
+        untangledPyutMethodParameters: PyutParameters = PyutParameters([])
+        for parameterElement in parameterElements:
+            name:           str = parameterElement['name']
+            defaultValue:   str = parameterElement['defaultValue']
+            parameterType:  PyutType = PyutType(parameterElement['type'])
+
+            parameter: PyutParameter = PyutParameter(name=name, parameterType=parameterType, defaultValue=defaultValue)
+            # <Param name="intParameter" type="int" defaultValue="0"/>
+            # <Param name="floatParameter" type="float" defaultValue="0.0"/>
+            # <Param name="stringParameter" type="str" defaultValue="''"/>
+            untangledPyutMethodParameters.append(parameter)
+
+        return untangledPyutMethodParameters
 
     def _getRawXml(self) -> str:
 

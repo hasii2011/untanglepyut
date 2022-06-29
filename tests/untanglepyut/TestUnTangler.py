@@ -11,6 +11,7 @@ from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
 from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutMethod import PyutMethod
 
 from wx import App
 from wx import Frame
@@ -131,6 +132,23 @@ class TestUnTangler(TestBase):
             pyutClass: PyutClass = oglClass.pyutObject
             possibleNames: List[str] = ['File', 'Folder', 'Car', 'Wheel', 'Interface', 'Implementor', 'LollipopImplementor']
             self.assertIn(pyutClass.name, possibleNames, "I don't see that name")
+
+    def testPyuMethodsCreated(self):
+        pass
+
+    def testPyutMethodsWithParameters(self):
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        title: DocumentTitle = DIAGRAM_NAME_1
+        document: Document = untangler.documents[title]
+        oglClasses: UntangledOglClasses = document.oglClasses
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            if pyutClass.name == 'BaseClass':
+                methodWithParameters: PyutMethod = pyutClass.methods[0]
+                parameters = methodWithParameters.parameters
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

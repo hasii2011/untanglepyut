@@ -8,14 +8,25 @@
 				</Field>
 			</Class>
 		</GraphicClass>
-		<GraphicClass width="79" height="43" x="225" y="75">
+		<GraphicClass width="177" height="72" x="225" y="75">
 			<Class id="2" name="BaseClass" filename="" description="I am a righteous boomer" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="method1" visibility="PUBLIC">
+					<Modifier name="static"/>
+					<Return type="float"/>
+					<Param name="intParameter" type="int" defaultValue="0"/>
+					<Param name="floatParameter" type="float" defaultValue="0.0"/>
+					<Param name="stringParameter" type="str" defaultValue="''"/>
+					<SourceCode/>
+				</Method>
 				<Field visibility="PRIVATE">
 					<Param name="id" type=""/>
 				</Field>
+				<Field visibility="PRIVATE">
+					<Param name="method1" type=""/>
+				</Field>
 			</Class>
 		</GraphicClass>
-		<GraphicLink srcX="264" srcY="275" dstX="264" dstY="117" spline="False">
+		<GraphicLink srcX="264" srcY="275" dstX="264" dstY="146" spline="False">
 			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
 		</GraphicLink>
 	</PyutDocument>
@@ -37,12 +48,6 @@
 				</Field>
 			</Class>
 		</GraphicClass>
-		<GraphicLink srcX="186" srcY="189" dstX="187" dstY="325" spline="False">
-			<LabelCenter x="579" y="300"/>
-			<LabelSrc x="579" y="300"/>
-			<LabelDst x="579" y="300"/>
-			<Link name="organizes" type="COMPOSITION" cardSrc="1" cardDestination="*" bidir="False" sourceId="3" destId="4"/>
-		</GraphicLink>
 		<GraphicClass width="129" height="70" x="517" y="125">
 			<Class id="5" name="Car" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
 				<Field visibility="PRIVATE">
@@ -69,20 +74,8 @@
 				</Field>
 			</Class>
 		</GraphicClass>
-		<GraphicLink srcX="573" srcY="194" dstX="574" dstY="325" spline="False">
-			<LabelCenter x="579" y="300"/>
-			<LabelSrc x="579" y="300"/>
-			<LabelDst x="579" y="300"/>
-			<Link name="has" type="AGGREGATION" cardSrc="1" cardDestination="4" bidir="False" sourceId="5" destId="6"/>
-		</GraphicLink>
-		<GraphicText width="221" height="73" x="125" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
-			<Text id="7" content="Aggregation associates two objects describes the 'have a' relationship."/>
-		</GraphicText>
-		<GraphicText width="206" height="74" x="550" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
-			<Text id="8" content="Composition is a specific type of Aggregation which implies ownership."/>
-		</GraphicText>
 		<GraphicClass width="172" height="75" x="850" y="175">
-			<Class id="9" name="Interface" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+			<Class id="7" name="Interface" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
 				<Method name="floatMethod" visibility="PUBLIC">
 					<Return type="float"/>
 					<SourceCode/>
@@ -98,15 +91,33 @@
 			</Class>
 		</GraphicClass>
 		<GraphicClass width="99" height="44" x="875" y="350">
-			<Class id="10" name="Implementor" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+			<Class id="8" name="Implementor" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
 		</GraphicClass>
-		<GraphicLink srcX="924" srcY="350" dstX="922" dstY="249" spline="False">
-			<Link name="" type="INTERFACE" cardSrc="" cardDestination="" bidir="False" sourceId="10" destId="9"/>
-		</GraphicLink>
 		<GraphicClass width="140" height="48" x="325" y="625">
-			<Class id="11" name="LollipopImplementor" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+			<Class id="9" name="LollipopImplementor" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
 		</GraphicClass>
-		<GraphicLollipop attachmentPoint="EAST" x="465" y="649">
+		<GraphicLink srcX="186" srcY="189" dstX="187" dstY="325" spline="False">
+			<LabelCenter x="579" y="300"/>
+			<LabelSrc x="579" y="300"/>
+			<LabelDst x="579" y="300"/>
+			<Link name="organizes" type="COMPOSITION" cardSrc="1" cardDestination="*" bidir="False" sourceId="3" destId="4"/>
+		</GraphicLink>
+		<GraphicLink srcX="573" srcY="194" dstX="574" dstY="325" spline="False">
+			<LabelCenter x="579" y="300"/>
+			<LabelSrc x="579" y="300"/>
+			<LabelDst x="579" y="300"/>
+			<Link name="has" type="AGGREGATION" cardSrc="1" cardDestination="4" bidir="False" sourceId="5" destId="6"/>
+		</GraphicLink>
+		<GraphicLink srcX="924" srcY="350" dstX="922" dstY="249" spline="False">
+			<Link name="" type="INTERFACE" cardSrc="" cardDestination="" bidir="False" sourceId="8" destId="7"/>
+		</GraphicLink>
+		<GraphicText width="221" height="73" x="125" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
+			<Text id="10" content="Aggregation associates two objects describes the 'have a' relationship."/>
+		</GraphicText>
+		<GraphicText width="206" height="74" x="550" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
+			<Text id="11" content="Composition is a specific type of Aggregation which implies ownership."/>
+		</GraphicText>
+		<GraphicLollipop attachmentPoint="EAST" x="464" y="649">
 			<Interface id="12" name="IClassInterface" description="">
 				<Method name="methodWithParameters" visibility="PUBLIC">
 					<Return type=""/>
