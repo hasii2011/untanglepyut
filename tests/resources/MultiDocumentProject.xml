@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <PyutProject version="10" CodePath="">
 	<PyutDocument type="CLASS_DIAGRAM" title="Diagram-1" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
-		<GraphicClass width="76" height="41" x="225" y="275">
+		<GraphicClass width="156" height="60" x="225" y="275">
 			<Class id="1" name="SubClass" filename="" description="I am crybaby Gen Z" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="methodWithManyModifiers" visibility="PUBLIC">
+					<Modifier name="modifier1,modifier2"/>
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
 				<Field visibility="PRIVATE">
 					<Param name="name" type=""/>
 				</Field>
 			</Class>
 		</GraphicClass>
-		<GraphicClass width="177" height="72" x="225" y="75">
-			<Class id="2" name="BaseClass" filename="" description="I am a righteous boomer" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+		<GraphicClass width="416" height="70" x="225" y="75">
+			<Class id="2" name="BaseClass" filename="" description="I am a righteous boomer" showMethods="True" showFields="True" showStereotype="True" displayParameters="Display">
 				<Method name="method1" visibility="PUBLIC">
 					<Modifier name="static"/>
 					<Return type="float"/>
 					<Param name="intParameter" type="int" defaultValue="0"/>
 					<Param name="floatParameter" type="float" defaultValue="0.0"/>
 					<Param name="stringParameter" type="str" defaultValue="''"/>
-					<SourceCode/>
+					<SourceCode>
+						<Code>#</Code>
+						<Code># I am a do nothing method</Code>
+						<Code>#</Code>
+						<Code>pass</Code>
+					</SourceCode>
 				</Method>
 				<Field visibility="PRIVATE">
 					<Param name="id" type=""/>
 				</Field>
 				<Field visibility="PRIVATE">
-					<Param name="method1" type=""/>
+					<Param name="privateField" type=""/>
 				</Field>
 			</Class>
 		</GraphicClass>
-		<GraphicLink srcX="264" srcY="275" dstX="264" dstY="146" spline="False">
+		<GraphicLink srcX="264" srcY="275" dstX="264" dstY="144" spline="False">
 			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
 		</GraphicLink>
 	</PyutDocument>

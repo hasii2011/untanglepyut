@@ -12,6 +12,7 @@ from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutMethod import PyutMethod
+from pyutmodel.PyutMethod import PyutModifiers
 
 from wx import App
 from wx import Frame
@@ -149,6 +150,25 @@ class TestUnTangler(TestBase):
             if pyutClass.name == 'BaseClass':
                 methodWithParameters: PyutMethod = pyutClass.methods[0]
                 parameters = methodWithParameters.parameters
+
+    def testPyutMethodModifiers(self):
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        title: DocumentTitle = DIAGRAM_NAME_1
+        document: Document = untangler.documents[title]
+        oglClasses: UntangledOglClasses = document.oglClasses
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            if pyutClass.name == 'BaseClass':
+                methods: List[PyutMethod] = pyutClass.methods
+                for method in methods:
+                    if method.name == 'methodWithManyModifiers':
+                        expectedModifiers: List[str] =['modifier1', 'modifier2']
+                        modifiers: PyutModifiers = method.modifiers
+                        for modifier in modifiers:
+                            self.assertIn(modifier, expectedModifiers, 'Unexpected method modifier')
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

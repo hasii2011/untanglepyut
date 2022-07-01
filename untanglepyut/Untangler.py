@@ -13,7 +13,10 @@ from ogl.OglClass import OglClass
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutMethod import PyutMethod
+from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutMethod import PyutParameters
+from pyutmodel.PyutMethod import SourceCode
+from pyutmodel.PyutModifier import PyutModifier
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
@@ -175,7 +178,6 @@ class UnTangler:
 
         Returns:  May return an empty list
         """
-
         untangledPyutMethods: UntangledPyutMethods = UntangledPyutMethods([])
 
         methodElements = classElement.get_elements('Method')
@@ -186,17 +188,36 @@ class UnTangler:
 
             pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
 
+            pyutMethod.modifiers = self._modifierToPyutMethodModifiers(methodElement=methodElement)
+
             returnElement = methodElement.get_elements('Return')
+
             if len(returnElement) > 0:
                 pyutType: PyutType = PyutType(value=returnElement[0]['type'])
                 pyutMethod.returnType = pyutType
 
-            # <Modifier name="static"/>
             parameters = self._paramToPyutParameters(methodElement)
             pyutMethod.parameters = parameters
+            pyutMethod.sourceCode = self._sourceCodeToPyutSourceCode(methodElement=methodElement)
+
             untangledPyutMethods.append(pyutMethod)
 
         return untangledPyutMethods
+
+    def _modifierToPyutMethodModifiers(self, methodElement: Element) -> PyutModifiers:
+        # <Modifier name="modifier1,modifier2,modifier3"/>
+        modifierElements = methodElement.get_elements('Modifier')
+
+        pyutModifiers: PyutModifiers = PyutModifiers([])
+        if len(modifierElements) > 0:
+            modifierElement: Element   = modifierElements[0]
+            names:           str       = modifierElement['name']    # comma delimited string
+            nameList:        List[str] = names.split(',')
+            for modifierName in nameList:
+                pyutModifier: PyutModifier = PyutModifier(modifierTypeName=modifierName)
+                pyutModifiers.append(pyutModifier)
+
+        return pyutModifiers
 
     def _paramToPyutParameters(self, methodElement: Element) -> PyutParameters:
 
@@ -207,13 +228,23 @@ class UnTangler:
             defaultValue:   str = parameterElement['defaultValue']
             parameterType:  PyutType = PyutType(parameterElement['type'])
 
-            parameter: PyutParameter = PyutParameter(name=name, parameterType=parameterType, defaultValue=defaultValue)
+            pyutParameter: PyutParameter = PyutParameter(name=name, parameterType=parameterType, defaultValue=defaultValue)
             # <Param name="intParameter" type="int" defaultValue="0"/>
             # <Param name="floatParameter" type="float" defaultValue="0.0"/>
             # <Param name="stringParameter" type="str" defaultValue="''"/>
-            untangledPyutMethodParameters.append(parameter)
+            untangledPyutMethodParameters.append(pyutParameter)
 
         return untangledPyutMethodParameters
+
+    def _sourceCodeToPyutSourceCode(self, methodElement: Element) -> SourceCode:
+        sourceCodeElements = methodElement.get_elements('SourceCode')
+        codeElements = sourceCodeElements[0].get_elements('Code')
+        sourceCode: SourceCode = SourceCode([])
+        for codeElement in codeElements:
+            self.logger.info(f'{codeElement.cdata=}')
+            codeLine: str = codeElement.cdata
+            sourceCode.append(codeLine)
+        return sourceCode
 
     def _getRawXml(self) -> str:
 
