@@ -11,8 +11,10 @@ from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
 from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
+from pyutmodel.PyutObject import PyutObject
 
 from wx import App
 from wx import Frame
@@ -135,7 +137,29 @@ class TestUnTangler(TestBase):
             self.assertIn(pyutClass.name, possibleNames, "I don't see that name")
 
     def testPyuMethodsCreated(self):
-        pass
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        title: DocumentTitle = DIAGRAM_NAME_2
+        document: Document = untangler.documents[title]
+        oglClasses: UntangledOglClasses = document.oglClasses
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            if pyutClass.name == 'Interface':
+                possibleNames: List[str] = ['floatMethod', 'intMethod', 'stringMethod', 'fakeMethod']
+                foundDictionary: dict = {
+                    'floatMethod': False,
+                    'intMethod':   False,
+                    'stringMethod': False
+                }
+                for method in pyutClass.methods:
+                    # first ensure we do not find unknown method names
+                    self.assertIn(method.name, possibleNames, 'I do not see that nane')
+                    foundDictionary[method.name] = True
+                # Then make sure we found the all the known ones
+                for methodName in foundDictionary.keys():
+                    self.assertTrue(foundDictionary[methodName], f'Oops did not find an expected method: {methodName}')
 
     def testPyutMethodsWithParameters(self):
         untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
@@ -150,6 +174,10 @@ class TestUnTangler(TestBase):
             if pyutClass.name == 'BaseClass':
                 methodWithParameters: PyutMethod = pyutClass.methods[0]
                 parameters = methodWithParameters.parameters
+                possibleNames: List[str] = ['intParameter', 'floatParameter', 'stringParameter']
+                for parameter in parameters:
+                    self.logger.info(f'{parameter.name=}')
+                    self.assertIn(parameter.name, possibleNames, f'I do not see that nane')
 
     def testPyutMethodModifiers(self):
         untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)

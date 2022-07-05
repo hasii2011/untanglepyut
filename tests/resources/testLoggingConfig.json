@@ -29,6 +29,11 @@
         "untanglepyut": {
             "level":     "INFO",
             "propagate": "False"
+        },
+        "TestUnTangler": {
+            "level":     "INFO",
+            "propagate": "False"
         }
+
     }
 }
