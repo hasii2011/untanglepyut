@@ -11,10 +11,9 @@ from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
 from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutInterface import PyutInterface
+
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
-from pyutmodel.PyutObject import PyutObject
 
 from wx import App
 from wx import Frame
@@ -29,7 +28,7 @@ from untanglepyut.Untangler import UntangledOglClasses
 
 DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
-TEST_XML_FILENAME: str = 'MultiDocumentProject.xml'
+TEST_XML_FILENAME: str           = 'MultiDocumentProject.xml'
 
 
 class DummyApp(App):
@@ -111,39 +110,23 @@ class TestUnTangler(TestBase):
         self._testNonZeroPositionsForClassesInDiagram(DIAGRAM_NAME_2)
 
     def testPyutClassesDescription(self):
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
-
-        untangler.untangle()
-
-        title: DocumentTitle = DIAGRAM_NAME_1
-        document: Document = untangler.documents[title]
-        oglClasses: UntangledOglClasses = document.oglClasses
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_1)
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             possibleDescriptions: List[str] = ['I am crybaby Gen Z', 'I am a righteous boomer']
             self.assertIn(pyutClass.description, possibleDescriptions, "I don't see that description")
 
     def testPyutClassesHaveNames(self):
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
 
-        untangler.untangle()
-
-        title: DocumentTitle = DIAGRAM_NAME_2
-        document: Document = untangler.documents[title]
-        oglClasses: UntangledOglClasses = document.oglClasses
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_2)
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             possibleNames: List[str] = ['File', 'Folder', 'Car', 'Wheel', 'Interface', 'Implementor', 'LollipopImplementor']
             self.assertIn(pyutClass.name, possibleNames, "I don't see that name")
 
     def testPyuMethodsCreated(self):
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
 
-        untangler.untangle()
-
-        title: DocumentTitle = DIAGRAM_NAME_2
-        document: Document = untangler.documents[title]
-        oglClasses: UntangledOglClasses = document.oglClasses
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_2)
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             if pyutClass.name == 'Interface':
@@ -162,13 +145,8 @@ class TestUnTangler(TestBase):
                     self.assertTrue(foundDictionary[methodName], f'Oops did not find an expected method: {methodName}')
 
     def testPyutMethodsWithParameters(self):
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
 
-        untangler.untangle()
-
-        title: DocumentTitle = DIAGRAM_NAME_1
-        document: Document = untangler.documents[title]
-        oglClasses: UntangledOglClasses = document.oglClasses
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_1)
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             if pyutClass.name == 'BaseClass':
@@ -180,31 +158,22 @@ class TestUnTangler(TestBase):
                     self.assertIn(parameter.name, possibleNames, f'I do not see that nane')
 
     def testPyutMethodModifiers(self):
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
 
-        untangler.untangle()
-
-        title: DocumentTitle = DIAGRAM_NAME_1
-        document: Document = untangler.documents[title]
-        oglClasses: UntangledOglClasses = document.oglClasses
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_1)
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             if pyutClass.name == 'BaseClass':
                 methods: List[PyutMethod] = pyutClass.methods
                 for method in methods:
                     if method.name == 'methodWithManyModifiers':
-                        expectedModifiers: List[str] =['modifier1', 'modifier2']
+                        expectedModifiers: List[str] = ['modifier1', 'modifier2']
                         modifiers: PyutModifiers = method.modifiers
                         for modifier in modifiers:
                             self.assertIn(modifier, expectedModifiers, 'Unexpected method modifier')
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
-
-        untangler.untangle()
-        document: Document = untangler.documents[title]
-        oglClasses: List[OglClass] = document.oglClasses
+        oglClasses: List[OglClass] = self._getOglClassesFromDocument(title)
 
         self.assertEqual(expectedCount, len(oglClasses), f'Incorrect number of classes generated for: {title}')
 
@@ -221,16 +190,23 @@ class TestUnTangler(TestBase):
             self.assertNotEqual(0, size[1], 'Height should be non-zero')
 
     def _testNonZeroPositionsForClassesInDiagram(self, title: DocumentTitle):
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
 
-        untangler.untangle()
-        document: Document = untangler.documents[title]
-        oglClasses: List[OglClass] = document.oglClasses
+        oglClasses: List[OglClass] = self._getOglClassesFromDocument(title)
 
         for oglClass in oglClasses:
             pos = oglClass.GetPosition()
             self.assertNotEqual(0, pos[0], 'x should be non-zero')
             self.assertNotEqual(0, pos[1], 'y should be non-zero')
+
+    def _getOglClassesFromDocument(self, title: DocumentTitle) -> UntangledOglClasses:
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        document:  Document             = untangler.documents[title]
+        oglClasses: UntangledOglClasses = document.oglClasses
+
+        return oglClasses
 
 
 def suite() -> TestSuite:
