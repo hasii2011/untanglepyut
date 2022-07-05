@@ -171,6 +171,20 @@ class TestUnTangler(TestBase):
                         for modifier in modifiers:
                             self.assertIn(modifier, expectedModifiers, 'Unexpected method modifier')
 
+    def testPyutMethodHasSourceCode(self):
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_1)
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            if pyutClass.name == 'SubClass':
+                methods: List[PyutMethod] = pyutClass.methods
+                for method in methods:
+                    if method.name == 'methodWithSourceCode':
+                        actualSourceCode: List[str] = method.sourceCode
+                        self.assertEqual(2, len(actualSourceCode), "Source code line count mismatch")
+                        expectedSource: List[str] = ['int: i = 0', 'return True']
+                        self.assertEqual(expectedSource, actualSourceCode, 'Source Code Mismatch')
+                        break
+
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
         oglClasses: List[OglClass] = self._getOglClassesFromDocument(title)

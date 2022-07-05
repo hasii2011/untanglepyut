@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <PyutProject version="10" CodePath="">
 	<PyutDocument type="CLASS_DIAGRAM" title="Diagram-1" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
-		<GraphicClass width="156" height="60" x="225" y="275">
+		<GraphicClass width="156" height="80" x="225" y="275">
 			<Class id="1" name="SubClass" filename="" description="I am crybaby Gen Z" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
 				<Method name="methodWithManyModifiers" visibility="PUBLIC">
 					<Modifier name="modifier1,modifier2"/>
 					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="methodWithSourceCode" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode>
+						<Code>int: i = 0</Code>
+						<Code>return True</Code>
+					</SourceCode>
+				</Method>
+				<Method name="method1" visibility="PRIVATE">
+					<Return type="bool"/>
 					<SourceCode/>
 				</Method>
 				<Field visibility="PRIVATE">
@@ -32,7 +43,7 @@
 					<Param name="id" type=""/>
 				</Field>
 				<Field visibility="PRIVATE">
-					<Param name="privateField" type=""/>
+					<Param name="method1" type=""/>
 				</Field>
 			</Class>
 		</GraphicClass>
@@ -40,7 +51,7 @@
 			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
 		</GraphicLink>
 	</PyutDocument>
-	<PyutDocument type="CLASS_DIAGRAM" title="Diagram-2" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+	<PyutDocument type="CLASS_DIAGRAM" title="Diagram-2" scrollPositionX="5" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
 		<GraphicClass width="77" height="40" x="150" y="150">
 			<Class id="3" name="Folder" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
 				<Field visibility="PRIVATE">
