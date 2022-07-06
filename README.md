@@ -13,7 +13,7 @@ I need a good project description
 
 ![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub.png)
 
-I am concerted about GitHub's Copilot project
+I am concerned about GitHub's Copilot project
 
 
 
