@@ -8,21 +8,24 @@
 
 I need a good project description
 
-== We're Using GitHub Under Protest ==
+== I am concerted about GitHub's Copilot project ==
 
-This project is currently hosted on GitHub.  This is not ideal; GitHub is a
-proprietary, trade-secret system that is not Free and Open Source Software
-(FOSS).  We are deeply concerned about using a proprietary system like GitHub
-to develop our FOSS project.  
-
-We urge you to read about the
+I urge you to read about the
 [Give up GitHub](https://GiveUpGitHub.org) campaign from
-[the Software Freedom Conservancy](https://sfconservancy.org) to understand 
-the reasons why GitHub is not a good place to host FOSS projects.
+[the Software Freedom Conservancy](https://sfconservancy.org).
 
+While I do not advocate for all the issues listed there I do not like that
+a company like Microsoft may profit from open source projects.
+
+I continue to use GitHub because it offers the services I need for free.  But, I continue
+to monitor their terms of service.
 
 Any use of this project's code by GitHub Copilot, past or present, is done
-without our permission.  We do not consent to GitHub's use of this project's
+without my permission.  I do not consent to GitHub's use of this project's
 code in Copilot.
 
-![Logo of the GiveUpGitHub campaign](https://sfconservancy.org/img/GiveUpGitHub.png)
+A repository owner may opt out of Copilot by changing Settings --> GitHub Copilot.
+
+I have done so.
+
+![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub-480x448.png)
