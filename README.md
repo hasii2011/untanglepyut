@@ -10,8 +10,12 @@ I need a good project description
 
 ------
 
-I am concerted about GitHub's Copilot project
+
 ![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub.png)
+
+I am concerted about GitHub's Copilot project
+
+
 
 I urge you to read about the
 [Give up GitHub](https://GiveUpGitHub.org) campaign from
