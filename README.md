@@ -28,4 +28,4 @@ A repository owner may opt out of Copilot by changing Settings --> GitHub Copilo
 
 I have done so.
 
-![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub-480x448.png)
+![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub.png)
