@@ -8,7 +8,10 @@
 
 I need a good project description
 
-== I am concerted about GitHub's Copilot project ==
+------
+
+I am concerted about GitHub's Copilot project
+![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub.png)
 
 I urge you to read about the
 [Give up GitHub](https://GiveUpGitHub.org) campaign from
@@ -27,5 +30,3 @@ code in Copilot.
 A repository owner may opt out of Copilot by changing Settings --> GitHub Copilot.
 
 I have done so.
-
-![Humberto's Modified Logo](https://raw.githubusercontent.com/wiki/hasii2011/gittodoistclone/images/SillyGitHub.png)
