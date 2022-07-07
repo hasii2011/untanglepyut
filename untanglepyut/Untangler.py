@@ -300,12 +300,12 @@ class UnTangler:
         assert srcShape is not None, 'Missing source shape, invalid XML'
         assert dstShape is not None, 'Missing destination shape, invalid XML'
 
-        pyutLink: PyutLink = self._linkToPyutLink(singleLink)
+        pyutLink: PyutLink = self._linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)
         oglLink: OglLink = OglLink(srcShape=srcShape, pyutLink=pyutLink, dstShape=dstShape, srcPos=(srcX, srcY), dstPos=(dstX, dstY))
 
         return oglLink
 
-    def _linkToPyutLink(self, singleLink: Element) -> PyutLink:
+    def _linkToPyutLink(self, singleLink: Element, source: PyutClass, destination: PyutClass) -> PyutLink:
         linkTypeStr:     str          = singleLink['type']
         linkType:        PyutLinkType = PyutLinkType.toEnum(linkTypeStr)
         cardSrc:         str          = singleLink['cardSrc']
@@ -317,8 +317,8 @@ class UnTangler:
                                       linkType=linkType,
                                       cardSrc=cardSrc, cardDest=cardDest,
                                       bidir=bidir,
-                                      source=None,
-                                      destination=None)
+                                      source=source,
+                                      destination=destination)
 
         return pyutLink
 

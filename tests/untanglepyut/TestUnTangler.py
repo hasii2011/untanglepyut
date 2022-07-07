@@ -209,6 +209,13 @@ class TestUnTangler(TestBase):
                 self.assertEquals(7, dstPyutClass.id)
                 break
 
+    def testAggregationCreated(self):
+        oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
+        for oglLink in oglLinks:
+            pyutLink: PyutLink = oglLink.pyutObject
+            if pyutLink.linkType == PyutLinkType.AGGREGATION:
+                break
+
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
         oglClasses: List[OglClass] = self._getOglClassesFromDocument(title)
