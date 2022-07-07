@@ -214,7 +214,16 @@ class TestUnTangler(TestBase):
         for oglLink in oglLinks:
             pyutLink: PyutLink = oglLink.pyutObject
             if pyutLink.linkType == PyutLinkType.AGGREGATION:
-                break
+                self.assertEqual('1', pyutLink.sourceCardinality, 'Aggregation source cardinality not correctly retrieved')
+                self.assertEqual('4', pyutLink.destinationCardinality, 'Aggregation destination cardinality not correctly retrieved')
+
+    def testCompositionCreated(self):
+        oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
+        for oglLink in oglLinks:
+            pyutLink: PyutLink = oglLink.pyutObject
+            if pyutLink.linkType == PyutLinkType.COMPOSITION:
+                self.assertEqual('1', pyutLink.sourceCardinality, 'Composition source cardinality not correctly retrieved')
+                self.assertEqual('*', pyutLink.destinationCardinality, 'Aggregation destination cardinality not correctly retrieved')
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

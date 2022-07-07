@@ -129,13 +129,13 @@
 			<LabelDst x="579" y="300"/>
 			<Link name="has" type="AGGREGATION" cardSrc="1" cardDestination="4" bidir="False" sourceId="5" destId="6"/>
 		</GraphicLink>
-		<GraphicLink srcX="924" srcY="350" dstX="922" dstY="249" spline="False">
+		<GraphicLink srcX="924" srcY="350" dstX="924" dstY="249" spline="False">
 			<Link name="" type="INTERFACE" cardSrc="" cardDestination="" bidir="False" sourceId="8" destId="7"/>
 		</GraphicLink>
-		<GraphicText width="221" height="73" x="125" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
+		<GraphicText width="221" height="73" x="500" y="400" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
 			<Text id="10" content="Aggregation associates two objects describes the 'have a' relationship."/>
 		</GraphicText>
-		<GraphicText width="206" height="74" x="550" y="425" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
+		<GraphicText width="206" height="74" x="125" y="400" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
 			<Text id="11" content="Composition is a specific type of Aggregation which implies ownership."/>
 		</GraphicText>
 		<GraphicLollipop attachmentPoint="EAST" x="464" y="649">
