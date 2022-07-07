@@ -1,6 +1,9 @@
 
+from typing import Dict
 from typing import List
 from typing import NewType
+
+from typing import Union
 from typing import cast
 
 from logging import Logger
@@ -10,8 +13,12 @@ from dataclasses import dataclass
 from dataclasses import field
 
 from ogl.OglClass import OglClass
+from ogl.OglInterface import OglInterface
+from ogl.OglLink import OglLink
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodel.PyutLink import PyutLink
+from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutMethod import PyutParameters
@@ -31,9 +38,11 @@ class ProjectInformation:
     codePath: str = cast(str, None)
 
 
+UntangledLinks       = Union[OglLink, OglInterface]
 UntangledOglClasses  = NewType('UntangledOglClasses', List[OglClass])
-
-UntangledPyutMethods          = NewType('UntangledPyutMethods', List[PyutMethod])
+UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
+UntangledOglLinks    = NewType('UntangledOglLinks', List[UntangledLinks])
+OglClassDictionary   = NewType('OglClassDictionary', Dict[int, OglClass])
 
 
 def createUntangledOglClassesFactory() -> UntangledOglClasses:
@@ -45,6 +54,14 @@ def createUntangledOglClassesFactory() -> UntangledOglClasses:
     return UntangledOglClasses([])
 
 
+def createUntangledOglLinksFactory() -> UntangledOglLinks:
+    return UntangledOglLinks([])
+
+
+def createOglClassDictionaryFactory() -> OglClassDictionary:
+    return OglClassDictionary({})
+
+
 @dataclass
 class Document:
     documentType:    str = ''
@@ -53,10 +70,11 @@ class Document:
     scrollPositionY: int = -1
     pixelsPerUnitX:  int = -1
     pixelsPerUnitY:  int = -1
-    oglClasses: UntangledOglClasses = field(default_factory=createUntangledOglClassesFactory)
+    oglClasses:         UntangledOglClasses = field(default_factory=createUntangledOglClassesFactory)
+    oglLinks:           UntangledOglLinks   = field(default_factory=createUntangledOglLinksFactory)
 
-    def __post_init__(self):
-        self.oglClasses = UntangledOglClasses([])
+    # def __post_init__(self):
+    #     self.oglClasses = UntangledOglClasses([])
 
 
 DocumentTitle = NewType('DocumentTitle', str)
@@ -106,6 +124,7 @@ class UnTangler:
 
             self.logger.debug(f'{document=}')
             document.oglClasses = self._graphicClassesToOglClasses(pyutDocument=pyutDocument)
+            document.oglLinks = self._graphicLinksToOglLink(pyutDocument, document.oglClasses)
 
     def _populateProjectInformation(self, pyutProject: Element):
         self._projectInformation.version  = pyutProject['version']
@@ -147,6 +166,18 @@ class UnTangler:
 
         return oglClasses
 
+    def _graphicLinksToOglLink(self, pyutDocument: Element, oglClasses: UntangledOglClasses) -> UntangledOglLinks:
+
+        oglClassDictionary: OglClassDictionary = self._buildOglClassDictionary(oglClasses)
+
+        oglLinks: UntangledOglLinks = createUntangledOglLinksFactory()
+
+        for graphicLink in pyutDocument.GraphicLink:
+            oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, oglClassDictionary)
+            oglLinks.append(oglLink)
+
+        return oglLinks
+
     def _classToPyutClass(self, graphicClass: Element) -> PyutClass:
         classElement: Element = graphicClass.Class
 
@@ -184,7 +215,7 @@ class UnTangler:
         for methodElement in methodElements:
             methodName: str                = methodElement['name']
             visibility: PyutVisibilityEnum = PyutVisibilityEnum.toEnum(methodElement['visibility'])
-            self.logger.info(f"{methodName=} - {visibility=}")
+            self.logger.debug(f"{methodName=} - {visibility=}")
 
             pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
 
@@ -241,10 +272,69 @@ class UnTangler:
         codeElements = sourceCodeElements[0].get_elements('Code')
         sourceCode: SourceCode = SourceCode([])
         for codeElement in codeElements:
-            self.logger.info(f'{codeElement.cdata=}')
+            self.logger.debug(f'{codeElement.cdata=}')
             codeLine: str = codeElement.cdata
             sourceCode.append(codeLine)
         return sourceCode
+
+    def _graphicLinkToOglLink(self, graphicLink: Element, oglClassDictionary: OglClassDictionary) -> OglLink:
+
+        assert len(oglClassDictionary) != 0, 'Developer forgot to create dictionary'
+        srcX: int = int(graphicLink['srcX'])
+        srcY: int = int(graphicLink['srcY'])
+        dstX: int = int(graphicLink['dstX'])
+        dstY: int = int(graphicLink['dstY'])
+
+        spline: bool = self._str2bool(graphicLink['spline'])
+
+        links: Element = graphicLink.get_elements('Link')
+        assert len(links) == 1, 'Should only ever one'
+
+        singleLink:  Element = links[0]
+        sourceId:    int = int(singleLink['sourceId'])
+        dstId:       int = int(singleLink['destId'])
+        self.logger.debug(f'graphicLink= {srcX=} {srcY=} {dstX=} {dstY=} {spline=}')
+
+        srcShape = oglClassDictionary[sourceId]
+        dstShape = oglClassDictionary[dstId]
+        assert srcShape is not None, 'Missing source shape, invalid XML'
+        assert dstShape is not None, 'Missing destination shape, invalid XML'
+
+        pyutLink: PyutLink = self._linkToPyutLink(singleLink)
+        oglLink: OglLink = OglLink(srcShape=srcShape, pyutLink=pyutLink, dstShape=dstShape, srcPos=(srcX, srcY), dstPos=(dstX, dstY))
+
+        return oglLink
+
+    def _linkToPyutLink(self, singleLink: Element) -> PyutLink:
+        linkTypeStr:     str          = singleLink['type']
+        linkType:        PyutLinkType = PyutLinkType.toEnum(linkTypeStr)
+        cardSrc:         str          = singleLink['cardSrc']
+        cardDest:        str          = singleLink['cardDestination']
+        bidir:           bool         = self._str2bool(singleLink['bidir'])
+        linkDescription: str          = singleLink['name']
+
+        pyutLink: PyutLink = PyutLink(name=linkDescription,
+                                      linkType=linkType,
+                                      cardSrc=cardSrc, cardDest=cardDest,
+                                      bidir=bidir,
+                                      source=None,
+                                      destination=None)
+
+        return pyutLink
+
+    def _buildOglClassDictionary(self, oglClasses: UntangledOglClasses):
+        """
+        """
+        oglClassDictionary: OglClassDictionary = createOglClassDictionaryFactory()
+
+        for oglClass in oglClasses:
+            classId: int = oglClass.pyutObject.id
+            oglClassDictionary[classId] = oglClass
+
+        return oglClassDictionary
+
+    def _str2bool(self, strValue: str) -> bool:
+        return strValue.lower() in ("yes", "true", "t", "1", 'True')
 
     def _getRawXml(self) -> str:
 

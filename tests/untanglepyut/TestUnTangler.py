@@ -11,6 +11,8 @@ from miniogl.DiagramFrame import DiagramFrame
 from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
 from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutLink import PyutLink
+from pyutmodel.PyutLinkType import PyutLinkType
 
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
@@ -25,6 +27,7 @@ from untanglepyut.Untangler import DocumentTitle
 
 from untanglepyut.Untangler import UnTangler
 from untanglepyut.Untangler import UntangledOglClasses
+from untanglepyut.Untangler import UntangledOglLinks
 
 DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
@@ -185,6 +188,27 @@ class TestUnTangler(TestBase):
                         self.assertEqual(expectedSource, actualSourceCode, 'Source Code Mismatch')
                         break
 
+    def testGraphicSimpleLinks(self):
+
+        oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_1)
+
+        self.assertTrue(len(oglLinks) == 1, 'A minimal link was not created')
+
+    def testClassicInterfaceCreated(self):
+
+        oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
+        for oglLink in oglLinks:
+            pyutLink: PyutLink = oglLink.pyutObject
+            if pyutLink.linkType == PyutLinkType.INTERFACE:
+                srcShape:     OglClass  = oglLink.getSourceShape()
+                srcPyutClass: PyutClass = srcShape.pyutObject
+                self.assertEquals(8, srcPyutClass.id)
+
+                dstShape:     OglClass  = oglLink.getDestinationShape()
+                dstPyutClass: PyutClass = dstShape.pyutObject
+                self.assertEquals(7, dstPyutClass.id)
+                break
+
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
         oglClasses: List[OglClass] = self._getOglClassesFromDocument(title)
@@ -221,6 +245,15 @@ class TestUnTangler(TestBase):
         oglClasses: UntangledOglClasses = document.oglClasses
 
         return oglClasses
+
+    def _getOglLinksFromDocument(self, title: DocumentTitle) -> UntangledOglLinks:
+        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+
+        untangler.untangle()
+
+        document:  Document             = untangler.documents[title]
+        oglLinks:  UntangledOglLinks = document.oglLinks
+        return oglLinks
 
 
 def suite() -> TestSuite:
