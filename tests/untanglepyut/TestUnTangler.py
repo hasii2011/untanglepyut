@@ -7,13 +7,17 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from miniogl.DiagramFrame import DiagramFrame
-from ogl.OglClass import OglClass
 from pkg_resources import resource_filename
+
+from miniogl.DiagramFrame import DiagramFrame
+
+from ogl.OglClass import OglClass
+from ogl.OglInterface2 import OglInterface2
+
 from pyutmodel.PyutClass import PyutClass
+from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
-
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 
@@ -212,18 +216,38 @@ class TestUnTangler(TestBase):
     def testAggregationCreated(self):
         oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
         for oglLink in oglLinks:
-            pyutLink: PyutLink = oglLink.pyutObject
-            if pyutLink.linkType == PyutLinkType.AGGREGATION:
-                self.assertEqual('1', pyutLink.sourceCardinality, 'Aggregation source cardinality not correctly retrieved')
-                self.assertEqual('4', pyutLink.destinationCardinality, 'Aggregation destination cardinality not correctly retrieved')
+
+            if isinstance(oglLink.pyutObject, PyutLink):
+                pyutLink: PyutLink = oglLink.pyutObject
+                if pyutLink.linkType == PyutLinkType.AGGREGATION:
+                    self.assertEqual('1', pyutLink.sourceCardinality, 'Aggregation source cardinality not correctly retrieved')
+                    self.assertEqual('4', pyutLink.destinationCardinality, 'Aggregation destination cardinality not correctly retrieved')
 
     def testCompositionCreated(self):
         oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
         for oglLink in oglLinks:
-            pyutLink: PyutLink = oglLink.pyutObject
-            if pyutLink.linkType == PyutLinkType.COMPOSITION:
-                self.assertEqual('1', pyutLink.sourceCardinality, 'Composition source cardinality not correctly retrieved')
-                self.assertEqual('*', pyutLink.destinationCardinality, 'Aggregation destination cardinality not correctly retrieved')
+            if isinstance(oglLink.pyutObject, PyutLink):
+                pyutLink: PyutLink = oglLink.pyutObject
+                if pyutLink.linkType == PyutLinkType.COMPOSITION:
+                    self.assertEqual('1', pyutLink.sourceCardinality, 'Composition source cardinality not correctly retrieved')
+                    self.assertEqual('*', pyutLink.destinationCardinality, 'Aggregation destination cardinality not correctly retrieved')
+
+    def testLollipopInterfaceCreated(self):
+        oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
+        foundKnownLollipop: bool = False
+        for oglLink in oglLinks:
+            if isinstance(oglLink, OglInterface2):
+                pyutInterface: PyutInterface = cast(PyutInterface, oglLink.pyutObject)
+                self.logger.debug(f'{pyutInterface=}')
+                self.assertEqual('IClassInterface', pyutInterface.name, 'Mismatched interface name')
+                self.assertEqual(1, len(pyutInterface.implementors), 'Should only have 1 implementor')
+                implementorName: str = pyutInterface.implementors[0]
+                self.assertEqual('LollipopImplementor', implementorName, 'Mismatched implementor name')
+
+                foundKnownLollipop = True
+                break
+        self.assertTrue(foundKnownLollipop, 'Did not untangle the expected lollipop interface')
+
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

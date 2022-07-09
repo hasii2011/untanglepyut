@@ -12,11 +12,17 @@ from logging import getLogger
 from dataclasses import dataclass
 from dataclasses import field
 
+from miniogl.AttachmentLocation import AttachmentLocation
+from miniogl.SelectAnchorPoint import SelectAnchorPoint
+
 from ogl.OglClass import OglClass
 from ogl.OglInterface import OglInterface
+from ogl.OglInterface2 import OglInterface2
 from ogl.OglLink import OglLink
+
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
@@ -38,7 +44,7 @@ class ProjectInformation:
     codePath: str = cast(str, None)
 
 
-UntangledLinks       = Union[OglLink, OglInterface]
+UntangledLinks       = Union[OglLink, OglInterface2]
 UntangledOglClasses  = NewType('UntangledOglClasses', List[OglClass])
 UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
 UntangledOglLinks    = NewType('UntangledOglLinks', List[UntangledLinks])
@@ -176,6 +182,11 @@ class UnTangler:
             oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, oglClassDictionary)
             oglLinks.append(oglLink)
 
+        graphicLollipops: Element = pyutDocument.get_elements('GraphicLollipop')
+        for graphicLollipop in graphicLollipops:
+            oglInterface2: OglInterface2 = self._graphicLollipopToOglInterface(graphicLollipop, oglClassDictionary)
+            oglLinks.append(oglInterface2)
+
         return oglLinks
 
     def _classToPyutClass(self, graphicClass: Element) -> PyutClass:
@@ -305,6 +316,25 @@ class UnTangler:
 
         return oglLink
 
+    def _graphicLollipopToOglInterface(self, graphicLollipop: Element, oglClassDictionary: OglClassDictionary) -> OglInterface2:
+        assert len(oglClassDictionary) != 0, 'Developer forgot to create dictionary'
+
+        x: int = int(graphicLollipop['x'])
+        y: int = int(graphicLollipop['y'])
+        attachmentLocationStr: str                = graphicLollipop['attachmentPoint']
+        attachmentLocation:    AttachmentLocation = AttachmentLocation.toEnum(attachmentLocationStr)
+        self.logger.debug(f'{x=},{y=}')
+
+        elements: Element = graphicLollipop.get_elements('Interface')
+        assert len(elements) == 1, 'If more than one interface tag the XML is invalid'
+        interfaceElement: Element           = elements[0]
+        pyutInterface:    PyutInterface     = self._interfaceToPyutInterface(interface=interfaceElement)
+        oglClass:         OglClass          = self._getOglClassFromName(pyutInterface.implementors[0], oglClassDictionary)
+        anchorPoint:      SelectAnchorPoint = SelectAnchorPoint(x=x, y=y, attachmentPoint=attachmentLocation, parent=oglClass)
+        oglInterface2:    OglInterface2     = OglInterface2(pyutInterface=pyutInterface, destinationAnchor=anchorPoint)
+
+        return oglInterface2
+
     def _linkToPyutLink(self, singleLink: Element, source: PyutClass, destination: PyutClass) -> PyutLink:
         linkTypeStr:     str          = singleLink['type']
         linkType:        PyutLinkType = PyutLinkType.toEnum(linkTypeStr)
@@ -321,6 +351,31 @@ class UnTangler:
                                       destination=destination)
 
         return pyutLink
+
+    def _interfaceToPyutInterface(self, interface: Element) -> PyutInterface:
+
+        interfaceId: int = int(interface['id'])
+        name:        str = interface['name']
+        description: str = interface['description']
+
+        pyutInterface: PyutInterface = PyutInterface(name=name)
+        pyutInterface.id          = interfaceId
+        pyutInterface.description = description
+
+        implementors: Element = interface.get_elements('Implementor')
+        for implementor in implementors:
+            pyutInterface.addImplementor(implementor['implementingClassName'])
+        return pyutInterface
+
+    def _getOglClassFromName(self, className: str, oglClassDictionary: OglClassDictionary) -> OglClass:
+
+        foundClass: OglClass = cast(OglClass, None)
+        for oglClass in oglClassDictionary.values():
+            if oglClass.pyutObject.name == className:
+                foundClass = oglClass
+                break
+        assert foundClass is not None, 'XML must be in error'
+        return foundClass
 
     def _buildOglClassDictionary(self, oglClasses: UntangledOglClasses):
         """
