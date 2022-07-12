@@ -26,12 +26,12 @@ from wx import Frame
 from wx import ID_ANY
 
 from tests.TestBase import TestBase
-from untanglepyut.Untangler import Document
-from untanglepyut.Untangler import DocumentTitle
+from untanglepyut.UnTangler import Document
+from untanglepyut.UnTangler import DocumentTitle
 
-from untanglepyut.Untangler import UnTangler
-from untanglepyut.Untangler import UntangledOglClasses
-from untanglepyut.Untangler import UntangledOglLinks
+from untanglepyut.UnTangler import UnTangler
+from untanglepyut.UnTangler import UntangledOglClasses
+from untanglepyut.UnTangler import UntangledOglLinks
 
 DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
@@ -257,6 +257,8 @@ class TestUnTangler(TestBase):
                 pyutInterface: PyutInterface = cast(PyutInterface, oglLink.pyutObject)
                 self.assertEqual(1, len(pyutInterface.methods), "Where is single method")
                 self.assertEqual(3, len(pyutInterface.methods[0].parameters), 'Not enough parameters')
+
+                foundMethods = True
 
         self.assertTrue(foundMethods, 'Did not untangle the expected lollipop interface')
 
