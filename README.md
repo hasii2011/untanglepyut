@@ -12,6 +12,11 @@ This project is intended to be used by [Pyut Plugin](https://github.com/hasii201
 Use as follows:
 
 ```python
+from untanglepyut.UnTangler import Document
+from untanglepyut.UnTangler import UnTangler
+from untanglepyut.UnTangler import UntangledOglClasses
+from untanglepyut.UnTangler import UntangledOglLinks
+
 untangler: UnTangler = UnTangler(fqFileName='MultiDocumentProject.xml')
 
 
@@ -24,6 +29,8 @@ oglLinks:   UntangledOglLinks   = document.oglLinks
 
 
 The following is the UML diagram for the Pyut Untangler
+
+![UntanglePyut](docs/UntanglePyut.png)
 
 
 
