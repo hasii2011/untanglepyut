@@ -30,7 +30,7 @@ oglLinks:   UntangledOglLinks   = document.oglLinks
 
 The following is the UML diagram for the Pyut Untangler
 
-![UntanglePyut](docs/UntanglePyut.png)
+![UntanglePyut](https://github.com/hasii2011/untanglepyut/blob/master/docs/UntanglePyut.png)
 
 
 
