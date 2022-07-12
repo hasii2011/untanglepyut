@@ -248,6 +248,17 @@ class TestUnTangler(TestBase):
                 break
         self.assertTrue(foundKnownLollipop, 'Did not untangle the expected lollipop interface')
 
+    def testLollipopInterfaceMethodsCreated(self):
+
+        oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
+        foundMethods: bool = False
+        for oglLink in oglLinks:
+            if isinstance(oglLink, OglInterface2):
+                pyutInterface: PyutInterface = cast(PyutInterface, oglLink.pyutObject)
+                self.assertEqual(1, len(pyutInterface.methods), "Where is single method")
+                self.assertEqual(3, len(pyutInterface.methods[0].parameters), 'Not enough parameters')
+
+        self.assertTrue(foundMethods, 'Did not untangle the expected lollipop interface')
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

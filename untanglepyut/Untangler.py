@@ -16,7 +16,6 @@ from miniogl.AttachmentLocation import AttachmentLocation
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
 from ogl.OglClass import OglClass
-from ogl.OglInterface import OglInterface
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglLink import OglLink
 
@@ -212,40 +211,6 @@ class UnTangler:
         pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
         return pyutClass
 
-    def _methodToPyutMethods(self, classElement: Element) -> UntangledPyutMethods:
-        """
-        The pyutClass may not have methods;
-        Args:
-            classElement:  The pyutClassElement
-
-        Returns:  May return an empty list
-        """
-        untangledPyutMethods: UntangledPyutMethods = UntangledPyutMethods([])
-
-        methodElements = classElement.get_elements('Method')
-        for methodElement in methodElements:
-            methodName: str                = methodElement['name']
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.toEnum(methodElement['visibility'])
-            self.logger.debug(f"{methodName=} - {visibility=}")
-
-            pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
-
-            pyutMethod.modifiers = self._modifierToPyutMethodModifiers(methodElement=methodElement)
-
-            returnElement = methodElement.get_elements('Return')
-
-            if len(returnElement) > 0:
-                pyutType: PyutType = PyutType(value=returnElement[0]['type'])
-                pyutMethod.returnType = pyutType
-
-            parameters = self._paramToPyutParameters(methodElement)
-            pyutMethod.parameters = parameters
-            pyutMethod.sourceCode = self._sourceCodeToPyutSourceCode(methodElement=methodElement)
-
-            untangledPyutMethods.append(pyutMethod)
-
-        return untangledPyutMethods
-
     def _modifierToPyutMethodModifiers(self, methodElement: Element) -> PyutModifiers:
         # <Modifier name="modifier1,modifier2,modifier3"/>
         modifierElements = methodElement.get_elements('Modifier')
@@ -365,7 +330,49 @@ class UnTangler:
         implementors: Element = interface.get_elements('Implementor')
         for implementor in implementors:
             pyutInterface.addImplementor(implementor['implementingClassName'])
+
+        pyutInterface.methods = self._interfaceMethodsToPyutMethods(interface=interface)
         return pyutInterface
+
+    def _interfaceMethodsToPyutMethods(self, interface: Element) -> List[PyutMethod]:
+
+        pyutMethods: List[PyutMethod] = self._methodToPyutMethods(interface)
+
+        return pyutMethods
+
+    def _methodToPyutMethods(self, classElement: Element) -> UntangledPyutMethods:
+        """
+        The pyutClass may not have methods;
+        Args:
+            classElement:  The pyutClassElement
+
+        Returns:  May return an empty list
+        """
+        untangledPyutMethods: UntangledPyutMethods = UntangledPyutMethods([])
+
+        methodElements = classElement.get_elements('Method')
+        for methodElement in methodElements:
+            methodName: str                = methodElement['name']
+            visibility: PyutVisibilityEnum = PyutVisibilityEnum.toEnum(methodElement['visibility'])
+            self.logger.debug(f"{methodName=} - {visibility=}")
+
+            pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
+
+            pyutMethod.modifiers = self._modifierToPyutMethodModifiers(methodElement=methodElement)
+
+            returnElement = methodElement.get_elements('Return')
+
+            if len(returnElement) > 0:
+                pyutType: PyutType = PyutType(value=returnElement[0]['type'])
+                pyutMethod.returnType = pyutType
+
+            parameters = self._paramToPyutParameters(methodElement)
+            pyutMethod.parameters = parameters
+            pyutMethod.sourceCode = self._sourceCodeToPyutSourceCode(methodElement=methodElement)
+
+            untangledPyutMethods.append(pyutMethod)
+
+        return untangledPyutMethods
 
     def _getOglClassFromName(self, className: str, oglClassDictionary: OglClassDictionary) -> OglClass:
 
