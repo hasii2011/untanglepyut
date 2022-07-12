@@ -1,4 +1,3 @@
-
 [![Build Status](https://travis-ci.com/hasii2011/PyUt.svg?branch=master)](https://travis-ci.com/hasii2011/PyUt)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 [![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)
@@ -6,7 +5,27 @@
 
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
-I need a good project description
+This project is intended to be used by [Pyut Plugin](https://github.com/hasii2011/pyutplugincore) developers to convert [Pyut](https://github.com/hasii2011/PyUt) XML files to the [Ogl Model](https://github.com/hasii2011/ogl) classes.  These model classes can then be used by the Pyut UI to display as UML Diagrams.
+
+------
+
+Use as follows:
+
+```python
+untangler: UnTangler = UnTangler(fqFileName='MultiDocumentProject.xml')
+
+
+document:   Document            = untangler.documents['Diagram-1']
+oglClasses: UntangledOglClasses = document.oglClasses
+oglLinks:   UntangledOglLinks   = document.oglLinks
+
+```
+
+
+
+The following is the UML diagram for the Pyut Untangler
+
+
 
 ------
 
