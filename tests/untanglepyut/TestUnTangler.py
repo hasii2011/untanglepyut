@@ -1,3 +1,4 @@
+from typing import Callable
 from typing import List
 from typing import cast
 
@@ -285,7 +286,17 @@ class TestUnTangler(TestBase):
         self.assertTrue(foundStereoType, 'Did not find stereotype')
 
     def testShowStereoTypeEmpty(self):
-        pass
+        """
+        My first indication that I understand functional programming
+        """
+        def emptyTest(oglClass) -> bool:
+            testPassed: bool = False
+            pyutClass: PyutClass = oglClass.pyutObject
+            if pyutClass.name == 'ClassWithEmptyStereoType':
+                self.assertEqual('', pyutClass.getStereotype().name, 'Stereotype should be empty')
+                testPassed = True
+            return testPassed
+        self._runTest(DIAGRAM_NAME_1, emptyTest)
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
@@ -332,6 +343,16 @@ class TestUnTangler(TestBase):
         document:  Document             = untangler.documents[title]
         oglLinks:  UntangledOglLinks = document.oglLinks
         return oglLinks
+
+    def _runTest(self, title: DocumentTitle, func: Callable):
+
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(title)
+
+        testPassed: bool = False
+        for oglClass in oglClasses:
+            testPassed = func(oglClass)
+
+        self.assertTrue(testPassed, 'Test did not pass')
 
 
 def suite() -> TestSuite:
