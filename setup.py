@@ -9,7 +9,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="untanglepyut",
-    version="0.1.1",
+    version="0.1.3",
     author_email='Humberto.A.Sanchez.II@gmail.com',
     description='XML to Ogl Object Model',
     long_description=README,

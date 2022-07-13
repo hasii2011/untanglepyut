@@ -30,6 +30,7 @@ from pyutmodel.PyutMethod import PyutParameters
 from pyutmodel.PyutMethod import SourceCode
 from pyutmodel.PyutModifier import PyutModifier
 from pyutmodel.PyutParameter import PyutParameter
+from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
@@ -177,7 +178,8 @@ class UnTangler:
 
         oglLinks: UntangledOglLinks = createUntangledOglLinksFactory()
 
-        for graphicLink in pyutDocument.GraphicLink:
+        graphicLinks: Element = pyutDocument.get_elements('GraphicLink')
+        for graphicLink in graphicLinks:
             oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, oglClassDictionary)
             oglLinks.append(oglLink)
 
@@ -198,15 +200,18 @@ class UnTangler:
         showStereotype:    bool = bool(classElement['showStereotype'])
         showFields:        bool = bool(classElement['showFields'])
         showMethods:       bool = bool(classElement['showMethods'])
+        stereotypeStr:     str  = classElement['stereotype']
+
         pyutClass.displayParameters = displayParameters
 
-        pyutClass.setStereotype(showStereotype)     # This is bogus;  How did I forget this
+        pyutClass.setShowStereotype(showStereotype)
         pyutClass.showFields     = showFields
         pyutClass.showMethods    = showMethods
 
         pyutClass.description = classElement['description']
         pyutClass.fileName    = classElement['fileName']
         pyutClass.id          = int(classElement['id'])      # TODO revisit this when we start using UUIDs
+        pyutClass.setStereotype(PyutStereotype(name=stereotypeStr))
 
         pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
         return pyutClass

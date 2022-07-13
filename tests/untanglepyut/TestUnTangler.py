@@ -98,7 +98,7 @@ class TestUnTangler(TestBase):
 
     def testCreateOglClassesForDiagram1(self):
 
-        self._testCreateClassesForDiagram(DIAGRAM_NAME_1, expectedCount=2)
+        self._testCreateClassesForDiagram(DIAGRAM_NAME_1, expectedCount=4)
 
     def testCreateOglClassesForDiagram2(self):
 
@@ -121,7 +121,8 @@ class TestUnTangler(TestBase):
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             possibleDescriptions: List[str] = ['I am crybaby Gen Z', 'I am a righteous boomer']
-            self.assertIn(pyutClass.description, possibleDescriptions, "I don't see that description")
+            if len(pyutClass.description) > 0:
+                self.assertIn(pyutClass.description, possibleDescriptions, "I don't see that description")
 
     def testPyutClassesHaveNames(self):
 
@@ -261,6 +262,30 @@ class TestUnTangler(TestBase):
                 foundMethods = True
 
         self.assertTrue(foundMethods, 'Did not untangle the expected lollipop interface')
+
+    def testNoGraphicLinks(self):
+        fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
+        untangler: UnTangler = UnTangler(fqFileName)
+
+        untangler.untangle()
+
+        self.assertEqual(1, len(untangler.documents), 'Should be a small document')
+        singleDocument: Document = untangler.documents['UnitTest']
+        self.assertEqual(0, len(singleDocument.oglLinks))
+
+    def testShowStereoType(self):
+        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_1)
+        foundStereoType: bool = False
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            if pyutClass.name == 'ClassWithStereoType':
+                self.assertEqual('IAmAStereoType', pyutClass.getStereotype().name, 'Incorrect stereotype')
+                foundStereoType = True
+                break
+        self.assertTrue(foundStereoType, 'Did not find stereotype')
+
+    def testShowStereoTypeEmpty(self):
+        pass
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
