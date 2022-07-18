@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from dataclasses import field
 
 from miniogl.AttachmentLocation import AttachmentLocation
+from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
 from ogl.OglClass import OglClass
@@ -44,10 +45,12 @@ class ProjectInformation:
     codePath: str = cast(str, None)
 
 
-UntangledLinks       = Union[OglLink, OglInterface2]
-UntangledOglClasses  = NewType('UntangledOglClasses', List[OglClass])
-UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
-UntangledOglLinks    = NewType('UntangledOglLinks', List[UntangledLinks])
+UntangledLinks         = Union[OglLink, OglInterface2]
+UntangledOglClasses    = NewType('UntangledOglClasses', List[OglClass])
+UntangledPyutMethods   = NewType('UntangledPyutMethods', List[PyutMethod])
+UntangledOglLinks      = NewType('UntangledOglLinks', List[UntangledLinks])
+UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
+
 OglClassDictionary   = NewType('OglClassDictionary', Dict[int, OglClass])
 
 
@@ -284,6 +287,17 @@ class UnTangler:
         pyutLink: PyutLink = self._linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)
         oglLink: OglLink = OglLink(srcShape=srcShape, pyutLink=pyutLink, dstShape=dstShape, srcPos=(srcX, srcY), dstPos=(dstX, dstY))
 
+        controlPoints: UntangledControlPoints = self._generateControlPoints(graphicLink=graphicLink)
+
+        parent = oglLink.GetSource().GetParent()
+        selfLink: bool = parent is oglLink.GetDestination().GetParent()
+
+        for controlPoint in controlPoints:
+            oglLink.AddControl(controlPoint)
+            if selfLink:
+                x, y = controlPoint.GetPosition()
+                controlPoint.SetParent(parent)
+                controlPoint.SetPosition(x, y)
         return oglLink
 
     def _graphicLollipopToOglInterface(self, graphicLollipop: Element, oglClassDictionary: OglClassDictionary) -> OglInterface2:
@@ -388,6 +402,19 @@ class UnTangler:
                 break
         assert foundClass is not None, 'XML must be in error'
         return foundClass
+
+    def _generateControlPoints(self, graphicLink: Element) -> UntangledControlPoints:
+
+        controlPoints: UntangledControlPoints = UntangledControlPoints([])
+
+        controlPointElements: Element = graphicLink.get_elements('ControlPoint')
+        for controlPointElement in controlPointElements:
+            x: int = int(controlPointElement['x'])
+            y: int = int(controlPointElement['y'])
+            controlPoint: ControlPoint = ControlPoint(x=x, y=y)
+            controlPoints.append(controlPoint)
+
+        return controlPoints
 
     def _buildOglClassDictionary(self, oglClasses: UntangledOglClasses):
         """

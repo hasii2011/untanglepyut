@@ -1,5 +1,7 @@
+
 from typing import Callable
 from typing import List
+from typing import Tuple
 from typing import cast
 
 from logging import Logger
@@ -10,6 +12,7 @@ from unittest import main as unitTestMain
 
 from pkg_resources import resource_filename
 
+from miniogl.ControlPoint import ControlPoint
 from miniogl.DiagramFrame import DiagramFrame
 
 from ogl.OglClass import OglClass
@@ -36,6 +39,8 @@ from untanglepyut.UnTangler import UntangledOglLinks
 
 DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
+
+ATM_DIAGRAM_NAME: DocumentTitle = DocumentTitle('Class Diagram')
 TEST_XML_FILENAME: str           = 'MultiDocumentProject.xml'
 
 
@@ -96,6 +101,31 @@ class TestUnTangler(TestBase):
         untangler.untangle()
 
         self.assertEqual(2, len(untangler.documents), 'Incorrect number of documents created')
+
+    def testControlPointsGenerated(self):
+        fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'ATM-Model.xml')
+
+        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+
+        untangler.untangle()
+
+        singleDocument: Document = untangler.documents[ATM_DIAGRAM_NAME]
+
+        oglLinks: UntangledOglLinks = singleDocument.oglLinks
+        for oglLink in oglLinks:
+            # Check a couple of the 'known' links with a single control point
+            linkName: str = oglLink.pyutObject.name
+            if linkName == 'has':
+                # 			<ControlPoint x="207" y="469"/>
+                self._assertPosition(expectedX=207, expectedY=469,
+                                     controlPoint=oglLink.GetControlPoints()[0],
+                                     objectName=linkName)
+
+            elif linkName == 'Account Transaction':
+                # 			<ControlPoint x="726" y="469"/>
+                self._assertPosition(expectedX=726, expectedY=469,
+                                     controlPoint=oglLink.GetControlPoints()[0],
+                                     objectName=linkName)
 
     def testCreateOglClassesForDiagram1(self):
 
@@ -353,6 +383,13 @@ class TestUnTangler(TestBase):
             testPassed = func(oglClass)
 
         self.assertTrue(testPassed, 'Test did not pass')
+
+    def _assertPosition(self, expectedX: int, expectedY: int, controlPoint: ControlPoint, objectName: str):
+
+        pos: Tuple[int, int] = controlPoint.GetPosition()
+
+        self.assertEqual(expectedX, pos[0], f'{objectName} x position is incorrect')
+        self.assertEqual(expectedY, pos[1], f'{objectName} y position is incorrect')
 
 
 def suite() -> TestSuite:

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Class Diagram" scrollPositionX="0" scrollPositionY="2" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="148" height="94" x="400" y="125">
+			<Class id="1" name="Bank" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="manages" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="maintains" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="code" type=""/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="address" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="204" height="106" x="625" y="300">
+			<Class id="2" name="ATM" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="identifies" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="transactions" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="location" type=""/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="managedBy" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="180" height="111" x="125" y="250">
+			<Class id="3" name="Customer" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="verifyPassword" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="name" type=""/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="address" type=""/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="dob" type=""/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="cardNumber" type=""/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="pin" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="115" height="90" x="400" y="425">
+			<Class id="4" name="Account" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="deposit" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="withdraw" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="createTransaction" visibility="PRIVATE">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PUBLIC">
+					<Param name="number" type=""/>
+				</Field>
+				<Field visibility="PUBLIC">
+					<Param name="balance" type=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="116" height="62" x="575" y="600">
+			<Class id="5" name="SavingsAccount" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="132" height="71" x="225" y="600">
+			<Class id="6" name="CheckingAccount" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLink srcX="547" srcY="172" dstX="723" dstY="300" spline="False">
+			<LabelCenter x="511" y="400"/>
+			<LabelSrc x="511" y="400"/>
+			<LabelDst x="511" y="400"/>
+			<ControlPoint x="722" y="173"/>
+			<Link name="" type="AGGREGATION" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
+		</GraphicLink>
+		<GraphicLink srcX="471" srcY="218" dstX="304" dstY="305" spline="False">
+			<LabelCenter x="511" y="400"/>
+			<LabelSrc x="511" y="400"/>
+			<LabelDst x="511" y="400"/>
+			<ControlPoint x="470" y="305"/>
+			<Link name="" type="AGGREGATION" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="3"/>
+		</GraphicLink>
+		<GraphicLink srcX="294" srcY="600" dstX="460" dstY="514" spline="False">
+			<ControlPoint x="294" y="573"/>
+			<ControlPoint x="461" y="573"/>
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="6" destId="4"/>
+		</GraphicLink>
+		<GraphicLink srcX="633" srcY="600" dstX="459" dstY="514" spline="False">
+			<ControlPoint x="633" y="572"/>
+			<ControlPoint x="462" y="573"/>
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="5" destId="4"/>
+		</GraphicLink>
+		<GraphicLink srcX="514" srcY="470" dstX="724" dstY="405" spline="False">
+			<LabelCenter x="511" y="400"/>
+			<LabelSrc x="511" y="400"/>
+			<LabelDst x="511" y="400"/>
+			<ControlPoint x="726" y="469"/>
+			<Link name="Account Transaction" type="ASSOCIATION" cardSrc="1" cardDestination="" bidir="False" sourceId="4" destId="2"/>
+		</GraphicLink>
+		<GraphicLink srcX="208" srcY="360" dstX="400" dstY="470" spline="False">
+			<LabelCenter x="511" y="400"/>
+			<LabelSrc x="511" y="400"/>
+			<LabelDst x="511" y="400"/>
+			<ControlPoint x="207" y="469"/>
+			<Link name="has" type="ASSOCIATION" cardSrc="1" cardDestination="1,2   " bidir="False" sourceId="3" destId="4"/>
+		</GraphicLink>
+		<GraphicLink srcX="505" srcY="218" dstX="506" dstY="425" spline="False">
+			<LabelCenter x="511" y="400"/>
+			<LabelSrc x="511" y="400"/>
+			<LabelDst x="511" y="400"/>
+			<Link name="" type="AGGREGATION" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="4"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>
