@@ -15,10 +15,16 @@ from dataclasses import field
 from miniogl.AttachmentLocation import AttachmentLocation
 from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
+from ogl.OglAggregation import OglAggregation
+from ogl.OglAssociation import OglAssociation
 
 from ogl.OglClass import OglClass
+from ogl.OglComposition import OglComposition
+from ogl.OglInheritance import OglInheritance
+from ogl.OglInterface import OglInterface
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglLink import OglLink
+from ogl.OglNoteLink import OglNoteLink
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
@@ -285,8 +291,12 @@ class UnTangler:
         assert dstShape is not None, 'Missing destination shape, invalid XML'
 
         pyutLink: PyutLink = self._linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)
-        oglLink: OglLink = OglLink(srcShape=srcShape, pyutLink=pyutLink, dstShape=dstShape, srcPos=(srcX, srcY), dstPos=(dstX, dstY))
-
+        # oglLink: OglLink = OglLink(srcShape=srcShape, pyutLink=pyutLink, dstShape=dstShape, srcPos=(srcX, srcY), dstPos=(dstX, dstY))
+        oglLink: OglLink = self._createOglLink(srcShape=srcShape, pyutLink=pyutLink, destShape=dstShape,
+                                               linkType=pyutLink.linkType,
+                                               srcPos=(srcX, srcY),
+                                               dstPos=(dstX, dstY)
+                                               )
         controlPoints: UntangledControlPoints = self._generateControlPoints(graphicLink=graphicLink)
 
         parent = oglLink.GetSource().GetParent()
@@ -426,6 +436,46 @@ class UnTangler:
             oglClassDictionary[classId] = oglClass
 
         return oglClassDictionary
+
+    # noinspection PyUnusedLocal
+    def _createOglLink(self, srcShape, pyutLink, destShape, linkType: PyutLinkType, srcPos=None, dstPos=None):
+        """
+        Used to get a OglLink of the given linkType.
+
+        Args:
+            srcShape:   Source shape
+            pyutLink:   Conceptual links associated with the graphical links.
+            destShape:  Destination shape
+            linkType:   The linkType of the link (OGL_INHERITANCE, ...)
+            srcPos:     source position
+            dstPos:     destination position
+
+        Returns:  The requested link
+        """
+        if linkType == PyutLinkType.AGGREGATION:
+            return OglAggregation(srcShape, pyutLink, destShape)
+
+        elif linkType == PyutLinkType.COMPOSITION:
+            return OglComposition(srcShape, pyutLink, destShape)
+
+        elif linkType == PyutLinkType.INHERITANCE:
+            return OglInheritance(srcShape, pyutLink, destShape)
+
+        elif linkType == PyutLinkType.ASSOCIATION:
+            return OglAssociation(srcShape, pyutLink, destShape)
+
+        elif linkType == PyutLinkType.INTERFACE:
+            return OglInterface(srcShape, pyutLink, destShape)
+
+        elif linkType == PyutLinkType.NOTELINK:
+            return OglNoteLink(srcShape, pyutLink, destShape)
+
+        elif linkType == PyutLinkType.SD_MESSAGE:
+            assert False, 'Sequence Diagram Messages not supported'
+            # return OglSDMessage(srcShape=srcShape, pyutSDMessage=pyutLink, dstShape=destShape)
+        else:
+            self.logger.error(f"Unknown OglLinkType: {linkType}")
+            return None
 
     def _str2bool(self, strValue: str) -> bool:
         return strValue.lower() in ("yes", "true", "t", "1", 'True')

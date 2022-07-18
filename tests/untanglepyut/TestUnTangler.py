@@ -10,6 +10,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from ogl.OglInheritance import OglInheritance
 from pkg_resources import resource_filename
 
 from miniogl.ControlPoint import ControlPoint
@@ -40,7 +41,9 @@ from untanglepyut.UnTangler import UntangledOglLinks
 DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
 
-ATM_DIAGRAM_NAME: DocumentTitle = DocumentTitle('Class Diagram')
+ATM_DIAGRAM_NAME:   DocumentTitle = DocumentTitle('Class Diagram')
+SIMPLE_DIAGRAM_NAME: DocumentTitle = DocumentTitle('Simple')
+
 TEST_XML_FILENAME: str           = 'MultiDocumentProject.xml'
 
 
@@ -126,6 +129,22 @@ class TestUnTangler(TestBase):
                 self._assertPosition(expectedX=726, expectedY=469,
                                      controlPoint=oglLink.GetControlPoints()[0],
                                      objectName=linkName)
+
+    def testSimpleInheritance(self):
+
+        fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleInheritance.xml')
+
+        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+
+        untangler.untangle()
+
+        singleDocument: Document          = untangler.documents[SIMPLE_DIAGRAM_NAME]
+        oglLinks:       UntangledOglLinks = singleDocument.oglLinks
+        self.assertEqual(1, len(oglLinks), 'There can be only one.')
+        self.assertTrue(isinstance(oglLinks[0], OglInheritance), 'Must be inheritance')
+        for oglLink in oglLinks:
+            self.logger.debug(f'{oglLink}')
+            self.assertEqual(PyutLinkType.INHERITANCE, oglLink.pyutObject.linkType)
 
     def testCreateOglClassesForDiagram1(self):
 

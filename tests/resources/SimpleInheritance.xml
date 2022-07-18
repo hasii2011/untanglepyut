@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="10" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="Simple" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="167" height="69" x="50" y="50">
+			<Class id="7" name="BaseClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicClass width="161" height="69" x="50" y="275">
+			<Class id="8" name="SubClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLink srcX="130" srcY="275" dstX="130" dstY="118" spline="False">
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="8" destId="7"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>
