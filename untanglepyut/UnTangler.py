@@ -153,10 +153,11 @@ class UnTangler:
 
         documentInformation.documentType = pyutDocument['type']
         documentInformation.documentTitle = documentTitle
-        documentInformation.scrollPositionX = pyutDocument['scrollPositionX']
-        documentInformation.scrollPositionY = pyutDocument['scrollPositionY']
-        documentInformation.pixelsPerUnitX = pyutDocument['pixelsPerUnitX']
-        documentInformation.pixelsPerUnitY = pyutDocument['pixelsPerUnitY']
+
+        documentInformation.scrollPositionX = int(pyutDocument['scrollPositionX'])
+        documentInformation.scrollPositionY = int(pyutDocument['scrollPositionY'])
+        documentInformation.pixelsPerUnitX  = int(pyutDocument['pixelsPerUnitX'])
+        documentInformation.pixelsPerUnitY  = int(pyutDocument['pixelsPerUnitY'])
 
         self.logger.debug(f'{documentInformation=}')
 
@@ -268,6 +269,19 @@ class UnTangler:
         return sourceCode
 
     def _graphicLinkToOglLink(self, graphicLink: Element, oglClassDictionary: OglClassDictionary) -> OglLink:
+        """
+        This code is way too convoluted.  Failing to do any of these step in this code leads to BAD
+        visual representations.
+        TODO:  Figure out how to simplify this code and/or make it more readable and obvious on how to create
+        links (of whatever kind) between 2 OglClass'es
+
+        Args:
+            graphicLink:        The XML `GraphicClass` element
+            oglClassDictionary: A dictionary indexed by an ID that returns an appropriate OglClass instance
+
+        Returns:  A fully formed OglLink including control points
+
+        """
 
         assert len(oglClassDictionary) != 0, 'Developer forgot to create dictionary'
         srcX: int = int(graphicLink['srcX'])
@@ -283,23 +297,34 @@ class UnTangler:
         singleLink:  Element = links[0]
         sourceId:    int = int(singleLink['sourceId'])
         dstId:       int = int(singleLink['destId'])
-        self.logger.debug(f'graphicLink= {srcX=} {srcY=} {dstX=} {dstY=} {spline=}')
-
-        srcShape = oglClassDictionary[sourceId]
-        dstShape = oglClassDictionary[dstId]
-        assert srcShape is not None, 'Missing source shape, invalid XML'
-        assert dstShape is not None, 'Missing destination shape, invalid XML'
+        self.logger.debug(f'graphicLink= {srcX=} {srcY=} {dstX=} {dstY=}')
+        try:
+            srcShape = oglClassDictionary[sourceId]
+            dstShape = oglClassDictionary[dstId]
+        except KeyError as ke:
+            self.logger.error(f'Developer Error -- srcId: {sourceId} - dstId: {dstId}  error: {ke}')
+            return cast(OglLink, None)
 
         pyutLink: PyutLink = self._linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)
-        # oglLink: OglLink = OglLink(srcShape=srcShape, pyutLink=pyutLink, dstShape=dstShape, srcPos=(srcX, srcY), dstPos=(dstX, dstY))
-        oglLink: OglLink = self._createOglLink(srcShape=srcShape, pyutLink=pyutLink, destShape=dstShape,
-                                               linkType=pyutLink.linkType,
-                                               srcPos=(srcX, srcY),
-                                               dstPos=(dstX, dstY)
-                                               )
+        oglLink:  OglLink  = self._createOglLink(srcShape=srcShape, pyutLink=pyutLink, destShape=dstShape,
+                                                 linkType=pyutLink.linkType,
+                                                 srcPos=(srcX, srcY),
+                                                 dstPos=(dstX, dstY)
+                                                 )
+        srcShape.addLink(oglLink)
+        dstShape.addLink(oglLink)
+        oglLink.SetSpline(spline)
         controlPoints: UntangledControlPoints = self._generateControlPoints(graphicLink=graphicLink)
 
-        parent = oglLink.GetSource().GetParent()
+        # put the anchors at the right position
+        srcAnchor = oglLink.GetSource()
+        dstAnchor = oglLink.GetDestination()
+        srcAnchor.SetPosition(srcX, srcY)
+        dstAnchor.SetPosition(dstX, dstY)
+
+        # add the control points to the line
+        line   = srcAnchor.GetLines()[0]     # only 1 line per anchor in Pyut
+        parent = line.GetSource().GetParent()
         selfLink: bool = parent is oglLink.GetDestination().GetParent()
 
         for controlPoint in controlPoints:
@@ -437,7 +462,6 @@ class UnTangler:
 
         return oglClassDictionary
 
-    # noinspection PyUnusedLocal
     def _createOglLink(self, srcShape, pyutLink, destShape, linkType: PyutLinkType, srcPos=None, dstPos=None):
         """
         Used to get a OglLink of the given linkType.
@@ -453,19 +477,19 @@ class UnTangler:
         Returns:  The requested link
         """
         if linkType == PyutLinkType.AGGREGATION:
-            return OglAggregation(srcShape, pyutLink, destShape)
+            return OglAggregation(srcShape, pyutLink, destShape, srcPos=srcPos, dstPos=dstPos)
 
         elif linkType == PyutLinkType.COMPOSITION:
-            return OglComposition(srcShape, pyutLink, destShape)
+            return OglComposition(srcShape, pyutLink, destShape, srcPos=srcPos, dstPos=dstPos)
 
         elif linkType == PyutLinkType.INHERITANCE:
             return OglInheritance(srcShape, pyutLink, destShape)
 
         elif linkType == PyutLinkType.ASSOCIATION:
-            return OglAssociation(srcShape, pyutLink, destShape)
+            return OglAssociation(srcShape, pyutLink, destShape, srcPos=srcPos, dstPos=dstPos)
 
         elif linkType == PyutLinkType.INTERFACE:
-            return OglInterface(srcShape, pyutLink, destShape)
+            return OglInterface(srcShape, pyutLink, destShape, srcPos=srcPos, dstPos=dstPos)
 
         elif linkType == PyutLinkType.NOTELINK:
             return OglNoteLink(srcShape, pyutLink, destShape)
