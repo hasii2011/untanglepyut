@@ -5,13 +5,14 @@ from typing import NewType
 from logging import Logger
 from logging import getLogger
 
+from untangle import Element
+
 from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutParameters
 from pyutmodel.PyutMethod import SourceCode
 from pyutmodel.PyutParameter import PyutParameter
-from untangle import Element
 
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
@@ -24,6 +25,8 @@ from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutText import PyutText
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutStereotype import PyutStereotype
+
+from untanglepyut.Common import str2bool
 
 UntangledPyutMethods   = NewType('UntangledPyutMethods',   List[PyutMethod])
 
@@ -117,7 +120,7 @@ class UnTanglePyut:
         linkType:        PyutLinkType = PyutLinkType.toEnum(linkTypeStr)
         cardSrc:         str          = singleLink['cardSrc']
         cardDest:        str          = singleLink['cardDestination']
-        bidir:           bool         = self._str2bool(singleLink['bidir'])
+        bidir:           bool         = str2bool(singleLink['bidir'])
         linkDescription: str          = singleLink['name']
 
         pyutLink: PyutLink = PyutLink(name=linkDescription,
@@ -221,16 +224,3 @@ class UnTanglePyut:
         pyutMethods: List[PyutMethod] = self._methodToPyutMethods(interface)
 
         return pyutMethods
-
-    def _str2bool(self, strValue: str) -> bool:
-        """
-        Converts a know set of strings to a boolean value
-
-        TODO: Put in common place;  Also, in UnTangler
-
-        Args:
-            strValue:
-
-        Returns:  the boolean value
-        """
-        return strValue.lower() in ("yes", "true", "t", "1", 'True')

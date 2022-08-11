@@ -14,15 +14,20 @@ Use as follows:
 ```python
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import UnTangler
-from untanglepyut.UnTangler import UntangledOglClasses
-from untanglepyut.UnTangler import UntangledOglLinks
+
+from untanglepyut.Types import UntangledOglClasses
+from untanglepyut.Types import UntangledOglLinks
+from untanglepyut.Types import UntangledOglNotes
+from untanglepyut.Types import UntangledOglTexts
 
 untangler: UnTangler = UnTangler(fqFileName='MultiDocumentProject.xml')
 
+document: Document = untangler.documents['Diagram-1']
 
-document:   Document            = untangler.documents['Diagram-1']
 oglClasses: UntangledOglClasses = document.oglClasses
 oglLinks:   UntangledOglLinks   = document.oglLinks
+oglNotes:   UntangledOglNotes   = document.oglNotes
+oglTexts:   UntangledOglTexts   = document.oglTexts
 
 ```
 
