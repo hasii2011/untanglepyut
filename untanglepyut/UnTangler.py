@@ -24,6 +24,7 @@ from ogl.OglInheritance import OglInheritance
 from ogl.OglInterface import OglInterface
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglLink import OglLink
+from ogl.OglNote import OglNote
 from ogl.OglNoteLink import OglNoteLink
 
 from pyutmodel.PyutClass import PyutClass
@@ -36,6 +37,7 @@ from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutMethod import PyutParameters
 from pyutmodel.PyutMethod import SourceCode
 from pyutmodel.PyutModifier import PyutModifier
+from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutType import PyutType
@@ -52,12 +54,14 @@ class ProjectInformation:
 
 
 UntangledLinks         = Union[OglLink, OglInterface2]
-UntangledOglClasses    = NewType('UntangledOglClasses', List[OglClass])
-UntangledPyutMethods   = NewType('UntangledPyutMethods', List[PyutMethod])
-UntangledOglLinks      = NewType('UntangledOglLinks', List[UntangledLinks])
+UntangledOglClasses    = NewType('UntangledOglClasses',    List[OglClass])
+UntangledPyutMethods   = NewType('UntangledPyutMethods',   List[PyutMethod])
+UntangledOglLinks      = NewType('UntangledOglLinks',      List[UntangledLinks])
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
+UntangledOglNotes      = NewType('UntangledOglNotes',      List[OglNote])
 
-OglClassDictionary   = NewType('OglClassDictionary', Dict[int, OglClass])
+OglClassDictionary  = NewType('OglClassDictionary', Dict[int, OglClass])
+OglNotesDictionary = NewType('OglNotesDictionary',  Dict[int, OglNote])
 
 
 def createUntangledOglClassesFactory() -> UntangledOglClasses:
@@ -73,8 +77,16 @@ def createUntangledOglLinksFactory() -> UntangledOglLinks:
     return UntangledOglLinks([])
 
 
+def createUntangledOglNotesFactory() -> UntangledOglNotes:
+    return UntangledOglNotes([])
+
+
 def createOglClassDictionaryFactory() -> OglClassDictionary:
     return OglClassDictionary({})
+
+
+def createOglNotesDictionaryFactory() -> OglNotesDictionary:
+    return OglNotesDictionary({})
 
 
 @dataclass
@@ -85,15 +97,25 @@ class Document:
     scrollPositionY: int = -1
     pixelsPerUnitX:  int = -1
     pixelsPerUnitY:  int = -1
-    oglClasses:         UntangledOglClasses = field(default_factory=createUntangledOglClassesFactory)
-    oglLinks:           UntangledOglLinks   = field(default_factory=createUntangledOglLinksFactory)
-
-    # def __post_init__(self):
-    #     self.oglClasses = UntangledOglClasses([])
+    oglClasses:      UntangledOglClasses = field(default_factory=createUntangledOglClassesFactory)
+    oglLinks:        UntangledOglLinks   = field(default_factory=createUntangledOglLinksFactory)
+    oglNotes:        UntangledOglNotes   = field(default_factory=createUntangledOglNotesFactory)
 
 
 DocumentTitle = NewType('DocumentTitle', str)
 Documents     = NewType('Documents', dict[DocumentTitle, Document])
+
+
+@dataclass
+class GraphicInformation:
+    """
+    Internal Class use to move information from a Graphic XML element
+    into Python
+    """
+    x: int = -1
+    y: int = -1
+    width:  int = -1
+    height: int = -1
 
 
 class UnTangler:
@@ -139,7 +161,8 @@ class UnTangler:
 
             self.logger.debug(f'{document=}')
             document.oglClasses = self._graphicClassesToOglClasses(pyutDocument=pyutDocument)
-            document.oglLinks = self._graphicLinksToOglLink(pyutDocument, document.oglClasses)
+            document.oglNotes   = self._graphicNotesToOglNotes(pyutDocument=pyutDocument)
+            document.oglLinks   = self._graphicLinksToOglLink(pyutDocument, oglClasses=document.oglClasses, oglNotes=document.oglNotes)
 
     def _populateProjectInformation(self, pyutProject: Element):
         self._projectInformation.version  = pyutProject['version']
@@ -169,12 +192,9 @@ class UnTangler:
         for graphicClass in pyutDocument.GraphicClass:
             self.logger.debug(f'{graphicClass=}')
 
-            x: int = int(graphicClass['x'])
-            y: int = int(graphicClass['y'])
-            width:  int = int(graphicClass['width'])
-            height: int = int(graphicClass['height'])
-            oglClass: OglClass = OglClass(w=width, h=height)
-            oglClass.SetPosition(x=x, y=y)
+            graphicInformation: GraphicInformation = self._toGraphicInfo(graphicElement=graphicClass)
+            oglClass: OglClass = OglClass(w=graphicInformation.width, h=graphicInformation.height)
+            oglClass.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
             pyutClass: PyutClass = self._classToPyutClass(graphicClass=graphicClass)
             oglClass.pyutObject = pyutClass
@@ -182,15 +202,33 @@ class UnTangler:
 
         return oglClasses
 
-    def _graphicLinksToOglLink(self, pyutDocument: Element, oglClasses: UntangledOglClasses) -> UntangledOglLinks:
+    def _graphicNotesToOglNotes(self, pyutDocument: Element) -> UntangledOglNotes:
+        oglNotes: UntangledOglNotes = createUntangledOglNotesFactory()
+
+        graphicNotes: Element = pyutDocument.get_elements('GraphicNote')
+        for graphicNote in graphicNotes:
+            self.logger.info(f'{graphicNote}')
+
+            graphicInformation: GraphicInformation = self._toGraphicInfo(graphicElement=graphicNote)
+            oglNote:            OglNote            = OglNote(w=graphicInformation.width, h=graphicInformation.height)
+            oglNote.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
+
+            pyutNote: PyutNote = self._noteToPyutNote(graphicNote=graphicNote)
+            oglNote.pyutObject = pyutNote
+            oglNotes.append(oglNote)
+
+        return oglNotes
+
+    def _graphicLinksToOglLink(self, pyutDocument: Element, oglClasses: UntangledOglClasses, oglNotes: UntangledOglNotes) -> UntangledOglLinks:
 
         oglClassDictionary: OglClassDictionary = self._buildOglClassDictionary(oglClasses)
+        oglNotesDictionary: OglNotesDictionary = self._buildOglNotesDictionary(oglNotes)
 
         oglLinks: UntangledOglLinks = createUntangledOglLinksFactory()
 
         graphicLinks: Element = pyutDocument.get_elements('GraphicLink')
         for graphicLink in graphicLinks:
-            oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, oglClassDictionary)
+            oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, oglClassDictionary=oglClassDictionary, oglNotesDictionary=oglNotesDictionary)
             oglLinks.append(oglLink)
 
         graphicLollipops: Element = pyutDocument.get_elements('GraphicLollipop')
@@ -214,17 +252,29 @@ class UnTangler:
 
         pyutClass.displayParameters = displayParameters
 
-        pyutClass.setShowStereotype(showStereotype)
+        # pyutClass.setShowStereotype(showStereotype)
+        pyutClass.displayStereoType = showStereotype
         pyutClass.showFields     = showFields
         pyutClass.showMethods    = showMethods
 
         pyutClass.description = classElement['description']
         pyutClass.fileName    = classElement['fileName']
         pyutClass.id          = int(classElement['id'])      # TODO revisit this when we start using UUIDs
-        pyutClass.setStereotype(PyutStereotype(name=stereotypeStr))
+        # pyutClass.setStereotype(PyutStereotype(name=stereotypeStr))
+        pyutClass.stereotype = PyutStereotype(name=stereotypeStr)
 
         pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
         return pyutClass
+
+    def _noteToPyutNote(self, graphicNote: Element) -> PyutNote:
+        noteElement: Element = graphicNote.Note
+        pyutNote: PyutNote = PyutNote()
+
+        pyutNote.id       = int(noteElement['id'])
+        pyutNote.content  = noteElement['content']
+        pyutNote.fileName = noteElement['filename']
+
+        return pyutNote
 
     def _modifierToPyutMethodModifiers(self, methodElement: Element) -> PyutModifiers:
         # <Modifier name="modifier1,modifier2,modifier3"/>
@@ -268,7 +318,7 @@ class UnTangler:
             sourceCode.append(codeLine)
         return sourceCode
 
-    def _graphicLinkToOglLink(self, graphicLink: Element, oglClassDictionary: OglClassDictionary) -> OglLink:
+    def _graphicLinkToOglLink(self, graphicLink: Element, oglClassDictionary: OglClassDictionary, oglNotesDictionary: OglNotesDictionary) -> OglLink:
         """
         This code is way too convoluted.  Failing to do any of these step in this code leads to BAD
         visual representations.
@@ -298,11 +348,17 @@ class UnTangler:
         sourceId:    int = int(singleLink['sourceId'])
         dstId:       int = int(singleLink['destId'])
         self.logger.debug(f'graphicLink= {srcX=} {srcY=} {dstX=} {dstY=}')
+        srcShape: Union[OglClass, OglNote] = cast(Union[OglClass, OglNote], None)
+        dstShape: OglClass                 = cast(OglClass, None)
         try:
-            srcShape = oglClassDictionary[sourceId]
-            dstShape = oglClassDictionary[dstId]
+            if singleLink['type'] == 'NOTELINK':
+                dstShape = oglClassDictionary[dstId]
+                srcShape = oglNotesDictionary[sourceId]
+            else:
+                srcShape = oglClassDictionary[sourceId]
+                dstShape = oglClassDictionary[dstId]
         except KeyError as ke:
-            self.logger.error(f'Developer Error -- srcId: {sourceId} - dstId: {dstId}  error: {ke}')
+            self.logger.error(f'Developer Error -- srcId: {sourceId} - dstId: {dstId}  KeyError index: {ke}')
             return cast(OglLink, None)
 
         pyutLink: PyutLink = self._linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)
@@ -451,8 +507,13 @@ class UnTangler:
 
         return controlPoints
 
-    def _buildOglClassDictionary(self, oglClasses: UntangledOglClasses):
+    def _buildOglClassDictionary(self, oglClasses: UntangledOglClasses) -> OglClassDictionary:
         """
+        Map class id to OglClass
+        Args:
+            oglClasses:
+
+        Returns:  The dictionary
         """
         oglClassDictionary: OglClassDictionary = createOglClassDictionaryFactory()
 
@@ -461,6 +522,22 @@ class UnTangler:
             oglClassDictionary[classId] = oglClass
 
         return oglClassDictionary
+
+    def _buildOglNotesDictionary(self, oglNotes: UntangledOglNotes) -> OglNotesDictionary:
+        """
+        Map note ID to OglNote
+        Args:
+            oglNotes:
+
+        Returns:  The dictionary
+        """
+        oglNotesDictionary: OglNotesDictionary = createOglNotesDictionaryFactory()
+
+        for oglNote in oglNotes:
+            noteId: int = oglNote.pyutObject.id
+            oglNotesDictionary[noteId] = oglNote
+
+        return oglNotesDictionary
 
     def _createOglLink(self, srcShape, pyutLink, destShape, linkType: PyutLinkType, srcPos=None, dstPos=None):
         """
@@ -503,6 +580,17 @@ class UnTangler:
 
     def _str2bool(self, strValue: str) -> bool:
         return strValue.lower() in ("yes", "true", "t", "1", 'True')
+
+    def _toGraphicInfo(self, graphicElement: Element) -> GraphicInformation:
+        graphicInformation: GraphicInformation = GraphicInformation()
+
+        graphicInformation.x = int(graphicElement['x'])
+        graphicInformation.y = int(graphicElement['y'])
+
+        graphicInformation.width  = int(graphicElement['width'])
+        graphicInformation.height = int(graphicElement['height'])
+
+        return graphicInformation
 
     def _getRawXml(self) -> str:
 

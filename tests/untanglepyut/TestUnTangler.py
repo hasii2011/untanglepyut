@@ -10,7 +10,10 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from ogl.OglInheritance import OglInheritance
+from wx import App
+from wx import Frame
+from wx import ID_ANY
+
 from pkg_resources import resource_filename
 
 from miniogl.ControlPoint import ControlPoint
@@ -18,6 +21,7 @@ from miniogl.DiagramFrame import DiagramFrame
 
 from ogl.OglClass import OglClass
 from ogl.OglInterface2 import OglInterface2
+from ogl.OglInheritance import OglInheritance
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutInterface import PyutInterface
@@ -26,17 +30,14 @@ from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 
-from wx import App
-from wx import Frame
-from wx import ID_ANY
-
-from tests.TestBase import TestBase
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 
 from untanglepyut.UnTangler import UnTangler
 from untanglepyut.UnTangler import UntangledOglClasses
 from untanglepyut.UnTangler import UntangledOglLinks
+
+from tests.TestBase import TestBase
 
 DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
@@ -60,10 +61,6 @@ class DummyApp(App):
 
 class TestUnTangler(TestBase):
     """
-    You need to change the name of this class to Test`xxxx`
-    Where `xxxx' is the name of the class that you want to test.
-
-    See existing tests for more information.
     """
     clsLogger: Logger = cast(Logger, None)
 
@@ -76,7 +73,7 @@ class TestUnTangler(TestBase):
         self.logger: Logger = TestUnTangler.clsLogger
         self.app:    App    = DummyApp(redirect=True)
 
-        self._fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, TEST_XML_FILENAME)
+        self._fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, TEST_XML_FILENAME)
 
     def tearDown(self):
         self.app.OnExit()
@@ -346,6 +343,17 @@ class TestUnTangler(TestBase):
                 testPassed = True
             return testPassed
         self._runTest(DIAGRAM_NAME_1, emptyTest)
+
+    def testUmlNote(self):
+        fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiObject.xml')
+
+        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+
+        untangler.untangle()
+
+        document: Document = untangler.documents['MultiObject']
+
+        self.assertEqual(1, len(document.oglNotes), 'Incorrect # of notes')
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
