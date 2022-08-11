@@ -30,24 +30,17 @@ from ogl.OglNoteLink import OglNoteLink
 from ogl.OglText import OglText
 
 from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
+
 from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutMethod import PyutModifiers
-from pyutmodel.PyutMethod import PyutParameters
-from pyutmodel.PyutMethod import SourceCode
-from pyutmodel.PyutModifier import PyutModifier
 from pyutmodel.PyutNote import PyutNote
-from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutText import PyutText
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from untangle import parse
 from untangle import Element
+
+from untanglepyut.UnTanglePyut import UnTanglePyut
 
 
 @dataclass
@@ -58,11 +51,10 @@ class ProjectInformation:
 
 UntangledLinks         = Union[OglLink, OglInterface2]
 UntangledOglClasses    = NewType('UntangledOglClasses',    List[OglClass])
-UntangledPyutMethods   = NewType('UntangledPyutMethods',   List[PyutMethod])
 UntangledOglLinks      = NewType('UntangledOglLinks',      List[UntangledLinks])
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
 UntangledOglNotes      = NewType('UntangledOglNotes',      List[OglNote])
-UntangledOglTexts      = NewType('UntangledOglText', List[OglText])
+UntangledOglTexts      = NewType('UntangledOglTexts',      List[OglText])
 
 OglClassDictionary = NewType('OglClassDictionary', Dict[int, OglClass])
 OglNotesDictionary = NewType('OglNotesDictionary', Dict[int, OglNote])
@@ -142,6 +134,8 @@ class UnTangler:
         self._projectInformation: ProjectInformation = ProjectInformation()
         self._documents:          Documents          = Documents({})
 
+        self._untanglePyut: UnTanglePyut = UnTanglePyut()
+
     @property
     def projectInformation(self) -> ProjectInformation:
         """
@@ -213,7 +207,7 @@ class UnTangler:
             oglClass: OglClass = OglClass(w=graphicInformation.width, h=graphicInformation.height)
             oglClass.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
-            pyutClass: PyutClass = self._classToPyutClass(graphicClass=graphicClass)
+            pyutClass: PyutClass = self._untanglePyut.classToPyutClass(graphicClass=graphicClass)
             oglClass.pyutObject = pyutClass
             oglClasses.append(oglClass)
 
@@ -231,13 +225,13 @@ class UnTangler:
 
         graphicNotes: Element = pyutDocument.get_elements('GraphicNote')
         for graphicNote in graphicNotes:
-            self.logger.info(f'{graphicNote}')
+            self.logger.debug(f'{graphicNote}')
 
             graphicInformation: GraphicInformation = self._toGraphicInfo(graphicElement=graphicNote)
             oglNote:            OglNote            = OglNote(w=graphicInformation.width, h=graphicInformation.height)
             oglNote.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
-            pyutNote: PyutNote = self._noteToPyutNote(graphicNote=graphicNote)
+            pyutNote: PyutNote = self._untanglePyut.noteToPyutNote(graphicNote=graphicNote)
             oglNote.pyutObject = pyutNote
             oglNotes.append(oglNote)
 
@@ -256,10 +250,10 @@ class UnTangler:
 
         graphicTexts: Element = pyutDocument.get_elements('GraphicText')
         for graphicText in graphicTexts:
-            self.logger.info(f'{graphicText}')
+            self.logger.debug(f'{graphicText}')
 
             graphicInformation: GraphicInformation = self._toGraphicInfo(graphicElement=graphicText)
-            pyutText:           PyutText           = self._textToPyutText(graphicText=graphicText)
+            pyutText:           PyutText           = self._untanglePyut.textToPyutText(graphicText=graphicText)
             oglText:            OglText            = OglText(pyutText=pyutText, width=graphicInformation.width, height=graphicInformation.height)
             oglText.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
             oglText.pyutText = pyutText
@@ -285,95 +279,6 @@ class UnTangler:
             oglLinks.append(oglInterface2)
 
         return oglLinks
-
-    def _classToPyutClass(self, graphicClass: Element) -> PyutClass:
-        classElement: Element = graphicClass.Class
-
-        pyutClass: PyutClass = PyutClass(name=classElement['name'])
-
-        displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(classElement['displayParameters'])
-
-        showStereotype:    bool = bool(classElement['showStereotype'])
-        showFields:        bool = bool(classElement['showFields'])
-        showMethods:       bool = bool(classElement['showMethods'])
-        stereotypeStr:     str  = classElement['stereotype']
-
-        pyutClass.displayParameters = displayParameters
-
-        # pyutClass.setShowStereotype(showStereotype)
-        pyutClass.displayStereoType = showStereotype
-        pyutClass.showFields     = showFields
-        pyutClass.showMethods    = showMethods
-
-        pyutClass.description = classElement['description']
-        pyutClass.fileName    = classElement['fileName']
-        pyutClass.id          = int(classElement['id'])      # TODO revisit this when we start using UUIDs
-        # pyutClass.setStereotype(PyutStereotype(name=stereotypeStr))
-        pyutClass.stereotype = PyutStereotype(name=stereotypeStr)
-
-        pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
-        return pyutClass
-
-    def _noteToPyutNote(self, graphicNote: Element) -> PyutNote:
-        noteElement: Element = graphicNote.Note
-        pyutNote: PyutNote = PyutNote()
-
-        pyutNote.id       = int(noteElement['id'])
-        pyutNote.content  = noteElement['content']
-        pyutNote.fileName = noteElement['filename']
-
-        return pyutNote
-
-    def _textToPyutText(self, graphicText: Element) -> PyutText:
-        textElement: Element  = graphicText.Text
-        pyutText:    PyutText = PyutText()
-
-        pyutText.id = textElement['id']
-        pyutText.content = textElement['content']
-
-        return pyutText
-
-    def _modifierToPyutMethodModifiers(self, methodElement: Element) -> PyutModifiers:
-        # <Modifier name="modifier1,modifier2,modifier3"/>
-        modifierElements = methodElement.get_elements('Modifier')
-
-        pyutModifiers: PyutModifiers = PyutModifiers([])
-        if len(modifierElements) > 0:
-            modifierElement: Element   = modifierElements[0]
-            names:           str       = modifierElement['name']    # comma delimited string
-            nameList:        List[str] = names.split(',')
-            for modifierName in nameList:
-                pyutModifier: PyutModifier = PyutModifier(modifierTypeName=modifierName)
-                pyutModifiers.append(pyutModifier)
-
-        return pyutModifiers
-
-    def _paramToPyutParameters(self, methodElement: Element) -> PyutParameters:
-
-        parameterElements = methodElement.get_elements('Param')     # TODO:  https://github.com/hasii2011/PyUt/issues/326
-        untangledPyutMethodParameters: PyutParameters = PyutParameters([])
-        for parameterElement in parameterElements:
-            name:           str = parameterElement['name']
-            defaultValue:   str = parameterElement['defaultValue']
-            parameterType:  PyutType = PyutType(parameterElement['type'])
-
-            pyutParameter: PyutParameter = PyutParameter(name=name, parameterType=parameterType, defaultValue=defaultValue)
-            # <Param name="intParameter" type="int" defaultValue="0"/>
-            # <Param name="floatParameter" type="float" defaultValue="0.0"/>
-            # <Param name="stringParameter" type="str" defaultValue="''"/>
-            untangledPyutMethodParameters.append(pyutParameter)
-
-        return untangledPyutMethodParameters
-
-    def _sourceCodeToPyutSourceCode(self, methodElement: Element) -> SourceCode:
-        sourceCodeElements = methodElement.get_elements('SourceCode')
-        codeElements = sourceCodeElements[0].get_elements('Code')
-        sourceCode: SourceCode = SourceCode([])
-        for codeElement in codeElements:
-            self.logger.debug(f'{codeElement.cdata=}')
-            codeLine: str = codeElement.cdata
-            sourceCode.append(codeLine)
-        return sourceCode
 
     def _graphicLinkToOglLink(self, graphicLink: Element, oglClassDictionary: OglClassDictionary, oglNotesDictionary: OglNotesDictionary) -> OglLink:
         """
@@ -417,7 +322,7 @@ class UnTangler:
             self.logger.error(f'Developer Error -- srcId: {sourceId} - dstId: {dstId}  KeyError index: {ke}')
             return cast(OglLink, None)
 
-        pyutLink: PyutLink = self._linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)
+        pyutLink: PyutLink = self._untanglePyut.linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)
         oglLink:  OglLink  = self._createOglLink(srcShape=srcShape, pyutLink=pyutLink, destShape=dstShape,
                                                  linkType=pyutLink.linkType,
                                                  srcPos=(srcX, srcY),
@@ -459,86 +364,12 @@ class UnTangler:
         elements: Element = graphicLollipop.get_elements('Interface')
         assert len(elements) == 1, 'If more than one interface tag the XML is invalid'
         interfaceElement: Element           = elements[0]
-        pyutInterface:    PyutInterface     = self._interfaceToPyutInterface(interface=interfaceElement)
+        pyutInterface:    PyutInterface     = self._untanglePyut.interfaceToPyutInterface(interface=interfaceElement)
         oglClass:         OglClass          = self._getOglClassFromName(pyutInterface.implementors[0], oglClassDictionary)
         anchorPoint:      SelectAnchorPoint = SelectAnchorPoint(x=x, y=y, attachmentPoint=attachmentLocation, parent=oglClass)
         oglInterface2:    OglInterface2     = OglInterface2(pyutInterface=pyutInterface, destinationAnchor=anchorPoint)
 
         return oglInterface2
-
-    def _linkToPyutLink(self, singleLink: Element, source: PyutClass, destination: PyutClass) -> PyutLink:
-        linkTypeStr:     str          = singleLink['type']
-        linkType:        PyutLinkType = PyutLinkType.toEnum(linkTypeStr)
-        cardSrc:         str          = singleLink['cardSrc']
-        cardDest:        str          = singleLink['cardDestination']
-        bidir:           bool         = self._str2bool(singleLink['bidir'])
-        linkDescription: str          = singleLink['name']
-
-        pyutLink: PyutLink = PyutLink(name=linkDescription,
-                                      linkType=linkType,
-                                      cardSrc=cardSrc, cardDest=cardDest,
-                                      bidir=bidir,
-                                      source=source,
-                                      destination=destination)
-
-        return pyutLink
-
-    def _interfaceToPyutInterface(self, interface: Element) -> PyutInterface:
-
-        interfaceId: int = int(interface['id'])
-        name:        str = interface['name']
-        description: str = interface['description']
-
-        pyutInterface: PyutInterface = PyutInterface(name=name)
-        pyutInterface.id          = interfaceId
-        pyutInterface.description = description
-
-        implementors: Element = interface.get_elements('Implementor')
-        for implementor in implementors:
-            pyutInterface.addImplementor(implementor['implementingClassName'])
-
-        pyutInterface.methods = self._interfaceMethodsToPyutMethods(interface=interface)
-        return pyutInterface
-
-    def _interfaceMethodsToPyutMethods(self, interface: Element) -> List[PyutMethod]:
-
-        pyutMethods: List[PyutMethod] = self._methodToPyutMethods(interface)
-
-        return pyutMethods
-
-    def _methodToPyutMethods(self, classElement: Element) -> UntangledPyutMethods:
-        """
-        The pyutClass may not have methods;
-        Args:
-            classElement:  The pyutClassElement
-
-        Returns:  May return an empty list
-        """
-        untangledPyutMethods: UntangledPyutMethods = UntangledPyutMethods([])
-
-        methodElements = classElement.get_elements('Method')
-        for methodElement in methodElements:
-            methodName: str                = methodElement['name']
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.toEnum(methodElement['visibility'])
-            self.logger.debug(f"{methodName=} - {visibility=}")
-
-            pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
-
-            pyutMethod.modifiers = self._modifierToPyutMethodModifiers(methodElement=methodElement)
-
-            returnElement = methodElement.get_elements('Return')
-
-            if len(returnElement) > 0:
-                pyutType: PyutType = PyutType(value=returnElement[0]['type'])
-                pyutMethod.returnType = pyutType
-
-            parameters = self._paramToPyutParameters(methodElement)
-            pyutMethod.parameters = parameters
-            pyutMethod.sourceCode = self._sourceCodeToPyutSourceCode(methodElement=methodElement)
-
-            untangledPyutMethods.append(pyutMethod)
-
-        return untangledPyutMethods
 
     def _getOglClassFromName(self, className: str, oglClassDictionary: OglClassDictionary) -> OglClass:
 
@@ -635,6 +466,16 @@ class UnTangler:
             return None
 
     def _str2bool(self, strValue: str) -> bool:
+        """
+        Converts a know set of strings to a boolean value
+
+        TODO: Put in common place;  Also, in UnTanglePyut
+
+        Args:
+            strValue:
+
+        Returns:  the boolean value
+        """
         return strValue.lower() in ("yes", "true", "t", "1", 'True')
 
     def _toGraphicInfo(self, graphicElement: Element) -> GraphicInformation:
