@@ -8,6 +8,9 @@ from logging import getLogger
 from dataclasses import dataclass
 from dataclasses import field
 
+from untangle import parse
+from untangle import Element
+
 from ogl.OglClass import OglClass
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
@@ -17,18 +20,20 @@ from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutText import PyutText
 
-from untangle import parse
-from untangle import Element
-
+from untanglepyut.Common import GraphicInformation
 from untanglepyut.Common import UntangledOglLinks
+from untanglepyut.Common import createUntangledOglActorsFactory
 from untanglepyut.Common import createUntangledOglLinksFactory
+from untanglepyut.Common import toGraphicInfo
 
+from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
+from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 
 
 @dataclass
@@ -66,22 +71,11 @@ class Document:
     oglLinks:        UntangledOglLinks   = field(default_factory=createUntangledOglLinksFactory)
     oglNotes:        UntangledOglNotes   = field(default_factory=createUntangledOglNotesFactory)
     oglTexts:        UntangledOglTexts   = field(default_factory=createUntangledOglTextsFactory)
+    oglActors:       UntangledOglActors  = field(default_factory=createUntangledOglActorsFactory)
 
 
 DocumentTitle = NewType('DocumentTitle', str)
 Documents     = NewType('Documents', dict[DocumentTitle, Document])
-
-
-@dataclass
-class GraphicInformation:
-    """
-    Internal Class use to move information from a Graphic XML element
-    into Python
-    """
-    x: int = -1
-    y: int = -1
-    width:  int = -1
-    height: int = -1
 
 
 class UnTangler:
@@ -137,9 +131,13 @@ class UnTangler:
             elif document.documentType == 'SEQUENCE_DIAGRAM':
                 self.logger.warning(f'{document.documentType} unsupported')
             elif document.documentType == 'USECASE_DIAGRAM':
-                self.logger.warning(f'{document.documentType} unsupported')
+
+                unTangleUseCaseDiagram: UnTangleUseCaseDiagram = UnTangleUseCaseDiagram()
+
+                unTangleUseCaseDiagram.unTangle(pyutDocument=pyutDocument)
+                document.oglActors = unTangleUseCaseDiagram.oglActors
             else:
-                assert False, f'Unknown document type: {document.documentType}'
+                assert False, f'Unknown document type: f{document.documentType}'
 
     def _populateProjectInformation(self, pyutProject: Element):
         self._projectInformation.version  = pyutProject['version']
@@ -169,7 +167,7 @@ class UnTangler:
         for graphicClass in pyutDocument.GraphicClass:
             self.logger.debug(f'{graphicClass=}')
 
-            graphicInformation: GraphicInformation = self._toGraphicInfo(graphicElement=graphicClass)
+            graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicClass)
             oglClass: OglClass = OglClass(w=graphicInformation.width, h=graphicInformation.height)
             oglClass.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
@@ -193,7 +191,7 @@ class UnTangler:
         for graphicNote in graphicNotes:
             self.logger.debug(f'{graphicNote}')
 
-            graphicInformation: GraphicInformation = self._toGraphicInfo(graphicElement=graphicNote)
+            graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicNote)
             oglNote:            OglNote            = OglNote(w=graphicInformation.width, h=graphicInformation.height)
             oglNote.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
@@ -218,7 +216,7 @@ class UnTangler:
         for graphicText in graphicTexts:
             self.logger.debug(f'{graphicText}')
 
-            graphicInformation: GraphicInformation = self._toGraphicInfo(graphicElement=graphicText)
+            graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicText)
             pyutText:           PyutText           = self._untanglePyut.textToPyutText(graphicText=graphicText)
             oglText:            OglText            = OglText(pyutText=pyutText, width=graphicInformation.width, height=graphicInformation.height)
             oglText.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
@@ -226,17 +224,6 @@ class UnTangler:
             oglTexts.append(oglText)
 
         return oglTexts
-
-    def _toGraphicInfo(self, graphicElement: Element) -> GraphicInformation:
-        graphicInformation: GraphicInformation = GraphicInformation()
-
-        graphicInformation.x = int(graphicElement['x'])
-        graphicInformation.y = int(graphicElement['y'])
-
-        graphicInformation.width  = int(graphicElement['width'])
-        graphicInformation.height = int(graphicElement['height'])
-
-        return graphicInformation
 
     def _getRawXml(self) -> str:
 

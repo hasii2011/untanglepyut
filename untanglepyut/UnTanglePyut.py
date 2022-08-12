@@ -1,12 +1,15 @@
 
 from typing import List
 from typing import NewType
+from typing import cast
 
 from logging import Logger
 from logging import getLogger
 
+from pyutmodel.PyutObject import PyutObject
 from untangle import Element
 
+from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
@@ -42,7 +45,9 @@ class UnTanglePyut:
     def classToPyutClass(self, graphicClass: Element) -> PyutClass:
         classElement: Element = graphicClass.Class
 
-        pyutClass: PyutClass = PyutClass(name=classElement['name'])
+        pyutClass: PyutClass = PyutClass()
+
+        pyutClass = cast(PyutClass, self._addPyutObjectAttributes(pyutElement=classElement, pyutObject=pyutClass))
 
         displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(classElement['displayParameters'])
 
@@ -58,11 +63,10 @@ class UnTanglePyut:
         pyutClass.showMethods    = showMethods
 
         pyutClass.description = classElement['description']
-        pyutClass.fileName    = classElement['fileName']
-        pyutClass.id          = int(classElement['id'])      # TODO revisit this when we start using UUIDs
         pyutClass.stereotype = PyutStereotype(name=stereotypeStr)
 
         pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
+
         return pyutClass
 
     def textToPyutText(self, graphicText: Element) -> PyutText:
@@ -76,7 +80,7 @@ class UnTanglePyut:
         textElement: Element  = graphicText.Text
         pyutText:    PyutText = PyutText()
 
-        pyutText.id = textElement['id']
+        pyutText.id     = textElement['id']
         pyutText.content = textElement['content']
 
         return pyutText
@@ -92,9 +96,7 @@ class UnTanglePyut:
         noteElement: Element = graphicNote.Note
         pyutNote: PyutNote = PyutNote()
 
-        pyutNote.id       = int(noteElement['id'])
-        pyutNote.content  = noteElement['content']
-        pyutNote.fileName = noteElement['filename']
+        pyutNote = cast(PyutNote, self._addPyutObjectAttributes(pyutElement=noteElement, pyutObject=pyutNote))
 
         return pyutNote
 
@@ -114,6 +116,24 @@ class UnTanglePyut:
 
         pyutInterface.methods = self._interfaceMethodsToPyutMethods(interface=interface)
         return pyutInterface
+
+    def actorToPyutActor(self, graphicActor: Element) -> PyutActor:
+        """
+        <GraphicActor width="87" height="114" x="293" y="236">
+            <Actor id="1" name="BasicActor" filename=""/>
+        </GraphicActor>
+
+        Args:
+            graphicActor:   untangle Element in the above format
+
+        Returns:   PyutActor
+        """
+        actorElement: Element   = graphicActor.Actor
+        pyutActor:    PyutActor = PyutActor()
+
+        pyutActor = cast(PyutActor, self._addPyutObjectAttributes(pyutElement=actorElement, pyutObject=pyutActor))
+
+        return pyutActor
 
     def linkToPyutLink(self, singleLink: Element, source: PyutClass, destination: PyutClass) -> PyutLink:
         linkTypeStr:     str          = singleLink['type']
@@ -224,3 +244,19 @@ class UnTanglePyut:
         pyutMethods: List[PyutMethod] = self._methodToPyutMethods(interface)
 
         return pyutMethods
+
+    def _addPyutObjectAttributes(self, pyutElement: Element, pyutObject: PyutObject) -> PyutObject:
+        """
+
+        Args:
+            pyutElement:    pyutElement XML with common keys
+            pyutObject:     The PyutObject to update
+
+        Returns:  The updated pyutObject as
+        """
+
+        pyutObject.id       = int(pyutElement['id'])    # TODO revisit this when we start using UUIDs
+        pyutObject.name     = pyutElement['name']
+        pyutObject.fileName = pyutElement['fileName']
+
+        return pyutObject

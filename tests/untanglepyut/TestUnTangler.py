@@ -10,6 +10,8 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from ogl.OglActor import OglActor
+from pyutmodel.PyutActor import PyutActor
 from wx import App
 from wx import Frame
 from wx import ID_ANY
@@ -30,6 +32,7 @@ from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 
+from untanglepyut.Types import UntangledOglActors
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 
@@ -367,6 +370,20 @@ class TestUnTangler(TestBase):
 
         self.assertEqual(1, len(document.oglTexts), 'Incorrect # of text annotations')
 
+    def testUseCaseDiagramActors(self):
+
+        document:  Document           = self._retrieveUseCaseDocument()
+        oglActors: UntangledOglActors = document.oglActors
+
+        self.assertEqual(1, len(oglActors), 'Mismatch # of OglActors ')
+
+        oglActor: OglActor = oglActors[0]
+        pyutActor: PyutActor = oglActor.pyutObject
+        actualName: str = pyutActor.name
+        expectedName: str = 'BasicActor'
+
+        self.assertEqual(expectedName, actualName, 'Did we get the wrong actor !!')
+
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
         oglClasses: List[OglClass] = self._getOglClassesFromDocument(title)
@@ -429,6 +446,17 @@ class TestUnTangler(TestBase):
 
         self.assertEqual(expectedX, pos[0], f'{objectName} x position is incorrect')
         self.assertEqual(expectedY, pos[1], f'{objectName} y position is incorrect')
+
+    def _retrieveUseCaseDocument(self) -> Document:
+
+        fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'UseCaseDiagram.xml')
+        untangler:  UnTangler = UnTangler(fqFileName=fqFileName)
+
+        untangler.untangle()
+
+        document: Document = untangler.documents[DocumentTitle('Use-Cases')]
+
+        return document
 
 
 def suite() -> TestSuite:
