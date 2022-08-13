@@ -31,9 +31,9 @@ from untanglepyut.Common import OglClassDictionary
 from untanglepyut.Common import OglNotesDictionary
 from untanglepyut.Common import UntangledControlPoints
 from untanglepyut.Common import UntangledOglLinks
-from untanglepyut.Common import createOglClassDictionaryFactory
-from untanglepyut.Common import createOglNotesDictionaryFactory
-from untanglepyut.Common import createUntangledOglLinksFactory
+from untanglepyut.Common import createOglClassDictionary
+from untanglepyut.Common import createOglNotesDictionary
+from untanglepyut.Common import createUntangledOglLinks
 from untanglepyut.Common import str2bool
 
 from untanglepyut.Types import UntangledOglClasses
@@ -55,7 +55,7 @@ class UnTangleOglLinks:
         oglClassDictionary: OglClassDictionary = self._buildOglClassDictionary(oglClasses)
         oglNotesDictionary: OglNotesDictionary = self._buildOglNotesDictionary(oglNotes)
 
-        oglLinks: UntangledOglLinks = createUntangledOglLinksFactory()
+        oglLinks: UntangledOglLinks = createUntangledOglLinks()
 
         graphicLinks: Element = pyutDocument.get_elements('GraphicLink')
         for graphicLink in graphicLinks:
@@ -77,7 +77,7 @@ class UnTangleOglLinks:
 
         Returns:  The dictionary
         """
-        oglClassDictionary: OglClassDictionary = createOglClassDictionaryFactory()
+        oglClassDictionary: OglClassDictionary = createOglClassDictionary()
 
         for oglClass in oglClasses:
             classId: int = oglClass.pyutObject.id
@@ -93,7 +93,7 @@ class UnTangleOglLinks:
 
         Returns:  The dictionary
         """
-        oglNotesDictionary: OglNotesDictionary = createOglNotesDictionaryFactory()
+        oglNotesDictionary: OglNotesDictionary = createOglNotesDictionary()
 
         for oglNote in oglNotes:
             noteId: int = oglNote.pyutObject.id

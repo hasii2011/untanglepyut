@@ -38,27 +38,27 @@ Factory methods for our dataclasses
 """
 
 
-def createUntangledOglLinksFactory() -> UntangledOglLinks:
+def createUntangledOglLinks() -> UntangledOglLinks:
     return UntangledOglLinks([])
 
 
-def createUntangledOglUseCasesFactory() -> UntangledOglUseCases:
+def createUntangledOglUseCases() -> UntangledOglUseCases:
     return UntangledOglUseCases([])
 
 
-def createUntangledOglActorsFactory() -> UntangledOglActors:
+def createUntangledOglActors() -> UntangledOglActors:
     return UntangledOglActors([])
 
 
-def createOglClassDictionaryFactory() -> OglClassDictionary:
+def createOglClassDictionary() -> OglClassDictionary:
     return OglClassDictionary({})
 
 
-def createOglNotesDictionaryFactory() -> OglNotesDictionary:
+def createOglNotesDictionary() -> OglNotesDictionary:
     return OglNotesDictionary({})
 
 
-def createOglUseCasesDictionaryFactory() -> OglUseCasesDictionary:
+def createOglUseCasesDictionary() -> OglUseCasesDictionary:
     return OglUseCasesDictionary({})
 
 

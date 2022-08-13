@@ -23,9 +23,9 @@ from pyutmodel.PyutText import PyutText
 from untanglepyut.Common import toGraphicInfo
 from untanglepyut.Common import GraphicInformation
 from untanglepyut.Common import UntangledOglLinks
-from untanglepyut.Common import createUntangledOglActorsFactory
-from untanglepyut.Common import createUntangledOglLinksFactory
-from untanglepyut.Common import createUntangledOglUseCasesFactory
+from untanglepyut.Common import createUntangledOglActors
+from untanglepyut.Common import createUntangledOglLinks
+from untanglepyut.Common import createUntangledOglUseCases
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglClasses
@@ -44,7 +44,12 @@ class ProjectInformation:
     codePath: str = cast(str, None)
 
 
-def createUntangledOglClassesFactory() -> UntangledOglClasses:
+"""
+Factory methods for our dataclasses
+"""
+
+
+def createUntangledOglClasses() -> UntangledOglClasses:
     """
     Factory method to create  the UntangledClasses data structure;
 
@@ -53,11 +58,11 @@ def createUntangledOglClassesFactory() -> UntangledOglClasses:
     return UntangledOglClasses([])
 
 
-def createUntangledOglNotesFactory() -> UntangledOglNotes:
+def createUntangledOglNotes() -> UntangledOglNotes:
     return UntangledOglNotes([])
 
 
-def createUntangledOglTextsFactory() -> UntangledOglTexts:
+def createUntangledOglTexts() -> UntangledOglTexts:
     return UntangledOglTexts([])
 
 
@@ -69,12 +74,12 @@ class Document:
     scrollPositionY: int = -1
     pixelsPerUnitX:  int = -1
     pixelsPerUnitY:  int = -1
-    oglClasses:      UntangledOglClasses  = field(default_factory=createUntangledOglClassesFactory)
-    oglLinks:        UntangledOglLinks    = field(default_factory=createUntangledOglLinksFactory)
-    oglNotes:        UntangledOglNotes    = field(default_factory=createUntangledOglNotesFactory)
-    oglTexts:        UntangledOglTexts    = field(default_factory=createUntangledOglTextsFactory)
-    oglActors:       UntangledOglActors   = field(default_factory=createUntangledOglActorsFactory)
-    oglUseCases:     UntangledOglUseCases = field(default_factory=createUntangledOglUseCasesFactory)
+    oglClasses:      UntangledOglClasses  = field(default_factory=createUntangledOglClasses)
+    oglLinks:        UntangledOglLinks    = field(default_factory=createUntangledOglLinks)
+    oglNotes:        UntangledOglNotes    = field(default_factory=createUntangledOglNotes)
+    oglTexts:        UntangledOglTexts    = field(default_factory=createUntangledOglTexts)
+    oglActors:       UntangledOglActors   = field(default_factory=createUntangledOglActors)
+    oglUseCases:     UntangledOglUseCases = field(default_factory=createUntangledOglUseCases)
 
 
 DocumentTitle = NewType('DocumentTitle', str)
@@ -167,7 +172,7 @@ class UnTangler:
 
     def _graphicClassesToOglClasses(self, pyutDocument: Element) -> UntangledOglClasses:
 
-        oglClasses: UntangledOglClasses = createUntangledOglClassesFactory()
+        oglClasses: UntangledOglClasses = createUntangledOglClasses()
         for graphicClass in pyutDocument.GraphicClass:
             self.logger.debug(f'{graphicClass=}')
 
@@ -189,7 +194,7 @@ class UnTangler:
 
         Returns: untangled OglNote objects if any exist, else an empty list
         """
-        oglNotes: UntangledOglNotes = createUntangledOglNotesFactory()
+        oglNotes: UntangledOglNotes = createUntangledOglNotes()
 
         graphicNotes: Element = pyutDocument.get_elements('GraphicNote')
         for graphicNote in graphicNotes:
@@ -214,7 +219,7 @@ class UnTangler:
 
         Returns:  untangled OglText objects if any exist, else an empty list
         """
-        oglTexts: UntangledOglTexts = createUntangledOglTextsFactory()
+        oglTexts: UntangledOglTexts = createUntangledOglTexts()
 
         graphicTexts: Element = pyutDocument.get_elements('GraphicText')
         for graphicText in graphicTexts:

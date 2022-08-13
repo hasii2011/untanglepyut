@@ -12,8 +12,8 @@ from ogl.OglActor import OglActor
 
 from untanglepyut.Common import GraphicInformation
 from untanglepyut.Common import toGraphicInfo
-from untanglepyut.Common import createUntangledOglActorsFactory
-from untanglepyut.Common import createUntangledOglUseCasesFactory
+from untanglepyut.Common import createUntangledOglActors
+from untanglepyut.Common import createUntangledOglUseCases
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
@@ -41,8 +41,8 @@ class UnTangleUseCaseDiagram:
     def __init__(self):
         self.logger: Logger = getLogger(__name__)
 
-        self._untangledOglActors:   UntangledOglActors   = createUntangledOglActorsFactory()
-        self._untangledOglUseCases: UntangledOglUseCases = createUntangledOglUseCasesFactory()
+        self._untangledOglActors:   UntangledOglActors   = createUntangledOglActors()
+        self._untangledOglUseCases: UntangledOglUseCases = createUntangledOglUseCases()
         self._untanglePyut:         UnTanglePyut         = UnTanglePyut()
 
     def unTangle(self, pyutDocument: Element):
@@ -66,7 +66,7 @@ class UnTangleUseCaseDiagram:
         return self._untangledOglUseCases
 
     def _unTangleOglActors(self, pyutDocument: Element) -> UntangledOglActors:
-        untangledOglActors: UntangledOglActors = createUntangledOglActorsFactory()
+        untangledOglActors: UntangledOglActors = createUntangledOglActors()
 
         graphicActors: Element = pyutDocument.get_elements('GraphicActor')
         for graphicActor in graphicActors:
@@ -84,7 +84,7 @@ class UnTangleUseCaseDiagram:
 
     def _unTangleOglUseCases(self, pyutDocument: Element) -> UntangledOglUseCases:
 
-        untangledOglUseCases: UntangledOglUseCases = createUntangledOglUseCasesFactory()
+        untangledOglUseCases: UntangledOglUseCases = createUntangledOglUseCases()
 
         graphicUseCases: Element = pyutDocument.get_elements('GraphicUseCase')
         for graphicUseCase in graphicUseCases:
