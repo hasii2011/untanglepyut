@@ -12,9 +12,11 @@ from ogl.OglNote import OglNote
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglLinks
+from untanglepyut.Types import UntangledOglUseCases
 
-OglClassDictionary = NewType('OglClassDictionary', Dict[int, OglClass])
-OglNotesDictionary = NewType('OglNotesDictionary', Dict[int, OglNote])
+OglClassDictionary    = NewType('OglClassDictionary',    Dict[int, OglClass])
+OglNotesDictionary    = NewType('OglNotesDictionary',    Dict[int, OglNote])
+OglUseCasesDictionary = NewType('OglUseCasesDictionary', Dict[int, OglNote])
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
 
@@ -31,20 +33,33 @@ class GraphicInformation:
     height: int = -1
 
 
+"""
+Factory methods for our dataclasses
+"""
+
+
 def createUntangledOglLinksFactory() -> UntangledOglLinks:
     return UntangledOglLinks([])
 
 
-def createOglNotesDictionaryFactory() -> OglNotesDictionary:
-    return OglNotesDictionary({})
+def createUntangledOglUseCasesFactory() -> UntangledOglUseCases:
+    return UntangledOglUseCases([])
+
+
+def createUntangledOglActorsFactory() -> UntangledOglActors:
+    return UntangledOglActors([])
 
 
 def createOglClassDictionaryFactory() -> OglClassDictionary:
     return OglClassDictionary({})
 
 
-def createUntangledOglActorsFactory() -> UntangledOglActors:
-    return UntangledOglActors([])
+def createOglNotesDictionaryFactory() -> OglNotesDictionary:
+    return OglNotesDictionary({})
+
+
+def createOglUseCasesDictionaryFactory() -> OglUseCasesDictionary:
+    return OglUseCasesDictionary({})
 
 
 def str2bool(strValue: str) -> bool:

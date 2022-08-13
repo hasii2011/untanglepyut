@@ -7,6 +7,7 @@ from logging import Logger
 from logging import getLogger
 
 from pyutmodel.PyutObject import PyutObject
+from pyutmodel.PyutUseCase import PyutUseCase
 from untangle import Element
 
 from pyutmodel.PyutActor import PyutActor
@@ -134,6 +135,24 @@ class UnTanglePyut:
         pyutActor = cast(PyutActor, self._addPyutObjectAttributes(pyutElement=actorElement, pyutObject=pyutActor))
 
         return pyutActor
+
+    def useCaseToPyutUseCase(self, graphicUseCase: Element) -> PyutUseCase:
+        """
+        <GraphicUseCase width="100" height="60" x="575" y="250">
+            <UseCase id="2" name="Basic Use Case" filename=""/>
+        </GraphicUseCase>
+
+        Args:
+            graphicUseCase:  An untangle Element in the above format
+
+        Returns:  PyutUseCase
+        """
+        useCaseElement: Element     = graphicUseCase.UseCase
+        pyutUseCase:    PyutUseCase = PyutUseCase()
+
+        pyutUseCase = cast(PyutUseCase, self._addPyutObjectAttributes(pyutElement=useCaseElement, pyutObject=pyutUseCase))
+
+        return pyutUseCase
 
     def linkToPyutLink(self, singleLink: Element, source: PyutClass, destination: PyutClass) -> PyutLink:
         linkTypeStr:     str          = singleLink['type']

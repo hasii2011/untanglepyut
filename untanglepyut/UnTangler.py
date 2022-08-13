@@ -20,16 +20,18 @@ from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutText import PyutText
 
+from untanglepyut.Common import toGraphicInfo
 from untanglepyut.Common import GraphicInformation
 from untanglepyut.Common import UntangledOglLinks
 from untanglepyut.Common import createUntangledOglActorsFactory
 from untanglepyut.Common import createUntangledOglLinksFactory
-from untanglepyut.Common import toGraphicInfo
+from untanglepyut.Common import createUntangledOglUseCasesFactory
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
+from untanglepyut.Types import UntangledOglUseCases
 
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
@@ -67,11 +69,12 @@ class Document:
     scrollPositionY: int = -1
     pixelsPerUnitX:  int = -1
     pixelsPerUnitY:  int = -1
-    oglClasses:      UntangledOglClasses = field(default_factory=createUntangledOglClassesFactory)
-    oglLinks:        UntangledOglLinks   = field(default_factory=createUntangledOglLinksFactory)
-    oglNotes:        UntangledOglNotes   = field(default_factory=createUntangledOglNotesFactory)
-    oglTexts:        UntangledOglTexts   = field(default_factory=createUntangledOglTextsFactory)
-    oglActors:       UntangledOglActors  = field(default_factory=createUntangledOglActorsFactory)
+    oglClasses:      UntangledOglClasses  = field(default_factory=createUntangledOglClassesFactory)
+    oglLinks:        UntangledOglLinks    = field(default_factory=createUntangledOglLinksFactory)
+    oglNotes:        UntangledOglNotes    = field(default_factory=createUntangledOglNotesFactory)
+    oglTexts:        UntangledOglTexts    = field(default_factory=createUntangledOglTextsFactory)
+    oglActors:       UntangledOglActors   = field(default_factory=createUntangledOglActorsFactory)
+    oglUseCases:     UntangledOglUseCases = field(default_factory=createUntangledOglUseCasesFactory)
 
 
 DocumentTitle = NewType('DocumentTitle', str)
@@ -135,7 +138,8 @@ class UnTangler:
                 unTangleUseCaseDiagram: UnTangleUseCaseDiagram = UnTangleUseCaseDiagram()
 
                 unTangleUseCaseDiagram.unTangle(pyutDocument=pyutDocument)
-                document.oglActors = unTangleUseCaseDiagram.oglActors
+                document.oglActors   = unTangleUseCaseDiagram.oglActors
+                document.oglUseCases = unTangleUseCaseDiagram.oglUseCases
             else:
                 assert False, f'Unknown document type: f{document.documentType}'
 

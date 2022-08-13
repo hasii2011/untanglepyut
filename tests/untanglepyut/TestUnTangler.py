@@ -33,6 +33,7 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 
 from untanglepyut.Types import UntangledOglActors
+from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 
@@ -383,6 +384,12 @@ class TestUnTangler(TestBase):
         expectedName: str = 'BasicActor'
 
         self.assertEqual(expectedName, actualName, 'Did we get the wrong actor !!')
+
+    def testUseCaseDiagramUseCases(self):
+        document:    Document             = self._retrieveUseCaseDocument()
+        oglUseCases: UntangledOglUseCases = document.oglUseCases
+
+        self.assertEqual(1, len(oglUseCases), 'Mismatch # of OglUseCases ')
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
