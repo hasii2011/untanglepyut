@@ -1,21 +1,16 @@
-from dataclasses import dataclass
-from typing import Dict
+
 from typing import List
 from typing import NewType
 
+from dataclasses import dataclass
 from untangle import Element
 
-from miniogl.ControlPoint import ControlPoint
 
-from ogl.OglClass import OglClass
-from ogl.OglNote import OglNote
+from miniogl.ControlPoint import ControlPoint
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import UntangledOglUseCases
-
-OglClassDictionary    = NewType('OglClassDictionary',    Dict[int, OglClass])
-OglNotesDictionary    = NewType('OglNotesDictionary',    Dict[int, OglNote])
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
 
@@ -47,14 +42,6 @@ def createUntangledOglUseCases() -> UntangledOglUseCases:
 
 def createUntangledOglActors() -> UntangledOglActors:
     return UntangledOglActors([])
-
-
-def createOglClassDictionary() -> OglClassDictionary:
-    return OglClassDictionary({})
-
-
-def createOglNotesDictionary() -> OglNotesDictionary:
-    return OglNotesDictionary({})
 
 
 def str2bool(strValue: str) -> bool:

@@ -6,6 +6,7 @@ from typing import NewType
 from typing import Union
 from typing import cast
 
+from ogl.OglPosition import OglPosition
 from untangle import Element
 
 from miniogl.AttachmentLocation import AttachmentLocation
@@ -29,33 +30,21 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
 
-from untanglepyut.Common import OglClassDictionary
-from untanglepyut.Common import OglNotesDictionary
 from untanglepyut.Common import UntangledControlPoints
 from untanglepyut.Common import UntangledOglLinks
-from untanglepyut.Common import createOglClassDictionary
-from untanglepyut.Common import createOglNotesDictionary
 from untanglepyut.Common import createUntangledOglLinks
 from untanglepyut.Common import str2bool
-from untanglepyut.Types import UntangledOglActors
-
-from untanglepyut.Types import UntangledOglClasses
-from untanglepyut.Types import UntangledOglNotes
-from untanglepyut.Types import UntangledOglUseCases
 
 from untanglepyut.UnTanglePyut import UnTanglePyut
 
 
-OglUseCasesDictionary = NewType('OglUseCasesDictionary', Dict[int, OglUseCase])
-OglActorsDictionary   = NewType('OglActorsDictionary',   Dict[int, OglActor])
+LinkableOglObject = Union[OglClass, OglNote, OglActor, OglUseCase]
+
+LinkableOglObjects = NewType('LinkableOglObjects',   Dict[int, LinkableOglObject])
 
 
-def createOgActorsDictionary() -> OglActorsDictionary:
-    return OglActorsDictionary({})
-
-
-def createOglUseCasesDictionary() -> OglUseCasesDictionary:
-    return OglUseCasesDictionary({})
+def createLinkableOglObjects() -> LinkableOglObjects:
+    return LinkableOglObjects({})
 
 
 @dataclass
@@ -99,123 +88,32 @@ class UnTangleOglLinks:
 
         self._untanglePyut:     UnTanglePyut     = UnTanglePyut()
 
-    def graphicLinksToOglLinks(self, pyutDocument: Element, oglClasses: UntangledOglClasses, oglNotes: UntangledOglNotes) -> UntangledOglLinks:
+    def graphicLinksToOglLinks(self, pyutDocument: Element, linkableOglObjects: LinkableOglObjects) -> UntangledOglLinks:
         """
         Convert from XML to Ogl Links
 
         Args:
             pyutDocument:  The Element that represents the Class Diagram XML
-            oglClasses:    The current list of OGL classes
-            oglNotes:      The current list of OGL Notes
+            linkableOglObjects:    OGL objects that can have links
 
         Returns:  The links between any of the above objects.  Also returns the graphic lollipop links
         """
 
-        oglClassDictionary: OglClassDictionary = self._buildOglClassDictionary(oglClasses)
-        oglNotesDictionary: OglNotesDictionary = self._buildOglNotesDictionary(oglNotes)
-
         oglLinks: UntangledOglLinks = createUntangledOglLinks()
 
         graphicLinks: Element = pyutDocument.get_elements('GraphicLink')
         for graphicLink in graphicLinks:
-            oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, oglClassDictionary=oglClassDictionary, oglNotesDictionary=oglNotesDictionary)
+            oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, linkableOglObjects=linkableOglObjects)
             oglLinks.append(oglLink)
 
         graphicLollipops: Element = pyutDocument.get_elements('GraphicLollipop')
         for graphicLollipop in graphicLollipops:
-            oglInterface2: OglInterface2 = self._graphicLollipopToOglInterface(graphicLollipop, oglClassDictionary)
+            oglInterface2: OglInterface2 = self._graphicLollipopToOglInterface(graphicLollipop, linkableOglObjects)
             oglLinks.append(oglInterface2)
 
         return oglLinks
 
-    def graphicUseCaseLinksToOglLinks(self, pyutDocument: Element, oglActors: UntangledOglActors, oglUseCases: UntangledOglUseCases) -> UntangledOglLinks:
-        """
-        Convert from XML to Ogl Links
-
-        Args:
-            pyutDocument:  The Element that represents the Use Case Diagram XML
-            oglActors:     The current list of OGL Actors
-            oglUseCases:   The current list of OGL Use Cases
-
-        Returns:  The links between the OGL Actors and the OGL Uses Cases
-        """
-        # noinspection PyUnusedLocal
-        oglActorsDictionary:   OglActorsDictionary   = self._buildOglActorsDictionary(oglActors=oglActors)
-        # noinspection PyUnusedLocal
-        oglUseCasesDictionary: OglUseCasesDictionary = self._buildOglUseCasesDictionary(oglUseCases=oglUseCases)
-
-        oglLinks: UntangledOglLinks = createUntangledOglLinks()
-
-        graphicLinks: Element = pyutDocument.get_elements('GraphicLink')
-        for graphicLink in graphicLinks:
-            self.logger.info(f'{graphicLink}')
-
-        return oglLinks
-
-    def _buildOglClassDictionary(self, oglClasses: UntangledOglClasses) -> OglClassDictionary:
-        """
-        Map class id to OglClass
-        Args:
-            oglClasses:
-
-        Returns:  The dictionary
-        """
-        oglClassDictionary: OglClassDictionary = createOglClassDictionary()
-
-        for oglClass in oglClasses:
-            classId: int = oglClass.pyutObject.id
-            oglClassDictionary[classId] = oglClass
-
-        return oglClassDictionary
-
-    def _buildOglNotesDictionary(self, oglNotes: UntangledOglNotes) -> OglNotesDictionary:
-        """
-        Map note ID to OglNote
-        Args:
-            oglNotes:
-
-        Returns:  The dictionary
-        """
-        oglNotesDictionary: OglNotesDictionary = createOglNotesDictionary()
-
-        for oglNote in oglNotes:
-            noteId: int = oglNote.pyutObject.id
-            oglNotesDictionary[noteId] = oglNote
-
-        return oglNotesDictionary
-
-    def _buildOglActorsDictionary(self, oglActors: UntangledOglActors) -> OglActorsDictionary:
-        """
-        Map Actor ID to OglActor
-        Args:
-            oglActors:
-
-        Returns:  The dictionary
-        """
-        oglActorsDictionary: OglActorsDictionary = createOgActorsDictionary()
-        for oglActor in oglActors:
-            actorId: int = oglActor.pyutObject.id
-            oglActorsDictionary[actorId] = oglActor
-
-        return oglActorsDictionary
-
-    def _buildOglUseCasesDictionary(self, oglUseCases: UntangledOglUseCases) -> OglUseCasesDictionary:
-        """
-        Maps UseCase ID to OglUseCase
-        Args:
-            oglUseCases:
-
-        Returns:  The dictionary
-        """
-        oglUseCasesDictionary: OglUseCasesDictionary = createOglUseCasesDictionary()
-
-        for oglUseCase in oglUseCases:
-            useCaseId: int = oglUseCase.pyutObject.id
-            oglUseCasesDictionary[useCaseId] = oglUseCase
-
-        return oglUseCasesDictionary
-
-    def _graphicLinkToOglLink(self, graphicLink: Element, oglClassDictionary: OglClassDictionary, oglNotesDictionary: OglNotesDictionary) -> OglLink:
+    def _graphicLinkToOglLink(self, graphicLink: Element, linkableOglObjects: LinkableOglObjects) -> OglLink:
         """
         This code is way too convoluted.  Failing to do any of these step in this code leads to BAD
         visual representations.
@@ -224,13 +122,12 @@ class UnTangleOglLinks:
 
         Args:
             graphicLink:        The XML `GraphicClass` element
-            oglClassDictionary: A dictionary indexed by an ID that returns an appropriate OglClass instance
+            linkableOglObjects:    OGL objects that can have links
 
         Returns:  A fully formed OglLink including control points
-
         """
 
-        assert len(oglClassDictionary) != 0, 'Developer forgot to create dictionary'
+        assert len(linkableOglObjects) != 0, 'Developer forgot to create dictionary'
         gla: GraphicLinkAttributes = fromGraphicLink(graphicLink=graphicLink)
 
         links: Element = graphicLink.get_elements('Link')
@@ -242,12 +139,8 @@ class UnTangleOglLinks:
         self.logger.debug(f'graphicLink= {gla.srcX=} {gla.srcY=} {gla.dstX=} {gla.dstY=} {gla.spline=}')
 
         try:
-            if singleLink['type'] == 'NOTELINK':
-                dstShape: OglClass = oglClassDictionary[dstId]
-                srcShape: Union[OglClass, OglNote] = oglNotesDictionary[sourceId]
-            else:
-                srcShape = oglClassDictionary[sourceId]
-                dstShape = oglClassDictionary[dstId]
+            srcShape: LinkableOglObject = linkableOglObjects[sourceId]
+            dstShape: LinkableOglObject = linkableOglObjects[dstId]
         except KeyError as ke:
             self.logger.error(f'Developer Error -- srcId: {sourceId} - dstId: {dstId}  KeyError index: {ke}')
             return cast(OglLink, None)
@@ -321,44 +214,94 @@ class UnTangleOglLinks:
             self.logger.error(f"Unknown OglLinkType: {linkType}")
             return None
 
-    def _graphicLollipopToOglInterface(self, graphicLollipop: Element, oglClassDictionary: OglClassDictionary) -> OglInterface2:
+    def _graphicLollipopToOglInterface(self, graphicLollipop: Element, linkableOglObjects: LinkableOglObjects) -> OglInterface2:
 
-        assert len(oglClassDictionary) != 0, 'Developer forgot to create dictionary'
+        assert len(linkableOglObjects) != 0, 'Developer forgot to create dictionary'
 
-        x: int = int(graphicLollipop['x'])
-        y: int = int(graphicLollipop['y'])
+        #
+        # TODO: Do not use these x,y positions;  They are diagram relative
+        #
+        # x: int = int(graphicLollipop['x'])
+        # y: int = int(graphicLollipop['y'])
         attachmentLocationStr: str                = graphicLollipop['attachmentPoint']
         attachmentLocation:    AttachmentLocation = AttachmentLocation.toEnum(attachmentLocationStr)
-        self.logger.debug(f'{x=},{y=}')
 
         elements: Element = graphicLollipop.get_elements('Interface')
         assert len(elements) == 1, 'If more than one interface tag the XML is invalid'
-        interfaceElement: Element           = elements[0]
-        pyutInterface:    PyutInterface     = self._untanglePyut.interfaceToPyutInterface(interface=interfaceElement)
-        oglClass:         OglClass          = self._getOglClassFromName(pyutInterface.implementors[0], oglClassDictionary)
-        anchorPoint:      SelectAnchorPoint = SelectAnchorPoint(x=x, y=y, attachmentPoint=attachmentLocation, parent=oglClass)
+        interfaceElement: Element        = elements[0]
+        pyutInterface:    PyutInterface = self._untanglePyut.interfaceToPyutInterface(interface=interfaceElement)
+
+        oglClass:    OglClass    = self._getOglClassFromName(pyutInterface.implementors[0], linkableOglObjects)
+        oglPosition: OglPosition = self._determineAttachmentPoint(attachmentLocation, oglClass)
+        self.logger.debug(f'{oglPosition.x=},{oglPosition.y=}')
+
+        anchorPoint:      SelectAnchorPoint = SelectAnchorPoint(x=oglPosition.x, y=oglPosition.y, attachmentPoint=attachmentLocation, parent=oglClass)
         oglInterface2:    OglInterface2     = OglInterface2(pyutInterface=pyutInterface, destinationAnchor=anchorPoint)
 
         return oglInterface2
 
-    def _getOglClassFromName(self, className: str, oglClassDictionary: OglClassDictionary) -> OglClass:
+    def _getOglClassFromName(self, className: str, linkableOglObjects: LinkableOglObjects) -> OglClass:
         """
-        Looks up a name in the class dictionary and return the associated class
+        Looks up a name in the linkable objects dictionary and return the associated class
         TODO: Make a simple lookup and catch any Key errors
+
         Args:
             className:
-            oglClassDictionary:
+            linkableOglObjects:
 
         Returns:
         """
 
         foundClass: OglClass = cast(OglClass, None)
-        for oglClass in oglClassDictionary.values():
+        for oglClass in linkableOglObjects.values():
             if oglClass.pyutObject.name == className:
-                foundClass = oglClass
+                foundClass = cast(OglClass, oglClass)
                 break
         assert foundClass is not None, 'XML must be in error'
         return foundClass
+
+    def _determineAttachmentPoint(self, attachmentPoint: AttachmentLocation, oglClass: OglClass) -> OglPosition:
+        """
+        Even though we serialize the attachment point location that position is relative to the diagram.
+        When we recreate the attachment point position we have to create it relative to its parent
+        TODO: When the Pyut serializer makes the positions relative to the implementor we will not need this code
+
+        Args:
+            attachmentPoint:    Where on the parent
+            oglClass:           The implementor
+
+        Returns:  An OglPosition with coordinates relative to the implementor
+        """
+
+        oglPosition: OglPosition = OglPosition()
+
+        dw, dh     = oglClass.GetSize()
+
+        if attachmentPoint == AttachmentLocation.NORTH:
+            northX: int = dw // 2
+            northY: int = 0
+            oglPosition.x = northX
+            oglPosition.y = northY
+        elif attachmentPoint == AttachmentLocation.SOUTH:
+            southX = dw // 2
+            southY = dh
+            oglPosition.x = southX
+            oglPosition.y = southY
+        elif attachmentPoint == AttachmentLocation.WEST:
+            westX: int = 0
+            westY: int = dh // 2
+            oglPosition.x = westX
+            oglPosition.y = westY
+        elif attachmentPoint == AttachmentLocation.EAST:
+            eastX: int = dw
+            eastY: int = dh // 2
+            oglPosition.x = eastX
+            oglPosition.y = eastY
+        else:
+            self.logger.warning(f'Unknown attachment point: {attachmentPoint}')
+            assert False, 'Unknown attachment point'
+
+        return oglPosition
 
     def _generateControlPoints(self, graphicLink: Element) -> UntangledControlPoints:
 

@@ -395,7 +395,7 @@ class TestUnTangler(TestBase):
         document: Document             = self._retrieveUseCaseDocument()
         oglLinks: UntangledOglLinks = document.oglLinks
 
-        self.assertEqual(0, len(oglLinks), 'Mismatch # of links ')      # TODO TEMP UNTIL I REFACTOR DIRTY CODE
+        self.assertEqual(1, len(oglLinks), 'Mismatch # of links ')      # TODO TEMP UNTIL I REFACTOR DIRTY CODE
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 

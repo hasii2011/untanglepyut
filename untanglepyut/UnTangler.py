@@ -32,6 +32,8 @@ from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 from untanglepyut.Types import UntangledOglUseCases
+from untanglepyut.UnTangleOglLinks import LinkableOglObjects
+from untanglepyut.UnTangleOglLinks import createLinkableOglObjects
 
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
@@ -134,8 +136,10 @@ class UnTangler:
             if document.documentType == 'CLASS_DIAGRAM':
                 document.oglClasses = self._graphicClassesToOglClasses(pyutDocument=pyutDocument)
                 document.oglNotes   = self._graphicNotesToOglNotes(pyutDocument=pyutDocument)
-                document.oglTexts    = self._graphicalTextToOglTexts(pyutDocument=pyutDocument)
-                document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, oglClasses=document.oglClasses, oglNotes=document.oglNotes)
+                document.oglTexts   = self._graphicalTextToOglTexts(pyutDocument=pyutDocument)
+
+                linkableOglObjects: LinkableOglObjects = self._buildDictionary(document=document)
+                document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
             elif document.documentType == 'SEQUENCE_DIAGRAM':
                 self.logger.warning(f'{document.documentType} unsupported')
             elif document.documentType == 'USECASE_DIAGRAM':
@@ -145,6 +149,9 @@ class UnTangler:
                 unTangleUseCaseDiagram.unTangle(pyutDocument=pyutDocument)
                 document.oglActors   = unTangleUseCaseDiagram.oglActors
                 document.oglUseCases = unTangleUseCaseDiagram.oglUseCases
+
+                linkableOglObjects: LinkableOglObjects = self._buildDictionary(document=document)
+                document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
             else:
                 assert False, f'Unknown document type: f{document.documentType}'
 
@@ -244,3 +251,28 @@ class UnTangler:
             raise e
 
         return xmlString
+
+    def _buildDictionary(self, document: Document) -> LinkableOglObjects:
+        """
+
+        Args:
+            document:   The created document either Use case or class diagram
+
+        Returns:  Linkable Objects Dictionary
+        """
+
+        linkableOglObjects: LinkableOglObjects = createLinkableOglObjects()
+
+        for oglClass in document.oglClasses:
+            linkableOglObjects[oglClass.pyutObject.id] = oglClass
+
+        for oglNote in document.oglNotes:
+            linkableOglObjects[oglNote.pyutObject.id] = oglNote
+
+        for oglUseCase in document.oglUseCases:
+            linkableOglObjects[oglUseCase.pyutObject.id] = oglUseCase
+
+        for oglActor in document.oglActors:
+            linkableOglObjects[oglActor.pyutObject.id] = oglActor
+
+        return linkableOglObjects
