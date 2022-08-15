@@ -135,7 +135,7 @@ class UnTangler:
                 document.oglClasses = self._graphicClassesToOglClasses(pyutDocument=pyutDocument)
                 document.oglNotes   = self._graphicNotesToOglNotes(pyutDocument=pyutDocument)
                 document.oglTexts    = self._graphicalTextToOglTexts(pyutDocument=pyutDocument)
-                document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLink(pyutDocument, oglClasses=document.oglClasses, oglNotes=document.oglNotes)
+                document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, oglClasses=document.oglClasses, oglNotes=document.oglNotes)
             elif document.documentType == 'SEQUENCE_DIAGRAM':
                 self.logger.warning(f'{document.documentType} unsupported')
             elif document.documentType == 'USECASE_DIAGRAM':

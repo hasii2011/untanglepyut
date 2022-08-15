@@ -16,7 +16,6 @@ from untanglepyut.Types import UntangledOglUseCases
 
 OglClassDictionary    = NewType('OglClassDictionary',    Dict[int, OglClass])
 OglNotesDictionary    = NewType('OglNotesDictionary',    Dict[int, OglNote])
-OglUseCasesDictionary = NewType('OglUseCasesDictionary', Dict[int, OglNote])
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
 
@@ -56,10 +55,6 @@ def createOglClassDictionary() -> OglClassDictionary:
 
 def createOglNotesDictionary() -> OglNotesDictionary:
     return OglNotesDictionary({})
-
-
-def createOglUseCasesDictionary() -> OglUseCasesDictionary:
-    return OglUseCasesDictionary({})
 
 
 def str2bool(strValue: str) -> bool:
