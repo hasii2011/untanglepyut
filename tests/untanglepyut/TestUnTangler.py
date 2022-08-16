@@ -408,6 +408,17 @@ class TestUnTangler(TestBase):
 
         self.assertEqual(1, len(oglLinks), 'Mismatch # of links ')      # TODO TEMP UNTIL I REFACTOR DIRTY CODE
 
+    # def testSequenceDiagramDocumentCreated(self):
+    #     fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SequenceDiagram.xml')
+    #     untangler:  UnTangler = UnTangler(fqFileName=fqFileName)
+    #
+    #     untangler.untangle()
+    #     document: Document = untangler.documents[DocumentTitle('Sequence Diagram')]
+    #     untangler.untangle()
+    #     #
+    #     self.assertEqual(0, len(document.oglSDMessages), 'Not enough messages')
+    #     self.assertEqual(0, len(document.oglSDInstances), 'Not enough instances')
+
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
         oglClasses: List[OglClass] = self._getOglClassesFromDocument(title)

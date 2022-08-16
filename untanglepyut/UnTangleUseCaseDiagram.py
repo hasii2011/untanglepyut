@@ -50,8 +50,6 @@ class UnTangleUseCaseDiagram:
 
         Args:
             pyutDocument:
-
-        Returns:
         """
 
         self._untangledOglActors   = self._unTangleOglActors(pyutDocument=pyutDocument)

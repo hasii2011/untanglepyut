@@ -38,6 +38,11 @@ from untanglepyut.UnTangleOglLinks import createLinkableOglObjects
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
+from untanglepyut.UntangleSequenceDiagram import OGLSDMessages
+from untanglepyut.UntangleSequenceDiagram import OglSDInstances
+from untanglepyut.UntangleSequenceDiagram import UntangleSequenceDiagram
+from untanglepyut.UntangleSequenceDiagram import createOGLSDMessages
+from untanglepyut.UntangleSequenceDiagram import createOglSDInstances
 
 
 @dataclass
@@ -70,6 +75,9 @@ def createUntangledOglTexts() -> UntangledOglTexts:
 
 @dataclass
 class Document:
+    """
+    Create a UseCaseDocument and a ClassDiagramDocument
+    """
     documentType:    str = ''
     documentTitle:   str = ''
     scrollPositionX: int = -1
@@ -82,6 +90,14 @@ class Document:
     oglTexts:        UntangledOglTexts    = field(default_factory=createUntangledOglTexts)
     oglActors:       UntangledOglActors   = field(default_factory=createUntangledOglActors)
     oglUseCases:     UntangledOglUseCases = field(default_factory=createUntangledOglUseCases)
+    oglSDInstances:  OglSDInstances = field(default_factory=createOglSDInstances)
+    oglSDMessages:   OGLSDMessages  = field(default_factory=createOGLSDMessages)
+
+
+# @dataclass
+# class SDDocument(Document):
+#     oglSDInstances:  OglSDInstances = field(default_factory=createOglSDInstances)
+#     oglSDMessages:   OGLSDMessages  = field(default_factory=createOGLSDMessages)
 
 
 DocumentTitle = NewType('DocumentTitle', str)
@@ -141,7 +157,12 @@ class UnTangler:
                 linkableOglObjects: LinkableOglObjects = self._buildDictionary(document=document)
                 document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
             elif document.documentType == 'SEQUENCE_DIAGRAM':
-                self.logger.warning(f'{document.documentType} unsupported')
+                untangleSequenceDiagram: UntangleSequenceDiagram = UntangleSequenceDiagram()
+
+                untangleSequenceDiagram.unTangle(pyutDocument=pyutDocument)
+                document.oglSDInstances = untangleSequenceDiagram.oglSDInstances
+                document.oglSDMessages  = untangleSequenceDiagram.oglSDMessages
+
             elif document.documentType == 'USECASE_DIAGRAM':
 
                 unTangleUseCaseDiagram: UnTangleUseCaseDiagram = UnTangleUseCaseDiagram()
