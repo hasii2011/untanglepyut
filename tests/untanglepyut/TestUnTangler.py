@@ -10,18 +10,18 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from ogl.OglActor import OglActor
-from pyutmodel.PyutActor import PyutActor
 from wx import App
 from wx import Frame
 from wx import ID_ANY
 
 from pkg_resources import resource_filename
 
+from miniogl.SelectAnchorPoint import SelectAnchorPoint
 from miniogl.ControlPoint import ControlPoint
 from miniogl.DiagramFrame import DiagramFrame
 
 from ogl.OglClass import OglClass
+from ogl.OglActor import OglActor
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglInheritance import OglInheritance
 
@@ -31,6 +31,7 @@ from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
+from pyutmodel.PyutActor import PyutActor
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
@@ -289,12 +290,22 @@ class TestUnTangler(TestBase):
         foundKnownLollipop: bool = False
         for oglLink in oglLinks:
             if isinstance(oglLink, OglInterface2):
-                pyutInterface: PyutInterface = cast(PyutInterface, oglLink.pyutObject)
+
+                oglInterface2: OglInterface2 = cast(OglInterface2, oglLink)
+
+                pyutInterface: PyutInterface = cast(PyutInterface, oglInterface2.pyutObject)
                 self.logger.debug(f'{pyutInterface=}')
                 self.assertEqual('IClassInterface', pyutInterface.name, 'Mismatched interface name')
                 self.assertEqual(1, len(pyutInterface.implementors), 'Should only have 1 implementor')
                 implementorName: str = pyutInterface.implementors[0]
                 self.assertEqual('LollipopImplementor', implementorName, 'Mismatched implementor name')
+
+                destAnchor:      SelectAnchorPoint  = oglInterface2.destinationAnchor
+
+                x, y = destAnchor.GetPosition()
+
+                self.assertEqual(465, x, 'X location incorrect')
+                self.assertEqual(648, y, 'Y location incorrect')
 
                 foundKnownLollipop = True
                 break
