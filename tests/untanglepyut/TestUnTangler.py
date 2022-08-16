@@ -305,7 +305,7 @@ class TestUnTangler(TestBase):
                 x, y = destAnchor.GetPosition()
 
                 self.assertEqual(465, x, 'X location incorrect')
-                self.assertEqual(648, y, 'Y location incorrect')
+                self.assertEqual(649, y, 'Y location incorrect')
 
                 foundKnownLollipop = True
                 break
