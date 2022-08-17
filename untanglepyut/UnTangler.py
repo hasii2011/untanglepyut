@@ -207,6 +207,12 @@ class UnTangler:
             graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicClass)
             oglClass: OglClass = OglClass(w=graphicInformation.width, h=graphicInformation.height)
             oglClass.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
+            #
+            # This is necessary if it is never added to a diagram
+            # and immediately serialized
+            #
+            model = oglClass.GetModel()
+            model.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
             pyutClass: PyutClass = self._untanglePyut.classToPyutClass(graphicClass=graphicClass)
             oglClass.pyutObject = pyutClass

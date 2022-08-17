@@ -10,7 +10,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="untanglepyut",
-    version="0.5.0",
+    version="0.3.1",
     author_email='Humberto.A.Sanchez.II@gmail.com',
     description='XML to Ogl Object Model',
     long_description=README,
