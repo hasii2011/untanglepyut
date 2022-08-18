@@ -1,5 +1,6 @@
 
 from typing import Callable
+from typing import Dict
 from typing import List
 from typing import Tuple
 from typing import cast
@@ -10,6 +11,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from pyutmodel.PyutField import PyutField
 from wx import App
 from wx import Frame
 from wx import ID_ANY
@@ -423,6 +425,49 @@ class TestUnTangler(TestBase):
             x, y = oglClass.GetPosition()
             self.assertNotEqual(0, x, 'There are no Ogl Classes at 0')
             self.assertNotEqual(0, y, 'There are no Ogl Classes at 0')
+
+    def testOglClassesWithFields(self):
+
+        fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLinkDocument.xml')
+        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+
+        untangler.untangle()
+
+        document: Document = untangler.documents[DocumentTitle('MultiLink')]
+        oglClasses: UntangledOglClasses = document.oglClasses
+        # ClassName -> list of field names
+        classFields: Dict[str, List[str]]  = {
+            'Folder':              ['permissions'],
+            'File':                ['size', 'name'],
+            'Car':                 ['model', 'vin', 'modelYear', 'make'],
+            'Wheel':               ['size', 'width'],
+            'Interface':           [],
+            'Implementor':         [],
+            'LollipopImplementor': []
+
+        }
+        # Class Names with found fields; classes with no fields preset to TRe
+        foundFields: Dict[str, bool] = {
+            'Folder':              False,
+            'File':                False,
+            'Car':                 False,
+            'Wheel':               False,
+            'Interface':           True,
+            'Implementor':         True,
+            'LollipopImplementor': True
+        }
+        for oglClass in oglClasses:
+            pyutClass: PyutClass = oglClass.pyutObject
+            fields: List[PyutField] = pyutClass.fields
+            expectedFieldNames: List[str] = classFields[pyutClass.name]
+            for field in fields:
+                self.assertIn(field.name, expectedFieldNames, f'Missing field {field.name}')
+                foundFields[pyutClass.name] = True
+        #
+        # Ensure that we found all fields
+        #
+        for className in foundFields.keys():
+            self.assertTrue(foundFields[className], f'"{className}" is missing fields')
 
     # def testSequenceDiagramDocumentCreated(self):
     #     fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SequenceDiagram.xml')

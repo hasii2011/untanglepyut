@@ -6,10 +6,11 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from pyutmodel.PyutObject import PyutObject
-from pyutmodel.PyutUseCase import PyutUseCase
 from untangle import Element
 
+from pyutmodel.PyutField import PyutField
+from pyutmodel.PyutObject import PyutObject
+from pyutmodel.PyutUseCase import PyutUseCase
 from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
@@ -17,22 +18,23 @@ from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutParameters
 from pyutmodel.PyutMethod import SourceCode
 from pyutmodel.PyutParameter import PyutParameter
-
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutModifier import PyutModifier
 from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
-
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutText import PyutText
-from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutStereotype import PyutStereotype
+from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 
 from untanglepyut.Common import str2bool
 
-UntangledPyutMethods   = NewType('UntangledPyutMethods',   List[PyutMethod])
+Elements = NewType('Elements',  List[Element])
+
+UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
+UntangledPyutFields  = NewType('UntangledPyutFields',  List[PyutField])
 
 
 class UnTanglePyut:
@@ -67,6 +69,7 @@ class UnTanglePyut:
         pyutClass.stereotype = PyutStereotype(name=stereotypeStr)
 
         pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
+        pyutClass.fields  = self._fieldToPyutFields(classElement=classElement)
 
         return pyutClass
 
@@ -74,7 +77,7 @@ class UnTanglePyut:
         """
         Parses Text elements
         Args:
-            graphicText:   Of the form:   <Text id="3" content="I am stand alone text"/>
+            graphicText:   Of the form:   <Text id="3" content="I am standalone text"/>
 
         Returns: A PyutText Object
         """
@@ -204,6 +207,25 @@ class UnTanglePyut:
             untangledPyutMethods.append(pyutMethod)
 
         return untangledPyutMethods
+
+    def _fieldToPyutFields(self, classElement: Element) -> UntangledPyutFields:
+        untangledPyutFields: UntangledPyutFields = UntangledPyutFields([])
+
+        fieldElements: Elements = classElement.get_elements('Field')
+        for fieldElement in fieldElements:
+            visibility:    PyutVisibilityEnum = PyutVisibilityEnum.toEnum(fieldElement['visibility'])
+            paramElements: Elements           = fieldElement.get_elements('Param')
+            assert len(paramElements) == 1, 'Curiously there should be only one'
+
+            paramElement: Element = paramElements[0]
+            fieldName: str = paramElement['name']
+            pyutType:  PyutType  = PyutType(paramElement['type'])
+
+            pyutField: PyutField = PyutField(name=fieldName, visibility=visibility, fieldType=pyutType)
+
+            untangledPyutFields.append(pyutField)
+
+        return untangledPyutFields
 
     def _modifierToPyutMethodModifiers(self, methodElement: Element) -> PyutModifiers:
         """
