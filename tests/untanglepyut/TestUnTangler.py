@@ -36,6 +36,7 @@ from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutActor import PyutActor
 
 from untanglepyut.Types import UntangledOglActors
+from untanglepyut.Types import UntangledOglTexts
 from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
@@ -425,6 +426,22 @@ class TestUnTangler(TestBase):
             x, y = oglClass.GetPosition()
             self.assertNotEqual(0, x, 'There are no Ogl Classes at 0')
             self.assertNotEqual(0, y, 'There are no Ogl Classes at 0')
+
+    def testOglTextModelUpdated(self):
+
+        fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLinkDocument.xml')
+        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+
+        untangler.untangle()
+
+        document: Document = untangler.documents[DocumentTitle('MultiLink')]
+
+        oglTexts: UntangledOglTexts = document.oglTexts
+
+        for oglText in oglTexts:
+            x, y = oglText.GetPosition()
+            self.assertNotEqual(0, x, 'There are no Ogl Text objects at abscissa 0')
+            self.assertNotEqual(0, y, 'There are no Ogl Text objects at ordinate 0')
 
     def testOglClassesWithFields(self):
 

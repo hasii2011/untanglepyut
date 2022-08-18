@@ -8,9 +8,11 @@ from logging import getLogger
 from dataclasses import dataclass
 from dataclasses import field
 
+from miniogl.ShapeModel import ShapeModel
 from untangle import parse
 from untangle import Element
 
+from ogl.OglObject import OglObject
 from ogl.OglClass import OglClass
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
@@ -211,8 +213,7 @@ class UnTangler:
             # This is necessary if it is never added to a diagram
             # and immediately serialized
             #
-            model = oglClass.GetModel()
-            model.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
+            self._updateModel(oglObject=oglClass, graphicInformation=graphicInformation)
 
             pyutClass: PyutClass = self._untanglePyut.classToPyutClass(graphicClass=graphicClass)
             oglClass.pyutObject = pyutClass
@@ -237,7 +238,7 @@ class UnTangler:
             graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicNote)
             oglNote:            OglNote            = OglNote(w=graphicInformation.width, h=graphicInformation.height)
             oglNote.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
-
+            self._updateModel(oglObject=oglNote, graphicInformation=graphicInformation)
             pyutNote: PyutNote = self._untanglePyut.noteToPyutNote(graphicNote=graphicNote)
             oglNote.pyutObject = pyutNote
             oglNotes.append(oglNote)
@@ -263,6 +264,11 @@ class UnTangler:
             pyutText:           PyutText           = self._untanglePyut.textToPyutText(graphicText=graphicText)
             oglText:            OglText            = OglText(pyutText=pyutText, width=graphicInformation.width, height=graphicInformation.height)
             oglText.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
+            #
+            # This is necessary if it is never added to a diagram
+            # and immediately serialized
+            #
+            self._updateModel(oglObject=oglText, graphicInformation=graphicInformation)
             oglText.pyutText = pyutText
             oglTexts.append(oglText)
 
@@ -303,3 +309,19 @@ class UnTangler:
             linkableOglObjects[oglActor.pyutObject.id] = oglActor
 
         return linkableOglObjects
+
+    def _updateModel(self, oglObject: OglObject, graphicInformation: GraphicInformation) -> ShapeModel:
+        """
+        This is necessary if it is never added to a diagram
+        and immediately serialized
+
+        Args:
+            oglObject:      OglObject with a model
+            graphicInformation:   The graphic class graphic information
+
+        Returns:  The updated shape model as a way of documenting that we updated it
+        """
+        model: ShapeModel = oglObject.GetModel()
+        model.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
+
+        return model
