@@ -8,9 +8,10 @@ from logging import getLogger
 from dataclasses import dataclass
 from dataclasses import field
 
-from miniogl.ShapeModel import ShapeModel
 from untangle import parse
 from untangle import Element
+
+from miniogl.ShapeModel import ShapeModel
 
 from ogl.OglObject import OglObject
 from ogl.OglClass import OglClass
@@ -18,7 +19,6 @@ from ogl.OglNote import OglNote
 from ogl.OglText import OglText
 
 from pyutmodel.PyutClass import PyutClass
-
 from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutText import PyutText
 
@@ -34,9 +34,9 @@ from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 from untanglepyut.Types import UntangledOglUseCases
+
 from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import createLinkableOglObjects
-
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram

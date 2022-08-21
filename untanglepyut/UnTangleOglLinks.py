@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+
 from logging import Logger
 from logging import getLogger
 from typing import Dict
@@ -6,7 +6,8 @@ from typing import NewType
 from typing import Union
 from typing import cast
 
-from ogl.OglPosition import OglPosition
+from dataclasses import dataclass
+
 from untangle import Element
 
 from miniogl.AttachmentLocation import AttachmentLocation
@@ -17,6 +18,7 @@ from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 
+from ogl.OglPosition import OglPosition
 from ogl.OglAggregation import OglAggregation
 from ogl.OglAssociation import OglAssociation
 from ogl.OglComposition import OglComposition
