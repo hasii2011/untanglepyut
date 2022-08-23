@@ -8,6 +8,7 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
+from ogl.OglAssociationLabel import OglAssociationLabel
 
 from ogl.OglClass import OglClass
 from ogl.OglInheritance import OglInheritance
@@ -154,6 +155,30 @@ class TestUnTangleOglLinks(TestBase):
                 foundMethods = True
 
         self.assertTrue(foundMethods, 'Did not untangle the expected lollipop interface')
+
+    def testGetAssociationLabelPositions(self):
+        fqFileName: str        = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
+        untangler:  UnTangler = UnTangler(fqFileName)
+
+        untangler.untangle()
+
+        document: Document = untangler.documents[DocumentTitle('SimpleLink')]
+
+        oglLinks: UntangledOglLinks = document.oglLinks
+        for oglLink in oglLinks:
+            self.logger.info(f'{oglLink}')
+            center: OglAssociationLabel = oglLink.centerLabel
+            src:    OglAssociationLabel = oglLink.sourceCardinality
+            dest:   OglAssociationLabel = oglLink.destinationCardinality
+
+            self.assertEqual(380, center.oglPosition.x, 'Bad center x')
+            self.assertEqual(125, center.oglPosition.y, 'Bad center y')
+
+            self.assertEqual(380, src.oglPosition.x, 'Bad source x')
+            self.assertEqual(125, src.oglPosition.y, 'Bad source y')
+
+            self.assertEqual(380, dest.oglPosition.x, 'Bad destination x')
+            self.assertEqual(125, dest.oglPosition.y, 'Bad destination y')
 
     def _getOglLinksFromDocument(self, title: DocumentTitle) -> UntangledOglLinks:
         untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)

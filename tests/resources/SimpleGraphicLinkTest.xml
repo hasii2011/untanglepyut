@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <PyutProject version="10" CodePath="">
 	<PyutDocument type="CLASS_DIAGRAM" title="SimpleLink" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
-		<GraphicClass width="79" height="20" x="75" y="175">
+		<GraphicClass width="79" height="49" x="100" y="100">
 			<Class id="1" name="SimpleClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
 		</GraphicClass>
-		<GraphicNote width="100" height="50" x="325" y="175">
-			<Note id="2" content="SimpleNote" filename=""/>
-		</GraphicNote>
-		<GraphicLink srcX="154" srcY="185" dstX="325" dstY="200" spline="True">
-			<LabelCenter x="306" y="198"/>
-			<LabelSrc x="306" y="198"/>
-			<LabelDst x="306" y="198"/>
-			<ControlPoint x="192" y="270"/>
-			<Link name="" type="ASSOCIATION" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
+		<GraphicClass width="99" height="46" x="400" y="100">
+			<Class id="2" name="AssociatedClass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+		</GraphicClass>
+		<GraphicLink srcX="179" srcY="124" dstX="400" dstY="125" spline="False">
+			<LabelCenter x="380" y="125"/>
+			<LabelSrc x="380" y="125"/>
+			<LabelDst x="380" y="125"/>
+			<Link name="many" type="AGGREGATION" cardSrc="0" cardDestination="*" bidir="False" sourceId="1" destId="2"/>
 		</GraphicLink>
 	</PyutDocument>
 </PyutProject>

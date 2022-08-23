@@ -2,12 +2,14 @@
 from logging import Logger
 from logging import getLogger
 from typing import Dict
+from typing import List
 from typing import NewType
 from typing import Union
 from typing import cast
 
 from dataclasses import dataclass
 
+from pyutmodel.PyutClass import PyutClass
 from untangle import Element
 
 from miniogl.AttachmentLocation import AttachmentLocation
@@ -31,6 +33,7 @@ from ogl.OglUseCase import OglUseCase
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
+from ogl.OglAssociationLabel import OglAssociationLabel
 
 from untanglepyut.Common import UntangledControlPoints
 from untanglepyut.Common import UntangledOglLinks
@@ -166,7 +169,7 @@ class UnTangleOglLinks:
         srcModel = srcAnchor.GetModel()
         srcModel.SetPosition(x=gla.srcX, y=gla.srcY)
         dstModel = dstAnchor.GetModel()
-        dstModel.SetPosition(x=gla.dstX, y= gla.dstY)
+        dstModel.SetPosition(x=gla.dstX, y=gla.dstY)
 
         # add the control points to the line
         line   = srcAnchor.GetLines()[0]     # only 1 line per anchor in Pyut
@@ -180,6 +183,12 @@ class UnTangleOglLinks:
                 x, y = controlPoint.GetPosition()
                 controlPoint.SetParent(parent)
                 controlPoint.SetPosition(x, y)
+
+        if isinstance(oglLink, OglAssociation):
+            self.__furtherCustomizeAssociationLink(graphicLink, oglLink)
+
+        self._reconstituteLinkDataModel(oglLink)
+
         return oglLink
 
     def _oglLinkFactory(self, srcShape, pyutLink, destShape, linkType: PyutLinkType, srcPos=None, dstPos=None):
@@ -322,3 +331,64 @@ class UnTangleOglLinks:
             controlPoints.append(controlPoint)
 
         return controlPoints
+
+    def _reconstituteLinkDataModel(self, oglLink: OglLink):
+        """
+        Updates one the following lists in a PyutLinkedObject:
+
+        ._parents   for Inheritance links
+        ._links     for all other link types
+
+        Args:
+            oglLink:       An OglLink
+        """
+        srcShape:  OglClass = oglLink.getSourceShape()
+        destShape: OglClass = oglLink.getDestinationShape()
+        self.logger.debug(f'source ID: {srcShape.GetID()} - destination ID: {destShape.GetID()}')
+
+        pyutLink: PyutLink = oglLink.pyutObject
+
+        if pyutLink.linkType == PyutLinkType.INHERITANCE:
+            childPyutClass:  PyutClass = cast(PyutClass, srcShape.pyutObject)
+            parentPyutClass: PyutClass = cast(PyutClass, destShape.pyutObject)
+            childPyutClass.addParent(parentPyutClass)
+        else:
+            srcPyutClass:  PyutClass = cast(PyutClass, srcShape.pyutObject)
+            srcPyutClass.addLink(pyutLink)
+
+    def __furtherCustomizeAssociationLink(self, graphicLink: Element, oglLink: OglAssociation):
+        """
+        Customize the visual aspects of an Association link
+
+        TODO:  There is no support for this yet.  Need to add it to OglAssociation
+
+        Args:
+            graphicLink:  The top level GraphicLink Element
+            oglLink:      The current OGL representation of the graphicLink
+        """
+        center: OglAssociationLabel = oglLink.centerLabel
+        src:    OglAssociationLabel = oglLink.sourceCardinality
+        dest:   OglAssociationLabel = oglLink.destinationCardinality
+
+        self.__setAssociationLabelPosition(graphicLink, 'LabelCenter', center)
+        self.__setAssociationLabelPosition(graphicLink, 'LabelSrc',    src)
+        self.__setAssociationLabelPosition(graphicLink, 'LabelDst',    dest)
+
+    def __setAssociationLabelPosition(self, graphicLink: Element, tagName: str, associationLabel: OglAssociationLabel):
+        """
+
+        Args:
+            graphicLink:  The top level GraphicLink Element
+            tagName:      The XML Element name
+            associationLabel:  The Ogl association label to update
+        """
+        labels:  List[Element]   = graphicLink.get_elements(tagName)
+        assert len(labels) == 1, 'There can be only one'
+        label: Element = labels[0]
+        x: int = int(label['x'])
+        y: int = int(label['y'])
+
+        self.logger.debug(f'tagName: {tagName} `{associationLabel.text=}`  pos: ({x},{y})')
+
+        associationLabel.oglPosition.x = x
+        associationLabel.oglPosition.y = y
