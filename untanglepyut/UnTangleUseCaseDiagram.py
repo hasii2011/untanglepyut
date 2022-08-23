@@ -2,13 +2,13 @@
 from logging import Logger
 from logging import getLogger
 
-from ogl.OglUseCase import OglUseCase
-from pyutmodel.PyutUseCase import PyutUseCase
 from untangle import Element
 
 from pyutmodel.PyutActor import PyutActor
+from pyutmodel.PyutUseCase import PyutUseCase
 
 from ogl.OglActor import OglActor
+from ogl.OglUseCase import OglUseCase
 
 from untanglepyut.Common import GraphicInformation
 from untanglepyut.Common import toGraphicInfo
@@ -17,10 +17,12 @@ from untanglepyut.Common import createUntangledOglUseCases
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
+
+from untanglepyut.BaseUnTangle import BaseUnTangle
 from untanglepyut.UnTanglePyut import UnTanglePyut
 
 
-class UnTangleUseCaseDiagram:
+class UnTangleUseCaseDiagram(BaseUnTangle):
     """
         <PyutDocument type="USECASE_DIAGRAM" title="Use-Cases" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
             <GraphicActor width="87" height="114" x="293" y="236">
@@ -39,6 +41,8 @@ class UnTangleUseCaseDiagram:
     """
 
     def __init__(self):
+
+        super().__init__()
         self.logger: Logger = getLogger(__name__)
 
         self._untangledOglActors:   UntangledOglActors   = createUntangledOglActors()
@@ -72,6 +76,8 @@ class UnTangleUseCaseDiagram:
             oglActor:    OglActor           = OglActor(w=graphicInfo.width, h=graphicInfo.height)
             oglActor.SetPosition(x=graphicInfo.x, y=graphicInfo.y)
 
+            self._updateModel(oglObject=oglActor, graphicInformation=graphicInfo)
+
             pyutActor: PyutActor = self._untanglePyut.actorToPyutActor(graphicActor=graphicActor)
 
             oglActor.pyutObject = pyutActor
@@ -90,6 +96,9 @@ class UnTangleUseCaseDiagram:
             oglUseCase:  OglUseCase         = OglUseCase(w=graphicInfo.width, h=graphicInfo.height)
 
             oglUseCase.SetPosition(x=graphicInfo.x, y=graphicInfo.y)
+
+            self._updateModel(oglObject=oglUseCase, graphicInformation=graphicInfo)
+
             pyutUseCase: PyutUseCase = self._untanglePyut.useCaseToPyutUseCase(graphicUseCase=graphicUseCase)
 
             oglUseCase.pyutObject = pyutUseCase

@@ -11,9 +11,7 @@ from dataclasses import field
 from untangle import parse
 from untangle import Element
 
-from miniogl.ShapeModel import ShapeModel
 
-from ogl.OglObject import OglObject
 from ogl.OglClass import OglClass
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
@@ -21,6 +19,8 @@ from ogl.OglText import OglText
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutText import PyutText
+
+from untanglepyut.BaseUnTangle import BaseUnTangle
 
 from untanglepyut.Common import toGraphicInfo
 from untanglepyut.Common import GraphicInformation
@@ -106,7 +106,7 @@ DocumentTitle = NewType('DocumentTitle', str)
 Documents     = NewType('Documents', dict[DocumentTitle, Document])
 
 
-class UnTangler:
+class UnTangler(BaseUnTangle):
 
     def __init__(self, fqFileName: str):
         """
@@ -114,7 +114,7 @@ class UnTangler:
         Args:
             fqFileName:  Fully qualified file name
         """
-
+        super().__init__()
         self.logger: Logger = getLogger(__name__)
 
         self._fqFileName:  str = fqFileName
@@ -309,19 +309,3 @@ class UnTangler:
             linkableOglObjects[oglActor.pyutObject.id] = oglActor
 
         return linkableOglObjects
-
-    def _updateModel(self, oglObject: OglObject, graphicInformation: GraphicInformation) -> ShapeModel:
-        """
-        This is necessary if it is never added to a diagram
-        and immediately serialized
-
-        Args:
-            oglObject:      OglObject with a model
-            graphicInformation:   The graphic class graphic information
-
-        Returns:  The updated shape model as a way of documenting that we updated it
-        """
-        model: ShapeModel = oglObject.GetModel()
-        model.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
-
-        return model
