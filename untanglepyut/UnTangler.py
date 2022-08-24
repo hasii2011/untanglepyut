@@ -40,10 +40,10 @@ from untanglepyut.UnTangleOglLinks import createLinkableOglObjects
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
-from untanglepyut.UntangleSequenceDiagram import OGLSDMessages
+from untanglepyut.UntangleSequenceDiagram import OglSDMessages
 from untanglepyut.UntangleSequenceDiagram import OglSDInstances
 from untanglepyut.UntangleSequenceDiagram import UntangleSequenceDiagram
-from untanglepyut.UntangleSequenceDiagram import createOGLSDMessages
+from untanglepyut.UntangleSequenceDiagram import createOglSDMessages
 from untanglepyut.UntangleSequenceDiagram import createOglSDInstances
 
 
@@ -93,7 +93,7 @@ class Document:
     oglActors:       UntangledOglActors   = field(default_factory=createUntangledOglActors)
     oglUseCases:     UntangledOglUseCases = field(default_factory=createUntangledOglUseCases)
     oglSDInstances:  OglSDInstances = field(default_factory=createOglSDInstances)
-    oglSDMessages:   OGLSDMessages  = field(default_factory=createOGLSDMessages)
+    oglSDMessages:   OglSDMessages  = field(default_factory=createOglSDMessages)
 
 
 # @dataclass
