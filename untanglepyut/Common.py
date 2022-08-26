@@ -58,6 +58,13 @@ def str2bool(strValue: str) -> bool:
     return strValue.lower() in ("yes", "true", "t", "1", 'True')
 
 
+def secureInteger(x: str):
+    if x is not None and x != '':
+        return int(x)
+    else:
+        return 0
+
+
 def toGraphicInfo(graphicElement: Element) -> GraphicInformation:
     graphicInformation: GraphicInformation = GraphicInformation()
 

@@ -9,5 +9,6 @@ __pycache__/
 /dist/
 /untanglepyut.egg-info/
 /pyenv-3.10.0/
+/pyenv-3.10.0-wxpython-4.2.0/
 .python-version
 .envrc

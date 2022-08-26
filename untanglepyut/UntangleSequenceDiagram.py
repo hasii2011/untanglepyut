@@ -5,41 +5,44 @@ from typing import NewType
 from logging import Logger
 from logging import getLogger
 
-from pyutmodel.PyutSDInstance import PyutSDInstance
-from pyutmodel.PyutSDMessage import PyutSDMessage
 from untangle import Element
 
-# from pyutmodel.PyutSDInstance import PyutSDInstance
-# from pyutmodel.PyutSDMessage import PyutSDMessage
+from pyutmodel.PyutSDInstance import PyutSDInstance
+from pyutmodel.PyutSDMessage import PyutSDMessage
 
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
+from untanglepyut.BaseUnTangle import BaseUnTangle
 from untanglepyut.Common import GraphicInformation
+from untanglepyut.Common import toGraphicInfo
+from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
+from untanglepyut.UnTanglePyut import UnTanglePyut
 
-# from untanglepyut.Common import GraphicInformation
-# from untanglepyut.Common import toGraphicInfo
-
-OglSDInstances = NewType('OglSDInstances', List[OglSDInstance])
+OglSDInstances = NewType('OglSDInstances', Dict[int, OglSDInstance])
 OglSDMessages  = NewType('OglSDMessages',  Dict[int, OglSDMessage])
 
 
 def createOglSDInstances() -> OglSDInstances:
-    return OglSDInstances([])
+    return OglSDInstances({})
 
 
 def createOglSDMessages() -> OglSDMessages:
     return OglSDMessages({})
 
 
-class UntangleSequenceDiagram:
+class UntangleSequenceDiagram(BaseUnTangle):
 
     def __init__(self):
+
+        super().__init__()
 
         self.logger: Logger = getLogger(__name__)
 
         self._oglSDInstances: OglSDInstances = createOglSDInstances()
         self._oglSDMessages:  OglSDMessages  = createOglSDMessages()
+
+        self._untanglePyut: UnTanglePyut = UnTanglePyut()
 
     def unTangle(self, pyutDocument: Element):
         """
@@ -48,8 +51,7 @@ class UntangleSequenceDiagram:
             pyutDocument:  The pyut untangle element that represents a sequence diagram
         """
         self._oglSDInstances = self._untangleSDInstances(pyutDocument=pyutDocument)
-
-        self.logger.warning('Not yet supported')
+        self._oglSDMessages  = self._untangleSDMessages(pyutDocument=pyutDocument)
 
     @property
     def oglSDInstances(self) -> OglSDInstances:
@@ -59,40 +61,44 @@ class UntangleSequenceDiagram:
     def oglSDMessages(self) -> OglSDMessages:
         return self._oglSDMessages
 
-    def _untangleSDMessage(self, pyutDocument: Element) -> OglSDMessages:
+    def _untangleSDInstances(self, pyutDocument: Element) -> OglSDInstances:
 
-        oglSDMessages: OglSDMessages = createOglSDMessages()
+        oglSDInstances:     OglSDInstances = createOglSDInstances()
+        graphicSDInstances: List[Element]   = pyutDocument.get_elements('GraphicSDInstance')
+
+        for graphicSDInstance in graphicSDInstances:
+            self.logger.debug(f'{graphicSDInstance=}')
+            pyutSDInstance: PyutSDInstance     = self._untanglePyut.sdInstanceToPyutSDInstance(graphicSDInstance=graphicSDInstance)
+
+            oglSDInstance:  OglSDInstance      = OglSDInstance(pyutSDInstance)
+            graphicInfo:    GraphicInformation = toGraphicInfo(graphicElement=graphicSDInstance)
+
+            oglSDInstance.SetSize(width=graphicInfo.width, height=graphicInfo.width)
+            oglSDInstance.SetPosition(x=graphicInfo.x, y=graphicInfo.y)
+
+            self._updateModel(oglObject=oglSDInstance, graphicInformation=graphicInfo)
+
+            oglSDInstances[pyutSDInstance.id] = oglSDInstance
+        return oglSDInstances
+
+    def _untangleSDMessages(self, pyutDocument: Element) -> OglSDMessages:
+
+        oglSDMessages:     OglSDMessages = createOglSDMessages()
         graphicSDMessages: List[Element] = pyutDocument.get_elements('GraphicSDMessage')
 
         for graphicSDMessage in graphicSDMessages:
-            pyutSDMessage: PyutSDMessage = PyutSDMessage()
+            bogus: ConvolutedPyutSDMessageInformation = self._untanglePyut.sdMessageToPyutSDMessage(graphicSDMessage=graphicSDMessage)
 
-            srcID:   int = int(graphicSDMessage['srcID'])
-            dstID:   int = int(graphicSDMessage['dstId'])
-            srcTime: int = int(graphicSDMessage['srcTime'])
-            dstTime: int = int(graphicSDMessage['dstTime'])
-            srcOgl = self._oglSDInstances[srcID]
-            dstOgl = self._oglSDInstances[dstID]
+            pyutSDMessage: PyutSDMessage = bogus.pyutSDMessage
 
-            pyutSDMessage.id = int(graphicSDMessage['id'])
-            pyutSDMessage.setMessage(graphicSDMessage['message'])
+            srcInstance: OglSDInstance = self._oglSDInstances[bogus.sourceId]
+            dstInstance: OglSDInstance = self._oglSDInstances[bogus.destinationId]
+
+            oglSDMessage: OglSDMessage = OglSDMessage(srcShape=srcInstance, pyutSDMessage=pyutSDMessage, dstShape=dstInstance)
+
+            srcInstance.addLink(link=oglSDMessage)
+            dstInstance.addLink(link=oglSDMessage)
+
+            oglSDMessages[pyutSDMessage.id] = oglSDMessage
 
         return oglSDMessages
-
-    def _untangleSDInstances(self, pyutDocument: Element) -> OglSDInstances:
-
-        oglSDInstances: OglSDInstances = createOglSDInstances()
-
-        # noinspection PyUnusedLocal
-        graphicSDInstances: List[Element] = pyutDocument.get_elements('GraphicSDInstance')
-        #
-        # for graphicSDInstance in graphicSDInstances:
-        #     self.logger.info(f'{graphicSDInstance=}')
-        #     pyutSDInstance: PyutSDInstance = PyutSDInstance()
-        #     oglSDInstance:  OglSDInstance  = OglSDInstance(pyutSDInstance, umlFrame)
-        #
-        #     graphicInfo: GraphicInformation = toGraphicInfo(graphicElement=graphicSDInstance)
-        #     oglSDInstance.SetSize(w, h)
-        #     oglSDInstance.SetPosition(x, y)
-
-        return oglSDInstances

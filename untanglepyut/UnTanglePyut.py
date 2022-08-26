@@ -1,4 +1,4 @@
-
+from dataclasses import dataclass
 from typing import List
 from typing import NewType
 from typing import cast
@@ -28,13 +28,28 @@ from pyutmodel.PyutText import PyutText
 from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodel.PyutSDInstance import PyutSDInstance
+from pyutmodel.PyutSDMessage import PyutSDMessage
 
+from untanglepyut.Common import secureInteger
 from untanglepyut.Common import str2bool
 
 Elements = NewType('Elements',  List[Element])
 
 UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
 UntangledPyutFields  = NewType('UntangledPyutFields',  List[PyutField])
+
+
+@dataclass
+class ConvolutedPyutSDMessageInformation:
+    """
+    This class is necessary because I do not want to mix Ogl and PyutModel code;  Unfortunately,
+    the IDs of the PyutSDInstance are buried and require a lookup
+
+    """
+    pyutSDMessage: PyutSDMessage = None
+    sourceId:      int           = -1
+    destinationId: int           = -1
 
 
 class UnTanglePyut:
@@ -173,6 +188,49 @@ class UnTanglePyut:
                                       destination=destination)
 
         return pyutLink
+
+    def sdInstanceToPyutSDInstance(self, graphicSDInstance: Element) -> PyutSDInstance:
+
+        instanceElement: Element        = graphicSDInstance.SDInstance
+        pyutSDInstance:  PyutSDInstance = PyutSDInstance()
+
+        pyutSDInstance.id                     = int(instanceElement['id'])
+        pyutSDInstance.instanceName           = instanceElement['instanceName']
+        pyutSDInstance.instanceLifeLineLength = secureInteger(instanceElement['lifeLineLength'])
+
+        return pyutSDInstance
+
+    def sdMessageToPyutSDMessage(self, graphicSDMessage: Element) -> ConvolutedPyutSDMessageInformation:
+        """
+        TODO:  Need to fix how SD Messages are created
+        Args:
+            graphicSDMessage:
+
+        Returns:  Bogus data class
+        """
+
+        messageElement: Element       = graphicSDMessage.SDMessage
+        pyutSDMessage:  PyutSDMessage = PyutSDMessage()
+
+        pyutSDMessage.id = int(messageElement['id'])
+        pyutSDMessage.setMessage(messageElement['message'])
+
+        srcID: int = int(messageElement['srcID'])
+        dstID: int = int(messageElement['dstID'])
+
+        srcTime: int = int(messageElement['srcTime'])
+        dstTime: int = int(messageElement['dstTime'])
+
+        pyutSDMessage.setSrcTime(value=srcTime, updateOGLObject=False)
+        pyutSDMessage.setDstTime(value=dstTime, updateOGLObject=False)
+
+        bogus: ConvolutedPyutSDMessageInformation = ConvolutedPyutSDMessageInformation()
+
+        bogus.pyutSDMessage = pyutSDMessage
+        bogus.sourceId      = srcID
+        bogus.destinationId = dstID
+
+        return bogus
 
     def _methodToPyutMethods(self, classElement: Element) -> UntangledPyutMethods:
         """

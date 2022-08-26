@@ -1,4 +1,4 @@
-
+from typing import List
 from typing import cast
 
 from logging import Logger
@@ -13,6 +13,7 @@ from tests.TestBase import TestBase
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 from untanglepyut.UnTangler import UnTangler
+from untanglepyut.UntangleSequenceDiagram import OglSDInstances
 
 
 # import the class you want to test here
@@ -30,25 +31,31 @@ class TestUnTangleSequenceDiagram(TestBase):
         TestUnTangleSequenceDiagram.clsLogger = getLogger(__name__)
 
     def setUp(self):
+        super().setUp()
         self.logger: Logger = TestUnTangleSequenceDiagram.clsLogger
 
     def tearDown(self):
-        pass
+        super().tearDown()
 
     def testSimpleSequenceDiagram(self):
         document: Document = self._retrieveSequenceDiagramDocument()
         self.assertEqual('SEQUENCE_DIAGRAM', document.documentType, 'Incorrect document type')
 
-    # def testSequenceInstances(self):
-    #     document: Document = self._retrieveSequenceDiagramDocument()
-    #
-    #     self.assertEqual(2, len(document.oglSDInstances), 'Bad # of instances')
+    def testSequenceInstances(self):
+        document: Document = self._retrieveSequenceDiagramDocument()
 
-    # def testSequenceMessages(self):
-    #     document: Document = self._retrieveSequenceDiagramDocument()
-    #
-    #     self.assertEqual(1, len(document.oglSDMessages), 'Bad # of messages')
-    #
+        oglSDInstances: OglSDInstances = document.oglSDInstances
+        self.assertEqual(2, len(oglSDInstances), 'Bad # of instances')
+
+        expectedInstanceNames: List[str] = ['Instance1', 'Instance2']
+        for oglSDInstance in oglSDInstances.values():
+            self.assertIn(oglSDInstance.instanceName.GetText(), expectedInstanceNames, 'Not an expected instance')
+
+    def testSequenceMessages(self):
+        document: Document = self._retrieveSequenceDiagramDocument()
+
+        self.assertEqual(1, len(document.oglSDMessages), 'Bad # of messages')
+
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
         fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SequenceDiagram.xml')

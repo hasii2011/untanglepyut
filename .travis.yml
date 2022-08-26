@@ -30,8 +30,8 @@ before_install:
 install:
   - pip install html-testRunner==1.2.1
   - pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-18.04 wxPython==4.1.1
-  - pip install untangle==1.1.1
-  - pip install ogl==0.54.9
+  - pip install untangle==1.2.1
+  - pip install ogl==0.60.0
 
 
 # command to run tests
