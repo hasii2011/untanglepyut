@@ -11,4 +11,4 @@ function changeToProjectRoot {
 
 changeToProjectRoot
 
-python -m tests.TestAll
+python3 -m tests.TestAll
