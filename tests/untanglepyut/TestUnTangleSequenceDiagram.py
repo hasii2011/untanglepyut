@@ -10,6 +10,7 @@ from unittest import main as unitTestMain
 from pkg_resources import resource_filename
 
 from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodel.PyutSDInstance import PyutSDInstance
 from pyutmodel.PyutSDMessage import PyutSDMessage
 
 from untanglepyut.UnTangler import Document
@@ -64,6 +65,19 @@ class TestUnTangleSequenceDiagram(TestBase):
         for sdMessage in sdMessages.values():
             pyutSDMessage: PyutSDMessage = sdMessage.getPyutObject()
             self.assertEqual(PyutLinkType.SD_MESSAGE, pyutSDMessage.linkType, 'Link type not correctly set')
+
+    def testSequenceMessagePyutSDMessageIsCorrect(self):
+        document: Document = self._retrieveSequenceDiagramDocument()
+
+        sdMessages: OglSDMessages = document.oglSDMessages
+        for sdMessage in sdMessages.values():
+            pyutSDMessage: PyutSDMessage = sdMessage.getPyutObject()
+
+            pyutSrcInstance: PyutSDInstance = pyutSDMessage.getSource()
+            pyutDstInstance: PyutSDInstance = pyutSDMessage.getDest()
+
+            self.assertIsNotNone(pyutSrcInstance, 'Missing source sd instance')
+            self.assertIsNotNone(pyutDstInstance, 'Missing source sd instance')
 
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
