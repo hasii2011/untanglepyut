@@ -47,7 +47,7 @@ class ConvolutedPyutSDMessageInformation:
     the IDs of the PyutSDInstance are buried and require a lookup
 
     """
-    pyutSDMessage: PyutSDMessage = None
+    pyutSDMessage: PyutSDMessage = cast(PyutSDMessage, None)
     sourceId:      int           = -1
     destinationId: int           = -1
 
@@ -214,6 +214,7 @@ class UnTanglePyut:
 
         pyutSDMessage.id = int(messageElement['id'])
         pyutSDMessage.setMessage(messageElement['message'])
+        pyutSDMessage.linkType = PyutLinkType.SD_MESSAGE
 
         srcID: int = int(messageElement['srcID'])
         dstID: int = int(messageElement['dstID'])

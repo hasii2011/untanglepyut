@@ -9,15 +9,16 @@ from unittest import main as unitTestMain
 
 from pkg_resources import resource_filename
 
-from tests.TestBase import TestBase
+from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodel.PyutSDMessage import PyutSDMessage
+
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 from untanglepyut.UnTangler import UnTangler
 from untanglepyut.UntangleSequenceDiagram import OglSDInstances
+from untanglepyut.UntangleSequenceDiagram import OglSDMessages
 
-
-# import the class you want to test here
-# from org.pyut.template import template
+from tests.TestBase import TestBase
 
 
 class TestUnTangleSequenceDiagram(TestBase):
@@ -55,6 +56,14 @@ class TestUnTangleSequenceDiagram(TestBase):
         document: Document = self._retrieveSequenceDiagramDocument()
 
         self.assertEqual(1, len(document.oglSDMessages), 'Bad # of messages')
+
+    def testSequenceMessageTypeIsCorrect(self):
+        document: Document = self._retrieveSequenceDiagramDocument()
+
+        sdMessages: OglSDMessages = document.oglSDMessages
+        for sdMessage in sdMessages.values():
+            pyutSDMessage: PyutSDMessage = sdMessage.getPyutObject()
+            self.assertEqual(PyutLinkType.SD_MESSAGE, pyutSDMessage.linkType, 'Link type not correctly set')
 
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
