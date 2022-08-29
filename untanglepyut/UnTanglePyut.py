@@ -117,6 +117,7 @@ class UnTanglePyut:
 
         pyutNote = cast(PyutNote, self._addPyutObjectAttributes(pyutElement=noteElement, pyutObject=pyutNote))
 
+        pyutNote.content = noteElement['content']
         return pyutNote
 
     def interfaceToPyutInterface(self, interface: Element) -> PyutInterface:

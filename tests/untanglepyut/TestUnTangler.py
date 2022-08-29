@@ -11,6 +11,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from ogl.OglNote import OglNote
 from pkg_resources import resource_filename
 
 from miniogl.ControlPoint import ControlPoint
@@ -28,6 +29,7 @@ from tests.TestBase import DIAGRAM_NAME_1
 from tests.TestBase import DIAGRAM_NAME_2
 from tests.TestBase import TEST_XML_FILENAME
 from untanglepyut.Types import UntangledOglActors
+from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.UnTangler import Document
@@ -243,6 +245,13 @@ class TestUnTangler(TestBase):
 
         self.assertEqual(1, len(document.oglNotes), 'Incorrect # of notes')
 
+        oglNotes: UntangledOglNotes = document.oglNotes
+        oglNote:  OglNote = oglNotes[0]     # Get the one and only
+
+        expectedRepr: str = 'I am a UML Note'
+        actualRepr:   str = oglNote.__repr__()      # indirectly tests pyutNote.content
+        self.assertEqual(expectedRepr, actualRepr, 'Bad representation')
+
     def testUmlText(self):
 
         fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiObject.xml')
@@ -355,17 +364,6 @@ class TestUnTangler(TestBase):
         #
         for className in foundFields.keys():
             self.assertTrue(foundFields[className], f'"{className}" is missing fields')
-
-    # def testSequenceDiagramDocumentCreated(self):
-    #     fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SequenceDiagram.xml')
-    #     untangler:  UnTangler = UnTangler(fqFileName=fqFileName)
-    #
-    #     untangler.untangle()
-    #     document: Document = untangler.documents[DocumentTitle('Sequence Diagram')]
-    #     untangler.untangle()
-    #     #
-    #     self.assertEqual(0, len(document.oglSDMessages), 'Not enough messages')
-    #     self.assertEqual(0, len(document.oglSDInstances), 'Not enough instances')
 
     def _testCreateClassesForDiagram(self, title: DocumentTitle, expectedCount: int):
 
