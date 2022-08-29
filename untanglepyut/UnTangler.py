@@ -11,7 +11,6 @@ from dataclasses import field
 from untangle import parse
 from untangle import Element
 
-
 from ogl.OglClass import OglClass
 from ogl.OglNote import OglNote
 from ogl.OglText import OglText
@@ -22,6 +21,7 @@ from pyutmodel.PyutText import PyutText
 
 from untanglepyut.BaseUnTangle import BaseUnTangle
 
+from untanglepyut.Common import Elements
 from untanglepyut.Common import toGraphicInfo
 from untanglepyut.Common import GraphicInformation
 from untanglepyut.Common import UntangledOglLinks
@@ -202,8 +202,10 @@ class UnTangler(BaseUnTangle):
 
     def _graphicClassesToOglClasses(self, pyutDocument: Element) -> UntangledOglClasses:
 
-        oglClasses: UntangledOglClasses = createUntangledOglClasses()
-        for graphicClass in pyutDocument.GraphicClass:
+        oglClasses:     UntangledOglClasses = createUntangledOglClasses()
+        graphicClasses: Elements            = pyutDocument.get_elements('GraphicClass')
+        
+        for graphicClass in graphicClasses:
             self.logger.debug(f'{graphicClass=}')
 
             graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicClass)
@@ -229,9 +231,9 @@ class UnTangler(BaseUnTangle):
 
         Returns: untangled OglNote objects if any exist, else an empty list
         """
-        oglNotes: UntangledOglNotes = createUntangledOglNotes()
+        oglNotes:     UntangledOglNotes = createUntangledOglNotes()
+        graphicNotes: Elements          = pyutDocument.get_elements('GraphicNote')
 
-        graphicNotes: Element = pyutDocument.get_elements('GraphicNote')
         for graphicNote in graphicNotes:
             self.logger.debug(f'{graphicNote}')
 
@@ -254,9 +256,9 @@ class UnTangler(BaseUnTangle):
 
         Returns:  untangled OglText objects if any exist, else an empty list
         """
-        oglTexts: UntangledOglTexts = createUntangledOglTexts()
+        oglTexts:     UntangledOglTexts = createUntangledOglTexts()
+        graphicTexts: Elements          = pyutDocument.get_elements('GraphicText')
 
-        graphicTexts: Element = pyutDocument.get_elements('GraphicText')
         for graphicText in graphicTexts:
             self.logger.debug(f'{graphicText}')
 

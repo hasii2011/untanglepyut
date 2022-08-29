@@ -21,11 +21,7 @@ before_install:
 # command to install dependencies
 install:
   - python3 --version
-  - pip install html-testRunner==1.2.1
-  - pip install wxPython~=4.2.0
-  - pip install untangle==1.2.1
-  - pip install ogl==0.60.1
-
+  - pip install -r requirements.txt
 
 # command to run tests
 script: ${TRAVIS_BUILD_DIR}/scripts/runtests.sh

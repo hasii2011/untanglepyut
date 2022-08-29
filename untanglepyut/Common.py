@@ -3,8 +3,8 @@ from typing import List
 from typing import NewType
 
 from dataclasses import dataclass
-from untangle import Element
 
+from untangle import Element
 
 from miniogl.ControlPoint import ControlPoint
 
@@ -14,6 +14,7 @@ from untanglepyut.Types import UntangledOglUseCases
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
 
+Elements = NewType('Elements', List[Element])
 
 @dataclass
 class GraphicInformation:
