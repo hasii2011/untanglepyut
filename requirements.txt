@@ -11,7 +11,7 @@ types-setuptools==65.3.0
 typing_extensions==4.3.0
 
 Deprecated~=1.2.13
-ogl~=0.60.1
+ogl~=0.60.2
 pyutmodel==1.1.0
 untangle==1.2.1
 
