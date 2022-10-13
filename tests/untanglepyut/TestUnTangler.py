@@ -88,6 +88,13 @@ class TestUnTangler(TestBase):
 
         self.assertEqual(2, len(untangler.documents), 'Incorrect number of documents created')
 
+    def testUntangleXml(self):
+        untangler: UnTangler = UnTangler()
+
+        rawXml: str = untangler.getRawXml(fqFileName=self._fqFileName)
+        untangler.untangleXml(xmlString=rawXml)
+        self.assertEqual(2, len(untangler.documents), 'Incorrect number of documents created')
+
     def testControlPointsGenerated(self):
         fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'ATM-Model.xml')
 

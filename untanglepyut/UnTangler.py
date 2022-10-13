@@ -134,8 +134,21 @@ class UnTangler(BaseUnTangle):
         return self._documents
 
     def untangleFile(self, fqFileName: str):
+        """
+        Read input file and untangle to Ogl
+        Args:
+            fqFileName:  The file name with the XML
 
+        """
         xmlString:   str     = self.getRawXml(fqFileName=fqFileName)
+        self.untangleXml(xmlString=xmlString)
+
+    def untangleXml(self, xmlString: str):
+        """
+        Untangle the input Xml string to Ogl
+        Args:
+            xmlString: The string wit the raw XML
+        """
         root:        Element = parse(xmlString)
         pyutProject: Element = root.PyutProject
 
@@ -175,7 +188,14 @@ class UnTangler(BaseUnTangle):
                 assert False, f'Unknown document type: f{document.documentType}'
 
     def getRawXml(self, fqFileName: str) -> str:
+        """
+        Convenience method to read a file.  Assumes the file has XML.
+        No check is done to verify this
+        Args:
+            fqFileName: The file to read
 
+        Returns:  The contents of the file
+        """
         try:
             with open(fqFileName, "r") as xmlFile:
                 xmlString: str = xmlFile.read()
