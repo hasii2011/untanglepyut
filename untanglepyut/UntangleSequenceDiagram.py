@@ -13,14 +13,16 @@ from pyutmodel.PyutSDMessage import PyutSDMessage
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
+from untanglepyut.Types import OglSDInstances
+from untanglepyut.Types import OglSDMessages
+
 from untanglepyut.BaseUnTangle import BaseUnTangle
+
 from untanglepyut.Common import GraphicInformation
 from untanglepyut.Common import toGraphicInfo
+
 from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
-
-OglSDInstances = NewType('OglSDInstances', Dict[int, OglSDInstance])
-OglSDMessages  = NewType('OglSDMessages',  Dict[int, OglSDMessage])
 
 
 def createOglSDInstances() -> OglSDInstances:

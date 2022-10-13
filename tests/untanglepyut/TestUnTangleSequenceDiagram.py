@@ -13,11 +13,12 @@ from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutSDInstance import PyutSDInstance
 from pyutmodel.PyutSDMessage import PyutSDMessage
 
+from untanglepyut.Types import OglSDInstances
+from untanglepyut.Types import OglSDMessages
+
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 from untanglepyut.UnTangler import UnTangler
-from untanglepyut.UntangleSequenceDiagram import OglSDInstances
-from untanglepyut.UntangleSequenceDiagram import OglSDMessages
 
 from tests.TestBase import TestBase
 
