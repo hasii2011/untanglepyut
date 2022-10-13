@@ -82,9 +82,9 @@ class TestUnTangleSequenceDiagram(TestBase):
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
         fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SequenceDiagram.xml')
-        untangler:  UnTangler = UnTangler(fqFileName=fqFileName)
+        untangler:  UnTangler = UnTangler()
 
-        untangler.untangle()
+        untangler.untangle(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle('Sequence Diagram')]
 

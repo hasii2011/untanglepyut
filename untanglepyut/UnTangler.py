@@ -108,16 +108,12 @@ Documents     = NewType('Documents', dict[DocumentTitle, Document])
 
 class UnTangler(BaseUnTangle):
 
-    def __init__(self, fqFileName: str):
+    def __init__(self):
         """
-
-        Args:
-            fqFileName:  Fully qualified file name
         """
         super().__init__()
         self.logger: Logger = getLogger(__name__)
 
-        self._fqFileName:  str = fqFileName
         self._projectInformation: ProjectInformation = ProjectInformation()
         self._documents:          Documents          = Documents({})
 
@@ -137,9 +133,9 @@ class UnTangler(BaseUnTangle):
     def documents(self) -> Documents:
         return self._documents
 
-    def untangle(self):
+    def untangle(self, fqFileName: str):
 
-        xmlString:   str     = self._getRawXml()
+        xmlString:   str     = self.getRawXml(fqFileName=fqFileName)
         root:        Element = parse(xmlString)
         pyutProject: Element = root.PyutProject
 
@@ -148,7 +144,7 @@ class UnTangler(BaseUnTangle):
         for pyutDocument in pyutProject.PyutDocument:
             document: Document = self._updateCurrentDocumentInformation(pyutDocument=pyutDocument)
 
-            self._documents[document.documentTitle] = document
+            self._documents[DocumentTitle(document.documentTitle)] = document
 
             self.logger.debug(f'{document=}')
             if document.documentType == 'CLASS_DIAGRAM':
@@ -173,10 +169,21 @@ class UnTangler(BaseUnTangle):
                 document.oglActors   = unTangleUseCaseDiagram.oglActors
                 document.oglUseCases = unTangleUseCaseDiagram.oglUseCases
 
-                linkableOglObjects: LinkableOglObjects = self._buildDictionary(document=document)
-                document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
+                linkableOglObjects = self._buildDictionary(document=document)
+                document.oglLinks  = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
             else:
                 assert False, f'Unknown document type: f{document.documentType}'
+
+    def getRawXml(self, fqFileName: str) -> str:
+
+        try:
+            with open(fqFileName, "r") as xmlFile:
+                xmlString: str = xmlFile.read()
+        except (ValueError, Exception) as e:
+            self.logger.error(f'xml open:  {e}')
+            raise e
+
+        return xmlString
 
     def _populateProjectInformation(self, pyutProject: Element):
         self._projectInformation.version  = pyutProject['version']
@@ -275,17 +282,6 @@ class UnTangler(BaseUnTangle):
             oglTexts.append(oglText)
 
         return oglTexts
-
-    def _getRawXml(self) -> str:
-
-        try:
-            with open(self._fqFileName, "r") as xmlFile:
-                xmlString: str = xmlFile.read()
-        except (ValueError, Exception) as e:
-            self.logger.error(f'decompress open:  {e}')
-            raise e
-
-        return xmlString
 
     def _buildDictionary(self, document: Document) -> LinkableOglObjects:
         """

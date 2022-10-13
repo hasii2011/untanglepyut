@@ -52,9 +52,9 @@ class TestUnTangleOglLinks(TestBase):
 
     def testNoGraphicLinks(self):
         fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
-        untangler: UnTangler = UnTangler(fqFileName)
+        untangler: UnTangler = UnTangler()
 
-        untangler.untangle()
+        untangler.untangle(fqFileName)
 
         self.assertEqual(1, len(untangler.documents), 'Should be a small document')
         singleDocument: Document = untangler.documents['UnitTest']
@@ -70,9 +70,9 @@ class TestUnTangleOglLinks(TestBase):
 
         fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleInheritance.xml')
 
-        untangler: UnTangler = UnTangler(fqFileName=fqFileName)
+        untangler: UnTangler = UnTangler()
 
-        untangler.untangle()
+        untangler.untangle(fqFileName=fqFileName)
 
         singleDocument: Document          = untangler.documents[TestUnTangleOglLinks.SIMPLE_DIAGRAM_NAME]
         oglLinks:       UntangledOglLinks = singleDocument.oglLinks
@@ -158,9 +158,9 @@ class TestUnTangleOglLinks(TestBase):
 
     def testGetAssociationLabelPositions(self):
         fqFileName: str        = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
-        untangler:  UnTangler = UnTangler(fqFileName)
+        untangler:  UnTangler = UnTangler()
 
-        untangler.untangle()
+        untangler.untangle(fqFileName)
 
         document: Document = untangler.documents[DocumentTitle('SimpleLink')]
 
@@ -181,9 +181,9 @@ class TestUnTangleOglLinks(TestBase):
             self.assertEqual(125, dest.oglPosition.y, 'Bad destination y')
 
     def _getOglLinksFromDocument(self, title: DocumentTitle) -> UntangledOglLinks:
-        untangler: UnTangler = UnTangler(fqFileName=self._fqFileName)
+        untangler: UnTangler = UnTangler()
 
-        untangler.untangle()
+        untangler.untangle(fqFileName=self._fqFileName)
 
         document:  Document             = untangler.documents[title]
         oglLinks:  UntangledOglLinks = document.oglLinks
