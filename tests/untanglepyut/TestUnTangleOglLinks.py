@@ -54,7 +54,7 @@ class TestUnTangleOglLinks(TestBase):
         fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName)
+        untangler.untangleFile(fqFileName)
 
         self.assertEqual(1, len(untangler.documents), 'Should be a small document')
         singleDocument: Document = untangler.documents['UnitTest']
@@ -72,7 +72,7 @@ class TestUnTangleOglLinks(TestBase):
 
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         singleDocument: Document          = untangler.documents[TestUnTangleOglLinks.SIMPLE_DIAGRAM_NAME]
         oglLinks:       UntangledOglLinks = singleDocument.oglLinks
@@ -160,7 +160,7 @@ class TestUnTangleOglLinks(TestBase):
         fqFileName: str        = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
         untangler:  UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName)
+        untangler.untangleFile(fqFileName)
 
         document: Document = untangler.documents[DocumentTitle('SimpleLink')]
 
@@ -183,7 +183,7 @@ class TestUnTangleOglLinks(TestBase):
     def _getOglLinksFromDocument(self, title: DocumentTitle) -> UntangledOglLinks:
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=self._fqFileName)
+        untangler.untangleFile(fqFileName=self._fqFileName)
 
         document:  Document             = untangler.documents[title]
         oglLinks:  UntangledOglLinks = document.oglLinks

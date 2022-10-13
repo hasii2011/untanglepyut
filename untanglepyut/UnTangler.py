@@ -133,7 +133,7 @@ class UnTangler(BaseUnTangle):
     def documents(self) -> Documents:
         return self._documents
 
-    def untangle(self, fqFileName: str):
+    def untangleFile(self, fqFileName: str):
 
         xmlString:   str     = self.getRawXml(fqFileName=fqFileName)
         root:        Element = parse(xmlString)

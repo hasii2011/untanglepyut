@@ -75,7 +75,7 @@ class TestUnTangler(TestBase):
 
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=self._fqFileName)
+        untangler.untangleFile(fqFileName=self._fqFileName)
 
         self.assertEqual('',   untangler.projectInformation.codePath)
         self.assertEqual('10', untangler.projectInformation.version)
@@ -84,7 +84,7 @@ class TestUnTangler(TestBase):
 
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=self._fqFileName)
+        untangler.untangleFile(fqFileName=self._fqFileName)
 
         self.assertEqual(2, len(untangler.documents), 'Incorrect number of documents created')
 
@@ -93,7 +93,7 @@ class TestUnTangler(TestBase):
 
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         singleDocument: Document = untangler.documents[ATM_DIAGRAM_NAME]
 
@@ -239,7 +239,7 @@ class TestUnTangler(TestBase):
 
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents['MultiObject']
 
@@ -258,7 +258,7 @@ class TestUnTangler(TestBase):
 
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents['MultiObject']
 
@@ -295,7 +295,7 @@ class TestUnTangler(TestBase):
         fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'ATM-Model.xml')
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle('Class Diagram')]
 
@@ -311,7 +311,7 @@ class TestUnTangler(TestBase):
         fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLinkDocument.xml')
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle('MultiLink')]
 
@@ -327,7 +327,7 @@ class TestUnTangler(TestBase):
         fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLinkDocument.xml')
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle('MultiLink')]
         oglClasses: UntangledOglClasses = document.oglClasses
@@ -374,7 +374,7 @@ class TestUnTangler(TestBase):
     def _testNonZeroSizeForClassesInDiagram(self, title: DocumentTitle):
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=self._fqFileName)
+        untangler.untangleFile(fqFileName=self._fqFileName)
         document: Document = untangler.documents[title]
         oglClasses: List[OglClass] = document.oglClasses
 
@@ -395,7 +395,7 @@ class TestUnTangler(TestBase):
     def _getOglClassesFromDocument(self, title: DocumentTitle) -> UntangledOglClasses:
         untangler: UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=self._fqFileName)
+        untangler.untangleFile(fqFileName=self._fqFileName)
 
         document:  Document             = untangler.documents[title]
         oglClasses: UntangledOglClasses = document.oglClasses
@@ -424,7 +424,7 @@ class TestUnTangler(TestBase):
         fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'UseCaseDiagram.xml')
         untangler:  UnTangler = UnTangler()
 
-        untangler.untangle(fqFileName=fqFileName)
+        untangler.untangleFile(fqFileName=fqFileName)
 
         document: Document = untangler.documents[DocumentTitle('Use-Cases')]
 
