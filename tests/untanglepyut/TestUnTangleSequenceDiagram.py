@@ -1,4 +1,5 @@
 from typing import List
+from typing import Tuple
 from typing import cast
 
 from logging import Logger
@@ -12,6 +13,8 @@ from pkg_resources import resource_filename
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutSDInstance import PyutSDInstance
 from pyutmodel.PyutSDMessage import PyutSDMessage
+
+from ogl.sd.OglSDInstance import OglSDInstance
 
 from untanglepyut.Types import OglSDInstances
 from untanglepyut.Types import OglSDMessages
@@ -79,6 +82,18 @@ class TestUnTangleSequenceDiagram(TestBase):
 
             self.assertIsNotNone(pyutSrcInstance, 'Missing source sd instance')
             self.assertIsNotNone(pyutDstInstance, 'Missing source sd instance')
+
+    def testSDInstanceLifeLineIsCorrect(self):
+        """
+        Verifies https://github.com/hasii2011/untanglepyut/issues/29
+        """
+        document: Document = self._retrieveSequenceDiagramDocument()
+
+        sdInstances: OglSDInstances = document.oglSDInstances
+        for sdInstance in sdInstances.values():
+            oglSDInstance: OglSDInstance = cast(OglSDInstance, sdInstance)
+            size: Tuple[int, int] = oglSDInstance.GetSize()
+            self.assertEqual(OglSDInstance.DEFAULT_HEIGHT, size[1], 'Lifeline height is incorrect')
 
     def _retrieveSequenceDiagramDocument(self) -> Document:
 

@@ -75,7 +75,7 @@ class UntangleSequenceDiagram(BaseUnTangle):
             oglSDInstance:  OglSDInstance      = OglSDInstance(pyutSDInstance)
             graphicInfo:    GraphicInformation = toGraphicInfo(graphicElement=graphicSDInstance)
 
-            oglSDInstance.SetSize(width=graphicInfo.width, height=graphicInfo.width)
+            oglSDInstance.SetSize(width=graphicInfo.width, height=graphicInfo.height)
             oglSDInstance.SetPosition(x=graphicInfo.x, y=graphicInfo.y)
 
             self._updateModel(oglObject=oglSDInstance, graphicInformation=graphicInfo)
@@ -96,8 +96,8 @@ class UntangleSequenceDiagram(BaseUnTangle):
             srcInstance: OglSDInstance = self._oglSDInstances[bogus.sourceId]
             dstInstance: OglSDInstance = self._oglSDInstances[bogus.destinationId]
 
-            pyutSDMessage.setSource(srcInstance.getPyutObject())          # Ugh, time was set by sdMessageToPyutSDMessage
-            pyutSDMessage.setDestination(dstInstance.getPyutObject())     # This "split" functionality must be fixed
+            pyutSDMessage.setSource(srcInstance.pyutObject)          # Ugh, time was set by sdMessageToPyutSDMessage
+            pyutSDMessage.setDestination(dstInstance.pyutObject)     # This "split" functionality must be fixed
             oglSDMessage: OglSDMessage = OglSDMessage(srcShape=srcInstance, pyutSDMessage=pyutSDMessage, dstShape=dstInstance)
 
             srcInstance.addLink(link=oglSDMessage)
