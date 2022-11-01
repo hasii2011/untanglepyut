@@ -16,7 +16,7 @@ matrix:  # or you can replace `matrix` with `jobs`
       os: osx
       language: shell
       python: 3.10.6
-      env: PYTHONVERSION=3.10.6
+      env: PYTHONVERSION=3.10.4
       cache:
         - directories:
           - $HOME/Library/Caches/pip
