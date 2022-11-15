@@ -178,7 +178,7 @@ class UnTangleOglLinks:
 
         controlPoints: UntangledControlPoints = self._generateControlPoints(graphicLink=graphicLink)
         for controlPoint in controlPoints:
-            oglLink.AddControl(controlPoint)
+            oglLink.AddControl(control=controlPoint, after=None)
             if selfLink:
                 x, y = controlPoint.GetPosition()
                 controlPoint.SetParent(parent)
