@@ -236,7 +236,7 @@ class UnTangler(BaseUnTangle):
             self.logger.debug(f'{graphicClass=}')
 
             graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicClass)
-            oglClass: OglClass = OglClass(w=graphicInformation.width, h=graphicInformation.height)
+            oglClass: OglClass = OglClass(pyutClass=None, w=graphicInformation.width, h=graphicInformation.height)
             oglClass.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
             #
             # This is necessary if it is never added to a diagram
