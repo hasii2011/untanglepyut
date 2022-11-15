@@ -344,7 +344,7 @@ class UnTangleOglLinks:
         """
         srcShape:  OglClass = oglLink.getSourceShape()
         destShape: OglClass = oglLink.getDestinationShape()
-        self.logger.debug(f'source ID: {srcShape.GetID()} - destination ID: {destShape.GetID()}')
+        self.logger.debug(f'source ID: {srcShape.id} - destination ID: {destShape.id}')
 
         pyutLink: PyutLink = oglLink.pyutObject
 
