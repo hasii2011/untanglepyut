@@ -10,7 +10,7 @@ function changeToProjectRoot {
 
 changeToProjectRoot
 
-mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes untanglepyut tests
+mypy --config-file .mypi.ini --pretty --no-color-output --show-error-codes --check-untyped-defs untanglepyut tests
 # mypy --config-file .mypi.ini --pretty  --show-error-codes untanglepyut tests
 status=$?
 

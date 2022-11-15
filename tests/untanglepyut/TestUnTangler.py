@@ -11,6 +11,7 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 from pkg_resources import resource_filename
 
@@ -105,19 +106,22 @@ class TestUnTangler(TestBase):
         singleDocument: Document = untangler.documents[ATM_DIAGRAM_NAME]
 
         oglLinks: UntangledOglLinks = singleDocument.oglLinks
-        for oglLink in oglLinks:
+        for link in oglLinks:
+            oglLink: OglLink = cast(OglLink, link)
             # Check a couple of the 'known' links with a single control point
             linkName: str = oglLink.pyutObject.name
             if linkName == 'has':
                 # 			<ControlPoint x="207" y="469"/>
+                controlPoint1: ControlPoint = cast(ControlPoint, oglLink.GetControlPoints()[0])
                 self._assertPosition(expectedX=207, expectedY=469,
-                                     controlPoint=oglLink.GetControlPoints()[0],
+                                     controlPoint=controlPoint1,
                                      objectName=linkName)
 
             elif linkName == 'Account Transaction':
                 # 			<ControlPoint x="726" y="469"/>
+                controlPoint: ControlPoint = cast(ControlPoint, oglLink.GetControlPoints()[0])
                 self._assertPosition(expectedX=726, expectedY=469,
-                                     controlPoint=oglLink.GetControlPoints()[0],
+                                     controlPoint=controlPoint,
                                      objectName=linkName)
 
     def testCreateOglClassesForDiagram1(self):
@@ -248,7 +252,7 @@ class TestUnTangler(TestBase):
 
         untangler.untangleFile(fqFileName=fqFileName)
 
-        document: Document = untangler.documents['MultiObject']
+        document: Document = untangler.documents[DocumentTitle('MultiObject')]
 
         self.assertEqual(1, len(document.oglNotes), 'Incorrect # of notes')
 
@@ -267,7 +271,7 @@ class TestUnTangler(TestBase):
 
         untangler.untangleFile(fqFileName=fqFileName)
 
-        document: Document = untangler.documents['MultiObject']
+        document: Document = untangler.documents[DocumentTitle('MultiObject')]
 
         self.assertEqual(1, len(document.oglTexts), 'Incorrect # of text annotations')
 

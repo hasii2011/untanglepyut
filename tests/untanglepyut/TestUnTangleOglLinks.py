@@ -8,11 +8,13 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
+from ogl.OglAssociation import OglAssociation
 from ogl.OglAssociationLabel import OglAssociationLabel
 
 from ogl.OglClass import OglClass
 from ogl.OglInheritance import OglInheritance
 from ogl.OglInterface2 import OglInterface2
+from ogl.OglLink import OglLink
 from pkg_resources import resource_filename
 
 from pyutmodel.PyutClass import PyutClass
@@ -57,7 +59,7 @@ class TestUnTangleOglLinks(TestBase):
         untangler.untangleFile(fqFileName)
 
         self.assertEqual(1, len(untangler.documents), 'Should be a small document')
-        singleDocument: Document = untangler.documents['UnitTest']
+        singleDocument: Document = untangler.documents[DocumentTitle('UnitTest')]
         self.assertEqual(0, len(singleDocument.oglLinks))
 
     def testGraphicSimpleLinks(self):
@@ -80,12 +82,16 @@ class TestUnTangleOglLinks(TestBase):
         self.assertTrue(isinstance(oglLinks[0], OglInheritance), 'Must be inheritance')
         for oglLink in oglLinks:
             self.logger.debug(f'{oglLink}')
-            self.assertEqual(PyutLinkType.INHERITANCE, oglLink.pyutObject.linkType)
+            pyutLink: PyutLink = cast(PyutLink, oglLink.pyutObject)
+            self.assertEqual(PyutLinkType.INHERITANCE, pyutLink.linkType)
 
     def testClassicInterfaceCreated(self):
 
         oglLinks:  UntangledOglLinks = self._getOglLinksFromDocument(DIAGRAM_NAME_2)
-        for oglLink in oglLinks:
+        for link in oglLinks:
+
+            oglLink: OglLink = cast(OglLink, link)
+
             pyutLink: PyutLink = oglLink.pyutObject
             if pyutLink.linkType == PyutLinkType.INTERFACE:
                 srcShape:     OglClass  = oglLink.getSourceShape()
@@ -167,9 +173,10 @@ class TestUnTangleOglLinks(TestBase):
         oglLinks: UntangledOglLinks = document.oglLinks
         for oglLink in oglLinks:
             self.logger.info(f'{oglLink}')
-            center: OglAssociationLabel = oglLink.centerLabel
-            src:    OglAssociationLabel = oglLink.sourceCardinality
-            dest:   OglAssociationLabel = oglLink.destinationCardinality
+            oglAssociation: OglAssociation = cast(OglAssociation, oglLink)
+            center: OglAssociationLabel = oglAssociation.centerLabel
+            src:    OglAssociationLabel = oglAssociation.sourceCardinality
+            dest:   OglAssociationLabel = oglAssociation.destinationCardinality
 
             self.assertEqual(380, center.oglPosition.x, 'Bad center x')
             self.assertEqual(125, center.oglPosition.y, 'Bad center y')
