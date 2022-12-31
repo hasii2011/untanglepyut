@@ -25,6 +25,7 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutField import PyutField
+from pyutmodel.PyutStereotype import PyutStereotype
 
 from tests.TestBase import DIAGRAM_NAME_1
 from tests.TestBase import DIAGRAM_NAME_2
@@ -227,12 +228,12 @@ class TestUnTangler(TestBase):
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
             if pyutClass.name == 'ClassWithStereoType':
-                self.assertEqual('IAmAStereoType', pyutClass.stereotype.name, 'Incorrect stereotype')
+                self.assertEqual(PyutStereotype.METACLASS, pyutClass.stereotype, 'Incorrect stereotype')
                 foundStereoType = True
                 break
         self.assertTrue(foundStereoType, 'Did not find stereotype')
 
-    def testShowStereoTypeEmpty(self):
+    def testStereoTypeEmpty(self):
         """
         My first indication that I understand functional programming
         """
@@ -240,7 +241,7 @@ class TestUnTangler(TestBase):
             testPassed: bool = False
             pyutClass: PyutClass = oglClass.pyutObject
             if pyutClass.name == 'ClassWithEmptyStereoType':
-                self.assertEqual('', pyutClass.stereotype.name, 'Stereotype should be empty')
+                self.assertEqual(PyutStereotype.NO_STEREOTYPE, pyutClass.stereotype, 'Stereotype should be empty')
                 testPassed = True
             return testPassed
         self._runTest(DIAGRAM_NAME_1, emptyTest)

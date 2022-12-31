@@ -51,7 +51,7 @@
 			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="1" destId="2"/>
 		</GraphicLink>
 		<GraphicClass width="159" height="69" x="225" y="500">
-			<Class id="3" name="ClassWithStereoType" stereotype="IAmAStereoType" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
+			<Class id="3" name="ClassWithStereoType" stereotype="metaclass" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>
 		</GraphicClass>
 		<GraphicClass width="284" height="63" x="475" y="500">
 			<Class id="4" name="ClassWithEmptyStereoType" stereotype="" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified"/>

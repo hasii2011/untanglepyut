@@ -81,7 +81,7 @@ class UnTanglePyut:
         pyutClass.showMethods    = showMethods
 
         pyutClass.description = classElement['description']
-        pyutClass.stereotype = PyutStereotype(name=stereotypeStr)
+        pyutClass.stereotype = PyutStereotype.toEnum(stereotypeStr)
 
         pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
         pyutClass.fields  = self._fieldToPyutFields(classElement=classElement)
