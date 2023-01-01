@@ -79,6 +79,7 @@ class TestUnTangler(TestBase):
 
         untangler.untangleFile(fqFileName=self._fqFileName)
 
+        self.assertEqual(self._fqFileName, untangler.projectInformation.fileName)
         self.assertEqual('',   untangler.projectInformation.codePath)
         self.assertEqual('10', untangler.projectInformation.version)
 

@@ -49,6 +49,7 @@ from untanglepyut.UntangleSequenceDiagram import createOglSDInstances
 
 @dataclass
 class ProjectInformation:
+    fileName: str = cast(str, None)
     version:  str = cast(str, None)
     codePath: str = cast(str, None)
 
@@ -142,6 +143,8 @@ class UnTangler(BaseUnTangle):
         """
         xmlString:   str     = self.getRawXml(fqFileName=fqFileName)
         self.untangleXml(xmlString=xmlString)
+
+        self._projectInformation.fileName = fqFileName
 
     def untangleXml(self, xmlString: str):
         """
