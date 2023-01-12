@@ -188,7 +188,7 @@ class UnTangler(BaseUnTangle):
                 linkableOglObjects = self._buildDictionary(document=document)
                 document.oglLinks  = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
             else:
-                assert False, f'Unknown document type: f{document.documentType}'
+                assert False, f'Unknown document type: {document.documentType}'
 
     def getRawXml(self, fqFileName: str) -> str:
         """
