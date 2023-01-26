@@ -9,17 +9,22 @@ from logging import getLogger
 from untangle import Element
 
 from pyutmodel.PyutField import PyutField
+from pyutmodel.PyutField import PyutFields
+
 from pyutmodel.PyutObject import PyutObject
 from pyutmodel.PyutUseCase import PyutUseCase
 from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
+
+from pyutmodel.PyutMethod import PyutMethods
 from pyutmodel.PyutMethod import PyutParameters
 from pyutmodel.PyutMethod import SourceCode
 from pyutmodel.PyutParameter import PyutParameter
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
+
 from pyutmodel.PyutModifier import PyutModifier
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutClass import PyutClass
@@ -35,9 +40,6 @@ from untanglepyut.Common import secureInteger
 from untanglepyut.Common import str2bool
 
 Elements = NewType('Elements',  List[Element])
-
-UntangledPyutMethods = NewType('UntangledPyutMethods', List[PyutMethod])
-UntangledPyutFields  = NewType('UntangledPyutFields',  List[PyutField])
 
 
 @dataclass
@@ -234,7 +236,7 @@ class UnTanglePyut:
 
         return bogus
 
-    def _methodToPyutMethods(self, classElement: Element) -> UntangledPyutMethods:
+    def _methodToPyutMethods(self, classElement: Element) -> PyutMethods:
         """
         The pyutClass may not have methods;
         Args:
@@ -242,7 +244,7 @@ class UnTanglePyut:
 
         Returns:  May return an empty list
         """
-        untangledPyutMethods: UntangledPyutMethods = UntangledPyutMethods([])
+        untangledPyutMethods: PyutMethods = PyutMethods([])
 
         methodElements = classElement.get_elements('Method')
         for methodElement in methodElements:
@@ -268,8 +270,8 @@ class UnTanglePyut:
 
         return untangledPyutMethods
 
-    def _fieldToPyutFields(self, classElement: Element) -> UntangledPyutFields:
-        untangledPyutFields: UntangledPyutFields = UntangledPyutFields([])
+    def _fieldToPyutFields(self, classElement: Element) -> PyutFields:
+        untangledPyutFields: PyutFields = PyutFields([])
 
         fieldElements: Elements = classElement.get_elements('Field')
         for fieldElement in fieldElements:
@@ -340,9 +342,9 @@ class UnTanglePyut:
             sourceCode.append(codeLine)
         return sourceCode
 
-    def _interfaceMethodsToPyutMethods(self, interface: Element) -> List[PyutMethod]:
+    def _interfaceMethodsToPyutMethods(self, interface: Element) -> PyutMethods:
 
-        pyutMethods: List[PyutMethod] = self._methodToPyutMethods(interface)
+        pyutMethods: PyutMethods = self._methodToPyutMethods(interface)
 
         return pyutMethods
 

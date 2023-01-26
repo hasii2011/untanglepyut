@@ -1,20 +1,20 @@
 wheel==0.38.4
-setuptools==65.6.3
+setuptools==66.1.1
 twine==4.0.2
-build==0.9.0
+build==0.10.0
 html-testRunner~=1.2.1
 
 mypy==0.991
 mypy-extensions~= 0.4.3
 types-Deprecated==1.2.9
-types-setuptools==65.6.0.2
+types-setuptools==65.7.0.3
 typing_extensions==4.4.0
 
 Deprecated~=1.2.13
 
 wxPython~=4.2.0
 
-pyutmodel~=1.3.2
-ogl~=0.60.25
+pyutmodel~=1.3.4
+ogl~=0.60.30
 untangle==1.2.1
 
