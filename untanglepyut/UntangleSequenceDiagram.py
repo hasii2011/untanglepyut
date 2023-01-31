@@ -1,6 +1,5 @@
-from typing import Dict
+
 from typing import List
-from typing import NewType
 
 from logging import Logger
 from logging import getLogger
@@ -98,7 +97,7 @@ class UntangleSequenceDiagram(BaseUnTangle):
 
             pyutSDMessage.setSource(srcInstance.pyutObject)          # Ugh, time was set by sdMessageToPyutSDMessage
             pyutSDMessage.setDestination(dstInstance.pyutObject)     # This "split" functionality must be fixed
-            oglSDMessage: OglSDMessage = OglSDMessage(srcShape=srcInstance, pyutSDMessage=pyutSDMessage, dstShape=dstInstance)
+            oglSDMessage: OglSDMessage = OglSDMessage(srcSDInstance=srcInstance, pyutSDMessage=pyutSDMessage, dstSDInstance=dstInstance)
 
             srcInstance.addLink(link=oglSDMessage)
             dstInstance.addLink(link=oglSDMessage)

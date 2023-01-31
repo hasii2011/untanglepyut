@@ -94,11 +94,11 @@ class TestUnTangleOglLinks(TestBase):
 
             pyutLink: PyutLink = oglLink.pyutObject
             if pyutLink.linkType == PyutLinkType.INTERFACE:
-                srcShape:     OglClass  = oglLink.getSourceShape()
+                srcShape:     OglClass  = oglLink.sourceShape
                 srcPyutClass: PyutClass = srcShape.pyutObject
                 self.assertEqual(8, srcPyutClass.id)
 
-                dstShape:     OglClass  = oglLink.getDestinationShape()
+                dstShape:     OglClass  = oglLink.destinationShape
                 dstPyutClass: PyutClass = dstShape.pyutObject
                 self.assertEqual(7, dstPyutClass.id)
                 break

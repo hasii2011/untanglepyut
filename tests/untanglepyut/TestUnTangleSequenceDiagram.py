@@ -67,7 +67,7 @@ class TestUnTangleSequenceDiagram(TestBase):
 
         sdMessages: OglSDMessages = document.oglSDMessages
         for sdMessage in sdMessages.values():
-            pyutSDMessage: PyutSDMessage = sdMessage.getPyutObject()
+            pyutSDMessage: PyutSDMessage = sdMessage.pyutSDMessage
             self.assertEqual(PyutLinkType.SD_MESSAGE, pyutSDMessage.linkType, 'Link type not correctly set')
 
     def testSequenceMessagePyutSDMessageIsCorrect(self):
@@ -75,7 +75,7 @@ class TestUnTangleSequenceDiagram(TestBase):
 
         sdMessages: OglSDMessages = document.oglSDMessages
         for sdMessage in sdMessages.values():
-            pyutSDMessage: PyutSDMessage = sdMessage.getPyutObject()
+            pyutSDMessage: PyutSDMessage = sdMessage.pyutSDMessage
 
             pyutSrcInstance: PyutSDInstance = pyutSDMessage.getSource()
             pyutDstInstance: PyutSDInstance = pyutSDMessage.getDest()
