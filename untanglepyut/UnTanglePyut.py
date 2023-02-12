@@ -216,7 +216,7 @@ class UnTanglePyut:
         pyutSDMessage:  PyutSDMessage = PyutSDMessage()
 
         pyutSDMessage.id = int(messageElement['id'])
-        pyutSDMessage.setMessage(messageElement['message'])
+        pyutSDMessage.message = messageElement['message']
         pyutSDMessage.linkType = PyutLinkType.SD_MESSAGE
 
         srcID: int = int(messageElement['srcID'])
@@ -225,8 +225,8 @@ class UnTanglePyut:
         srcTime: int = int(messageElement['srcTime'])
         dstTime: int = int(messageElement['dstTime'])
 
-        pyutSDMessage.setSrcTime(value=srcTime, updateOGLObject=False)
-        pyutSDMessage.setDstTime(value=dstTime, updateOGLObject=False)
+        pyutSDMessage.sourceY      = srcTime
+        pyutSDMessage.destinationY = dstTime
 
         bogus: ConvolutedPyutSDMessageInformation = ConvolutedPyutSDMessageInformation()
 

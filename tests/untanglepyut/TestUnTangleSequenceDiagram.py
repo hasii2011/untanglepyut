@@ -8,6 +8,8 @@ from logging import getLogger
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from ogl.OglDimensions import OglDimensions
+from ogl.preferences.OglPreferences import OglPreferences
 from pkg_resources import resource_filename
 
 from pyutmodel.PyutLinkType import PyutLinkType
@@ -92,8 +94,9 @@ class TestUnTangleSequenceDiagram(TestBase):
         sdInstances: OglSDInstances = document.oglSDInstances
         for sdInstance in sdInstances.values():
             oglSDInstance: OglSDInstance = cast(OglSDInstance, sdInstance)
-            size: Tuple[int, int] = oglSDInstance.GetSize()
-            self.assertEqual(OglSDInstance.DEFAULT_HEIGHT, size[1], 'Lifeline height is incorrect')
+            actualSize:   Tuple[int, int] = oglSDInstance.GetSize()
+            expectedSize: OglDimensions   = OglPreferences().instanceDimensions
+            self.assertEqual(expectedSize.height, actualSize[1], 'Lifeline height is incorrect')
 
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
