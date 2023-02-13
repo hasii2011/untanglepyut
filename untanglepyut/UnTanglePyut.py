@@ -293,7 +293,10 @@ class UnTanglePyut:
         """
         Should be in this form:
 
-        <Modifier name="modifier1,modifier2,modifier3"/>
+            <Modifier name="Modifier1"/>
+            <Modifier name="Modifier2"/>
+            <Modifier name="Modifier3"/>
+            <Modifier name="Modifier4"/>
 
         Args:
             methodElement:
@@ -305,10 +308,8 @@ class UnTanglePyut:
 
         pyutModifiers: PyutModifiers = PyutModifiers([])
         if len(modifierElements) > 0:
-            modifierElement: Element   = modifierElements[0]
-            names:           str       = modifierElement['name']    # comma delimited string
-            nameList:        List[str] = names.split(',')
-            for modifierName in nameList:
+            for modifierElement in modifierElements:
+                modifierName:           str       = modifierElement['name']
                 pyutModifier: PyutModifier = PyutModifier(modifierTypeName=modifierName)
                 pyutModifiers.append(pyutModifier)
 

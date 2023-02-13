@@ -25,6 +25,7 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutField import PyutField
+from pyutmodel.PyutModifier import PyutModifier
 from pyutmodel.PyutStereotype import PyutStereotype
 
 from tests.TestBase import DIAGRAM_NAME_1
@@ -197,17 +198,29 @@ class TestUnTangler(TestBase):
 
     def testPyutMethodModifiers(self):
 
-        oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_1)
+        fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiMethodModifier.xml')
+
+        untangler: UnTangler = UnTangler()
+        untangler.untangleFile(fqFileName=fqFileName)
+
+        document:  Document             = untangler.documents[DocumentTitle('MultiMethodModifier')]
+        oglClasses: UntangledOglClasses = document.oglClasses
+
         for oglClass in oglClasses:
             pyutClass: PyutClass = oglClass.pyutObject
-            if pyutClass.name == 'BaseClass':
+            if pyutClass.name == 'ClassWithMethods':
                 methods: List[PyutMethod] = pyutClass.methods
                 for method in methods:
                     if method.name == 'methodWithManyModifiers':
-                        expectedModifiers: List[str] = ['modifier1', 'modifier2']
+                        expectedModifiers: List[str] = ['Modifier1', 'Modifier2', 'Modifier3', 'Modifier4']
                         modifiers: PyutModifiers = method.modifiers
+                        self.assertEqual(4, len(modifiers), 'Missing Modifiers')
+                        foundCount: int = 0
                         for modifier in modifiers:
-                            self.assertIn(modifier, expectedModifiers, 'Unexpected method modifier')
+                            pyutModifier: PyutModifier = cast(PyutModifier, modifier)
+                            self.assertIn(pyutModifier.name, expectedModifiers, 'Unexpected method modifier')
+                            foundCount +=1
+                        self.assertEqual(4, foundCount, 'Did not find all the expected modifiers')
 
     def testPyutMethodHasSourceCode(self):
         oglClasses: UntangledOglClasses = self._getOglClassesFromDocument(DIAGRAM_NAME_1)
