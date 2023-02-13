@@ -1,9 +1,9 @@
 [![CircleCI](https://dl.circleci.com/insights-snapshot/gh/hasii2011/untanglepyut/master/main/badge.svg?window=30d)](https://app.circleci.com/insights/github/hasii2011/untanglepyut/workflows/main/overview?branch=master&reporting-window=last-30-days&insights-snapshot=true)
+<img src="./docs/agpl-license-web-badge-version-2-256x48.png"/>
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/hasii2011/untanglepyut/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/hasii2011/untanglepyut/tree/master)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
 
-<img src="./docs/agpl-license-web-badge-version-2-256x48.png"/>
 
 
 
