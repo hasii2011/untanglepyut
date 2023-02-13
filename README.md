@@ -1,9 +1,13 @@
+[![CircleCI](https://dl.circleci.com/insights-snapshot/gh/hasii2011/untanglepyut/master/main/badge.svg?window=30d)](https://app.circleci.com/insights/github/hasii2011/untanglepyut/workflows/main/overview?branch=master&reporting-window=last-30-days&insights-snapshot=true)
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/hasii2011/untanglepyut/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/hasii2011/untanglepyut/tree/master)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
+
 <img src="./docs/agpl-license-web-badge-version-2-256x48.png"/>
 
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/Naereen/StrapDown.js/graphs/commit-activity)
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/hasii2011/untanglepyut/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/hasii2011/untanglepyut/tree/master)
-[![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)
 
+
+[![macOS](https://svgshare.com/i/ZjP.svg)](https://svgshare.com/i/ZjP.svg)
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 
 This project is intended to be used by [Pyut Plugin](https://github.com/hasii2011/pyutplugincore) developers to convert [Pyut](https://github.com/hasii2011/PyUt) XML files to the [Ogl Model](https://github.com/hasii2011/ogl) classes.  These model classes can then be used by the Pyut UI to display as UML Diagrams.
