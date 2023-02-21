@@ -161,8 +161,8 @@ class UnTangleOglLinks:
         dstShape.addLink(oglLink)
 
         # put the anchors at the right position
-        srcAnchor = oglLink.GetSource()
-        dstAnchor = oglLink.GetDestination()
+        srcAnchor = oglLink.sourceAnchor
+        dstAnchor = oglLink.destinationAnchor
         srcAnchor.SetPosition(gla.srcX, gla.srcY)
         dstAnchor.SetPosition(gla.dstX, gla.dstY)
 
@@ -173,8 +173,8 @@ class UnTangleOglLinks:
 
         # add the control points to the line
         line   = srcAnchor.GetLines()[0]     # only 1 line per anchor in Pyut
-        parent = line.GetSource().GetParent()
-        selfLink: bool = parent is oglLink.GetDestination().GetParent()
+        parent = line.sourceAnchor.GetParent()
+        selfLink: bool = parent is oglLink.destinationAnchor.GetParent()
 
         controlPoints: UntangledControlPoints = self._generateControlPoints(graphicLink=graphicLink)
         for controlPoint in controlPoints:

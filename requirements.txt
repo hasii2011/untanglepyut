@@ -16,6 +16,6 @@ Deprecated~=1.2.13
 wxPython~=4.2.0
 
 pyutmodel==1.4.0
-ogl~=0.70.0
+ogl~=0.70.10
 untangle==1.2.1
 

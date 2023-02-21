@@ -10,7 +10,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="untanglepyut",
-    version="0.6.25",
+    version="0.6.30",
     author_email='Humberto.A.Sanchez.II@gmail.com',
     description='XML to Ogl Object Model',
     long_description=README,
@@ -23,5 +23,5 @@ setup(
         'untanglepyut': ['py.typed'],
     },
 
-    install_requires=['ogl==0.70.0', 'untangle==1.2.1'],
+    install_requires=['ogl==0.70.10', 'untangle==1.2.1'],
 )
