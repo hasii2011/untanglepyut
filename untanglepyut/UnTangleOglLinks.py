@@ -9,10 +9,11 @@ from typing import cast
 
 from dataclasses import dataclass
 
+from miniogl.AttachmentSide import AttachmentSide
 from pyutmodel.PyutClass import PyutClass
 from untangle import Element
 
-from miniogl.AttachmentLocation import AttachmentLocation
+
 from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
@@ -239,8 +240,8 @@ class UnTangleOglLinks:
         #
         # x: int = int(graphicLollipop['x'])
         # y: int = int(graphicLollipop['y'])
-        attachmentLocationStr: str                = graphicLollipop['attachmentPoint']
-        attachmentLocation:    AttachmentLocation = AttachmentLocation.toEnum(attachmentLocationStr)
+        attachmentLocationStr: str            = graphicLollipop['attachmentPoint']
+        attachmentSide:        AttachmentSide = AttachmentSide.toEnum(attachmentLocationStr)
 
         elements: Element = graphicLollipop.get_elements('Interface')
         assert len(elements) == 1, 'If more than one interface tag the XML is invalid'
@@ -248,10 +249,10 @@ class UnTangleOglLinks:
         pyutInterface:    PyutInterface = self._untanglePyut.interfaceToPyutInterface(interface=interfaceElement)
 
         oglClass:    OglClass    = self._getOglClassFromName(pyutInterface.implementors[0], linkableOglObjects)
-        oglPosition: OglPosition = self._determineAttachmentPoint(attachmentLocation, oglClass)
+        oglPosition: OglPosition = self._determineAttachmentPoint(attachmentSide, oglClass)
         self.logger.debug(f'{oglPosition.x=},{oglPosition.y=}')
 
-        anchorPoint:      SelectAnchorPoint = SelectAnchorPoint(x=oglPosition.x, y=oglPosition.y, attachmentPoint=attachmentLocation, parent=oglClass)
+        anchorPoint:      SelectAnchorPoint = SelectAnchorPoint(x=oglPosition.x, y=oglPosition.y, attachmentSide=attachmentSide, parent=oglClass)
         oglInterface2:    OglInterface2     = OglInterface2(pyutInterface=pyutInterface, destinationAnchor=anchorPoint)
 
         return oglInterface2
@@ -276,7 +277,7 @@ class UnTangleOglLinks:
         assert foundClass is not None, 'XML must be in error'
         return foundClass
 
-    def _determineAttachmentPoint(self, attachmentPoint: AttachmentLocation, oglClass: OglClass) -> OglPosition:
+    def _determineAttachmentPoint(self, attachmentPoint: AttachmentSide, oglClass: OglClass) -> OglPosition:
         """
         Even though we serialize the attachment point location that position is relative to the diagram.
         When we recreate the attachment point position we have to create it relative to its parent
@@ -293,22 +294,22 @@ class UnTangleOglLinks:
 
         dw, dh     = oglClass.GetSize()
 
-        if attachmentPoint == AttachmentLocation.NORTH:
+        if attachmentPoint == AttachmentSide.NORTH:
             northX: int = dw // 2
             northY: int = 0
             oglPosition.x = northX
             oglPosition.y = northY
-        elif attachmentPoint == AttachmentLocation.SOUTH:
+        elif attachmentPoint == AttachmentSide.SOUTH:
             southX = dw // 2
             southY = dh
             oglPosition.x = southX
             oglPosition.y = southY
-        elif attachmentPoint == AttachmentLocation.WEST:
+        elif attachmentPoint == AttachmentSide.WEST:
             westX: int = 0
             westY: int = dh // 2
             oglPosition.x = westX
             oglPosition.y = westY
-        elif attachmentPoint == AttachmentLocation.EAST:
+        elif attachmentPoint == AttachmentSide.EAST:
             eastX: int = dw
             eastY: int = dh // 2
             oglPosition.x = eastX
