@@ -23,5 +23,5 @@ setup(
         'untanglepyut': ['py.typed'],
     },
 
-    install_requires=['ogl==0.70.20', 'untangle==1.2.1'],
+    install_requires=['hasiicommon~=0.2.1', 'pyutmodel~=1.4.2', 'ogl==0.70.22', 'untangle==1.2.1'],
 )

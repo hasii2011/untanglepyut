@@ -2,15 +2,11 @@ from typing import List
 from typing import Tuple
 from typing import cast
 
-from logging import Logger
-from logging import getLogger
-
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from ogl.OglDimensions import OglDimensions
 from ogl.preferences.OglPreferences import OglPreferences
-from pkg_resources import resource_filename
 
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutSDInstance import PyutSDInstance
@@ -31,16 +27,8 @@ from tests.TestBase import TestBase
 class TestUnTangleSequenceDiagram(TestBase):
     """
     """
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestUnTangleSequenceDiagram.clsLogger = getLogger(__name__)
-
     def setUp(self):
         super().setUp()
-        self.logger: Logger = TestUnTangleSequenceDiagram.clsLogger
 
     def tearDown(self):
         super().tearDown()
@@ -57,7 +45,7 @@ class TestUnTangleSequenceDiagram(TestBase):
 
         expectedInstanceNames: List[str] = ['Instance1', 'Instance2']
         for oglSDInstance in oglSDInstances.values():
-            self.assertIn(oglSDInstance.instanceName.GetText(), expectedInstanceNames, 'Not an expected instance')
+            self.assertIn(oglSDInstance.instanceName.text, expectedInstanceNames, 'Not an expected instance')
 
     def testSequenceMessages(self):
         document: Document = self._retrieveSequenceDiagramDocument()
@@ -100,7 +88,7 @@ class TestUnTangleSequenceDiagram(TestBase):
 
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
-        fqFileName: str       = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SequenceDiagram.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'SequenceDiagram.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)

@@ -1,13 +1,11 @@
 
 from typing import cast
 
-from logging import Logger
-from logging import getLogger
-
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
+
 from ogl.OglAssociation import OglAssociation
 from ogl.OglAssociationLabel import OglAssociationLabel
 
@@ -15,7 +13,6 @@ from ogl.OglClass import OglClass
 from ogl.OglInheritance import OglInheritance
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglLink import OglLink
-from pkg_resources import resource_filename
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutInterface import PyutInterface
@@ -26,6 +23,7 @@ from tests.TestBase import DIAGRAM_NAME_1
 from tests.TestBase import DIAGRAM_NAME_2
 from tests.TestBase import TEST_XML_FILENAME
 from tests.TestBase import TestBase
+
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
@@ -37,24 +35,17 @@ class TestUnTangleOglLinks(TestBase):
     """
     SIMPLE_DIAGRAM_NAME: DocumentTitle = DocumentTitle('Simple')
 
-    clsLogger: Logger = cast(Logger, None)
-
-    @classmethod
-    def setUpClass(cls):
-        TestBase.setUpLogging()
-        TestUnTangleOglLinks.clsLogger = getLogger(__name__)
-
     def setUp(self):
-        self.logger: Logger = TestUnTangleOglLinks.clsLogger
+
         super().setUp()
-        self._fqFileName: str = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, TEST_XML_FILENAME)
+        self._fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, TEST_XML_FILENAME)
 
     def tearDown(self):
         super().tearDown()
 
     def testNoGraphicLinks(self):
-        fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
-        untangler: UnTangler = UnTangler()
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
+        untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName)
 
@@ -70,9 +61,8 @@ class TestUnTangleOglLinks(TestBase):
 
     def testSimpleInheritance(self):
 
-        fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleInheritance.xml')
-
-        untangler: UnTangler = UnTangler()
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleInheritance.xml')
+        untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
 
@@ -163,7 +153,8 @@ class TestUnTangleOglLinks(TestBase):
         self.assertTrue(foundMethods, 'Did not untangle the expected lollipop interface')
 
     def testGetAssociationLabelPositions(self):
-        fqFileName: str        = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
+
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName)

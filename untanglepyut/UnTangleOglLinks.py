@@ -186,7 +186,7 @@ class UnTangleOglLinks:
                 controlPoint.SetPosition(x, y)
 
         if isinstance(oglLink, OglAssociation):
-            self.__furtherCustomizeAssociationLink(graphicLink, oglLink)
+            oglLink = self.__furtherCustomizeAssociationLink(graphicLink, oglLink)
 
         self._reconstituteLinkDataModel(oglLink)
 
@@ -357,7 +357,7 @@ class UnTangleOglLinks:
             srcPyutClass:  PyutClass = cast(PyutClass, srcShape.pyutObject)
             srcPyutClass.addLink(pyutLink)
 
-    def __furtherCustomizeAssociationLink(self, graphicLink: Element, oglLink: OglAssociation):
+    def __furtherCustomizeAssociationLink(self, graphicLink: Element, oglLink: OglAssociation) -> OglAssociation:
         """
         Customize the visual aspects of an Association link
 
@@ -366,22 +366,28 @@ class UnTangleOglLinks:
         Args:
             graphicLink:  The top level GraphicLink Element
             oglLink:      The current OGL representation of the graphicLink
+
+        Returns:  The updated association link
         """
         center: OglAssociationLabel = oglLink.centerLabel
         src:    OglAssociationLabel = oglLink.sourceCardinality
         dest:   OglAssociationLabel = oglLink.destinationCardinality
 
-        self.__setAssociationLabelPosition(graphicLink, 'LabelCenter', center)
-        self.__setAssociationLabelPosition(graphicLink, 'LabelSrc',    src)
-        self.__setAssociationLabelPosition(graphicLink, 'LabelDst',    dest)
+        oglLink.centerLabel            = self.__setAssociationLabelPosition(graphicLink, 'LabelCenter', center)
+        oglLink.sourceCardinality      = self.__setAssociationLabelPosition(graphicLink, 'LabelSrc',    src)
+        oglLink.destinationCardinality = self.__setAssociationLabelPosition(graphicLink, 'LabelDst',    dest)
 
-    def __setAssociationLabelPosition(self, graphicLink: Element, tagName: str, associationLabel: OglAssociationLabel):
+        return oglLink
+
+    def __setAssociationLabelPosition(self, graphicLink: Element, tagName: str, associationLabel: OglAssociationLabel) -> OglAssociationLabel:
         """
 
         Args:
             graphicLink:  The top level GraphicLink Element
             tagName:      The XML Element name
             associationLabel:  The Ogl association label to update
+
+        Returns:  The updated association label
         """
         labels:  List[Element]   = graphicLink.get_elements(tagName)
         assert len(labels) == 1, 'There can be only one'
@@ -393,3 +399,5 @@ class UnTangleOglLinks:
 
         associationLabel.oglPosition.x = x
         associationLabel.oglPosition.y = y
+
+        return associationLabel
