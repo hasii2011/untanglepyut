@@ -4,10 +4,10 @@ twine==4.0.2
 build==0.10.0
 html-testRunner~=1.2.1
 
-mypy==1.1.1
+mypy==1.2.0
 mypy-extensions==1.0.0
 types-Deprecated==1.2.9.2
-types-setuptools==67.6.0.6
+types-setuptools==67.6.0.7
 typing_extensions==4.5.0
 
 Deprecated~=1.2.13
@@ -15,7 +15,8 @@ Deprecated~=1.2.13
 untangle==1.2.1
 wxPython~=4.2.0
 
-hasiicommon~=0.2.1
-pyutmodel~=1.4.2
-ogl~=0.70.22
+hasiihelper~=0.2.0
+hasiicommon==0.2.2
+pyutmodel==1.4.3
+ogl==0.70.26
 
