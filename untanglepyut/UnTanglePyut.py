@@ -6,6 +6,8 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
+from os import linesep as osLineSep
+
 from untangle import Element
 
 from pyutmodel.PyutField import PyutField
@@ -58,6 +60,9 @@ class UnTanglePyut:
     """
     Converts PyutModel XML to Pyut Objects
     """
+    # https://www.codetable.net/hex/a
+    END_OF_LINE_MARKER: str ='&#xA;'
+
     def __init__(self):
 
         self.logger: Logger = getLogger(__name__)
@@ -117,9 +122,12 @@ class UnTanglePyut:
         noteElement: Element = graphicNote.Note
         pyutNote: PyutNote = PyutNote()
 
+        # fix line feeds
         pyutNote = cast(PyutNote, self._addPyutObjectAttributes(pyutElement=noteElement, pyutObject=pyutNote))
 
-        pyutNote.content = noteElement['content']
+        rawContent:   str = noteElement['content']
+        cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
+        pyutNote.content = cleanContent
         return pyutNote
 
     def interfaceToPyutInterface(self, interface: Element) -> PyutInterface:

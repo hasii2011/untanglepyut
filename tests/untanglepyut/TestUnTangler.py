@@ -10,16 +10,17 @@ from importlib.abc import Traversable
 
 from importlib.resources import files
 
+from os import linesep as osLineSep
+
 from unittest import TestSuite
 from unittest import main as unitTestMain
-
-from ogl.OglLink import OglLink
-from ogl.OglNote import OglNote
 
 from miniogl.ControlPoint import ControlPoint
 
 from ogl.OglClass import OglClass
 from ogl.OglActor import OglActor
+from ogl.OglLink import OglLink
+from ogl.OglNote import OglNote
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutMethod import PyutMethod
@@ -27,6 +28,7 @@ from pyutmodel.PyutMethod import PyutModifiers
 from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutModifier import PyutModifier
+from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutStereotype import PyutStereotype
 
 from tests.TestBase import DIAGRAM_NAME_1
@@ -269,6 +271,25 @@ class TestUnTangler(TestBase):
         expectedRepr: str = 'I am a UML Note'
         actualRepr:   str = oglNote.__repr__()      # indirectly tests pyutNote.content
         self.assertEqual(expectedRepr, actualRepr, 'Bad representation')
+
+    def testMultiLineUmlNote(self):
+
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLineNote.xml')
+        untangler:  UnTangler = UnTangler()
+
+        untangler.untangleFile(fqFileName=fqFileName)
+
+        document: Document = untangler.documents[DocumentTitle('DiagramNotes')]
+
+        self.assertTrue(len(document.oglNotes) == 1, 'Too many notes')
+
+        oglNote:     OglNote  = document.oglNotes.pop()
+        pyutNote:    PyutNote = oglNote.pyutObject
+        noteContent: str      = pyutNote.content
+
+        lines: List[str] = noteContent.split(osLineSep)
+
+        self.assertTrue(len(lines) == 4, 'Did not recover correct number of lines')
 
     def testUmlText(self):
 

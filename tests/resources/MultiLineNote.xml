@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<PyutProject version="" CodePath="">
+	<PyutDocument type="CLASS_DIAGRAM" title="DiagramNotes" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+		<GraphicClass width="145" height="100" x="400" y="75">
+			<Class id="1" name="Animal" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="isMammal" visibility="PUBLIC">
+					<Return type="bool"/>
+					<SourceCode/>
+				</Method>
+				<Method name="mate" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PRIVATE">
+					<Param name="age" type="int" defaultValue=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicClass width="160" height="101" x="75" y="300">
+			<Class id="2" name="Duck" stereotype="noStereotype" filename="" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+				<Method name="swim" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Method name="quack" visibility="PUBLIC">
+					<Return type=""/>
+					<SourceCode/>
+				</Method>
+				<Field visibility="PRIVATE">
+					<Param name="beakColor" type="str" defaultValue=""/>
+				</Field>
+			</Class>
+		</GraphicClass>
+		<GraphicNote width="137" height="101" x="100" y="100">
+			<Note id="3" content="Can Fly&#xA;Can Swim&#xA;Can Dive&#xA;Can help in debugging" filename=""/>
+		</GraphicNote>
+		<GraphicText width="147" height="45" x="550" y="200" textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
+			<Text id="4" content="Standalone Text"/>
+		</GraphicText>
+		<GraphicLink srcX="234" srcY="350" dstX="469" dstY="174" spline="False">
+			<ControlPoint x="470" y="350"/>
+			<Link name="" type="INHERITANCE" cardSrc="" cardDestination="" bidir="False" sourceId="2" destId="1"/>
+		</GraphicLink>
+		<GraphicLink srcX="168" srcY="200" dstX="167" dstY="300" spline="False">
+			<Link name="Notelink-10" type="NOTELINK" cardSrc="" cardDestination="" bidir="False" sourceId="3" destId="2"/>
+		</GraphicLink>
+	</PyutDocument>
+</PyutProject>
