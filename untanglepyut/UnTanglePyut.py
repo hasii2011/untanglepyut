@@ -288,10 +288,12 @@ class UnTanglePyut:
             assert len(paramElements) == 1, 'Curiously there should be only one'
 
             paramElement: Element = paramElements[0]
-            fieldName: str = paramElement['name']
-            pyutType:  PyutType  = PyutType(paramElement['type'])
-
-            pyutField: PyutField = PyutField(name=fieldName, visibility=visibility, fieldType=pyutType)
+            fieldName:    str       = paramElement['name']
+            pyutType:     PyutType  = PyutType(paramElement['type'])
+            defaultValue: str       = paramElement['defaultValue']
+            if defaultValue is None:
+                defaultValue = ''
+            pyutField: PyutField = PyutField(name=fieldName, visibility=visibility, fieldType=pyutType, defaultValue=defaultValue)
 
             untangledPyutFields.append(pyutField)
 
