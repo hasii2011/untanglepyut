@@ -106,8 +106,11 @@ class UnTanglePyut:
         textElement: Element  = graphicText.Text
         pyutText:    PyutText = PyutText()
 
-        pyutText.id     = textElement['id']
-        pyutText.content = textElement['content']
+        pyutText.id  = textElement['id']
+
+        rawContent:   str = textElement['content']
+        cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
+        pyutText.content = cleanContent
 
         return pyutText
 
