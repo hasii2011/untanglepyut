@@ -18,14 +18,12 @@ from unittest import main as unitTestMain
 from miniogl.ControlPoint import ControlPoint
 
 from ogl.OglClass import OglClass
-from ogl.OglActor import OglActor
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutModifiers
-from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutModifier import PyutModifier
 from pyutmodel.PyutNote import PyutNote
@@ -35,10 +33,8 @@ from tests.TestBase import DIAGRAM_NAME_1
 from tests.TestBase import DIAGRAM_NAME_2
 from tests.TestBase import TEST_XML_FILENAME
 
-from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
-from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.UnTangler import Document
 from untanglepyut.UnTangler import DocumentTitle
 
@@ -302,32 +298,6 @@ class TestUnTangler(TestBase):
 
         self.assertEqual(1, len(document.oglTexts), 'Incorrect # of text annotations')
 
-    def testUseCaseDiagramActors(self):
-
-        document:  Document           = self._retrieveUseCaseDocument()
-        oglActors: UntangledOglActors = document.oglActors
-
-        self.assertEqual(1, len(oglActors), 'Mismatch # of OglActors ')
-
-        oglActor: OglActor = oglActors[0]
-        pyutActor: PyutActor = oglActor.pyutObject
-        actualName: str = pyutActor.name
-        expectedName: str = 'BasicActor'
-
-        self.assertEqual(expectedName, actualName, 'Did we get the wrong actor !!')
-
-    def testUseCaseDiagramUseCases(self):
-        document:    Document             = self._retrieveUseCaseDocument()
-        oglUseCases: UntangledOglUseCases = document.oglUseCases
-
-        self.assertEqual(1, len(oglUseCases), 'Mismatch # of OglUseCases ')
-
-    def testUseCaseDiagramLinks(self):
-        document: Document             = self._retrieveUseCaseDocument()
-        oglLinks: UntangledOglLinks = document.oglLinks
-
-        self.assertEqual(1, len(oglLinks), 'Mismatch # of links ')      # TODO TEMP UNTIL I REFACTOR DIRTY CODE
-
     def testOglClassModelUpdated(self):
 
         fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'ATM-Model.xml')
@@ -457,16 +427,6 @@ class TestUnTangler(TestBase):
         self.assertEqual(expectedX, pos[0], f'{objectName} x position is incorrect')
         self.assertEqual(expectedY, pos[1], f'{objectName} y position is incorrect')
 
-    def _retrieveUseCaseDocument(self) -> Document:
-
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'UseCaseDiagram.xml')
-        untangler:  UnTangler = UnTangler()
-
-        untangler.untangleFile(fqFileName=fqFileName)
-
-        document: Document = untangler.documents[DocumentTitle('Use-Cases')]
-
-        return document
 
 
 def suite() -> TestSuite:

@@ -184,6 +184,8 @@ class UnTangler(BaseUnTangle):
                 unTangleUseCaseDiagram.unTangle(pyutDocument=pyutDocument)
                 document.oglActors   = unTangleUseCaseDiagram.oglActors
                 document.oglUseCases = unTangleUseCaseDiagram.oglUseCases
+                document.oglNotes    = self._graphicNotesToOglNotes(pyutDocument=pyutDocument)
+                document.oglTexts    = self._graphicalTextToOglTexts(pyutDocument=pyutDocument)
 
                 linkableOglObjects = self._buildDictionary(document=document)
                 document.oglLinks  = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
