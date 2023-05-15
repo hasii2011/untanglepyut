@@ -42,6 +42,7 @@ class TestUnTangleUseCase(TestBase):
         document: Document = untangler.documents[DocumentTitle('Use-Cases')]
 
         self.assertEqual(1, len(document.oglTexts), 'Mismatch # of OglText instances ')
+        self.assertEqual(1, len(document.oglNotes), 'Mismatch # of OglNote instances')
 
     def testUseCaseDiagramActors(self):
 
