@@ -1,5 +1,6 @@
 import pathlib
 from setuptools import setup
+from untanglepyut import __version__ as untanglepyutVersion
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -10,7 +11,7 @@ LICENSE = (HERE / 'LICENSE').read_text()
 
 setup(
     name="untanglepyut",
-    version="0.6.61",
+    version=untanglepyutVersion,
     author_email='Humberto.A.Sanchez.II@gmail.com',
     description='XML to Ogl Object Model',
     long_description=README,
