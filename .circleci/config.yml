@@ -35,7 +35,7 @@ jobs:
             pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04  wxPython
             pip install hasiihelper~=0.2.0
             pip install hasiicommon~=0.2.2
-            pip install ogl~=0.70.30
+            pip install ogl~=0.70.40
             pip install untangle==1.2.1
             pip install buildlackey~=0.8.1
       - run:
