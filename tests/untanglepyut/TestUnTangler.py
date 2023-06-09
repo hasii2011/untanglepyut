@@ -428,14 +428,12 @@ class TestUnTangler(TestBase):
         self.assertEqual(expectedY, pos[1], f'{objectName} y position is incorrect')
 
 
-
 def suite() -> TestSuite:
-    """You need to change the name of the test class here also."""
     import unittest
 
     testSuite: TestSuite = TestSuite()
-    # noinspection PyUnresolvedReferences
-    testSuite.addTest(unittest.makeSuite(TestUnTangler))
+
+    testSuite.addTest(unittest.defaultTestLoader.loadTestsFromTestCase(testCaseClass=TestUnTangler))
 
     return testSuite
 
