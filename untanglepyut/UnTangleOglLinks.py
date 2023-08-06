@@ -1,19 +1,20 @@
 
-from logging import Logger
-from logging import getLogger
 from typing import Dict
 from typing import List
 from typing import NewType
 from typing import Union
 from typing import cast
 
+from logging import Logger
+from logging import getLogger
+
 from dataclasses import dataclass
 
-from miniogl.AttachmentSide import AttachmentSide
 from pyutmodel.PyutClass import PyutClass
+
 from untangle import Element
 
-
+from miniogl.AttachmentSide import AttachmentSide
 from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
@@ -186,7 +187,7 @@ class UnTangleOglLinks:
                 controlPoint.SetPosition(x, y)
 
         if isinstance(oglLink, OglAssociation):
-            oglLink = self.__furtherCustomizeAssociationLink(graphicLink, oglLink)
+            self._addAssociationLabels(graphicLink, oglLink)
 
         self._reconstituteLinkDataModel(oglLink)
 
@@ -357,47 +358,37 @@ class UnTangleOglLinks:
             srcPyutClass:  PyutClass = cast(PyutClass, srcShape.pyutObject)
             srcPyutClass.addLink(pyutLink)
 
-    def __furtherCustomizeAssociationLink(self, graphicLink: Element, oglLink: OglAssociation) -> OglAssociation:
+    def _addAssociationLabels(self, graphicLink: Element, oglAssociation: OglAssociation):
         """
-        Customize the visual aspects of an Association link
-
-        TODO:  There is no support for this yet.  Need to add it to OglAssociation
+        The association labels are now separate components;  We need to handle that
 
         Args:
-            graphicLink:  The top level GraphicLink Element
-            oglLink:      The current OGL representation of the graphicLink
+            graphicLink:    The top level GraphicLink Element
+            oglAssociation: The current OGL representation of the graphicLink
 
         Returns:  The updated association link
         """
-        center: OglAssociationLabel = oglLink.centerLabel
-        src:    OglAssociationLabel = oglLink.sourceCardinality
-        dest:   OglAssociationLabel = oglLink.destinationCardinality
 
-        oglLink.centerLabel            = self.__setAssociationLabelPosition(graphicLink, 'LabelCenter', center)
-        oglLink.sourceCardinality      = self.__setAssociationLabelPosition(graphicLink, 'LabelSrc',    src)
-        oglLink.destinationCardinality = self.__setAssociationLabelPosition(graphicLink, 'LabelDst',    dest)
+        pyutLink:         PyutLink            = oglAssociation.pyutObject
 
-        return oglLink
+        oglAssociation.centerLabel            = self._createALabel(oglAssociation, graphicLink, text=pyutLink.name, tagName='LabelCenter')
+        oglAssociation.sourceCardinality      = self._createALabel(oglAssociation, graphicLink, text=pyutLink.sourceCardinality, tagName='LabelSrc')
+        oglAssociation.destinationCardinality = self._createALabel(oglAssociation, graphicLink, text=pyutLink.destinationCardinality, tagName='LabelDst')
 
-    def __setAssociationLabelPosition(self, graphicLink: Element, tagName: str, associationLabel: OglAssociationLabel) -> OglAssociationLabel:
-        """
+    def _createALabel(self, parentAssociation: OglAssociation, graphicLink: Element, text: str, tagName: str) -> OglAssociationLabel:
 
-        Args:
-            graphicLink:  The top level GraphicLink Element
-            tagName:      The XML Element name
-            associationLabel:  The Ogl association label to update
-
-        Returns:  The updated association label
-        """
         labels:  List[Element]   = graphicLink.get_elements(tagName)
         assert len(labels) == 1, 'There can be only one'
+
         label: Element = labels[0]
-        x: int = int(label['x'])
-        y: int = int(label['y'])
+        x:     int     = int(label['x'])
+        y:     int     = int(label['y'])
 
-        self.logger.debug(f'tagName: {tagName} `{associationLabel.text=}`  pos: ({x},{y})')
+        self.logger.debug(f'{tagName=} `{text=}` pos: ({x},{y})')
 
-        associationLabel.oglPosition.x = x
-        associationLabel.oglPosition.y = y
+        updatedLabelText: str = text
+        if updatedLabelText is None:
+            updatedLabelText = ''
+        oglAssociationLabel: OglAssociationLabel = OglAssociationLabel(x=x, y=y, text=updatedLabelText, parent=parentAssociation)
 
-        return associationLabel
+        return oglAssociationLabel

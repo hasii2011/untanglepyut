@@ -1,8 +1,10 @@
 
+from typing import Tuple
 from typing import cast
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
+from unittest.mock import MagicMock
 
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
@@ -39,6 +41,8 @@ class TestUnTangleOglLinks(TestBase):
 
         super().setUp()
         self._fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, TEST_XML_FILENAME)
+
+        self._mockDC: MagicMock = MagicMock()
 
     def tearDown(self):
         super().tearDown()
@@ -165,18 +169,22 @@ class TestUnTangleOglLinks(TestBase):
         for oglLink in oglLinks:
             self.logger.info(f'{oglLink}')
             oglAssociation: OglAssociation = cast(OglAssociation, oglLink)
+            oglAssociation.Draw(dc=self._mockDC, withChildren=False)
             center: OglAssociationLabel = oglAssociation.centerLabel
             src:    OglAssociationLabel = oglAssociation.sourceCardinality
             dest:   OglAssociationLabel = oglAssociation.destinationCardinality
 
-            self.assertEqual(380, center.oglPosition.x, 'Bad center x')
-            self.assertEqual(125, center.oglPosition.y, 'Bad center y')
+            dumbPosition: Tuple[int, int] = center.GetPosition()
+            self.assertEqual(669, dumbPosition[0], 'Bad center x')
+            self.assertEqual(249, dumbPosition[1], 'Bad center y')
 
-            self.assertEqual(380, src.oglPosition.x, 'Bad source x')
-            self.assertEqual(125, src.oglPosition.y, 'Bad source y')
+            dumbPosition = src.GetPosition()
+            self.assertEqual(669, dumbPosition[0], 'Bad source x')
+            self.assertEqual(249, dumbPosition[1], 'Bad source y')
 
-            self.assertEqual(380, dest.oglPosition.x, 'Bad destination x')
-            self.assertEqual(125, dest.oglPosition.y, 'Bad destination y')
+            dumbPosition = dest.GetPosition()
+            self.assertEqual(669, dumbPosition[0], 'Bad destination x')
+            self.assertEqual(249, dumbPosition[1], 'Bad destination y')
 
     def _getOglLinksFromDocument(self, title: DocumentTitle) -> UntangledOglLinks:
         untangler: UnTangler = UnTangler()
