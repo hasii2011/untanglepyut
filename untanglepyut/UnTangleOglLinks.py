@@ -1,14 +1,9 @@
 
-from typing import Dict
 from typing import List
-from typing import NewType
-from typing import Union
 from typing import cast
 
 from logging import Logger
 from logging import getLogger
-
-from dataclasses import dataclass
 
 from pyutmodel.PyutClass import PyutClass
 
@@ -29,16 +24,15 @@ from ogl.OglComposition import OglComposition
 from ogl.OglInheritance import OglInheritance
 from ogl.OglInterface import OglInterface
 from ogl.OglNoteLink import OglNoteLink
-from ogl.OglNote import OglNote
-from ogl.OglActor import OglActor
-from ogl.OglUseCase import OglUseCase
+
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglAssociationLabel import OglAssociationLabel
 
-
-from untanglepyut.Common import str2bool
+from untanglepyut.Types import GraphicLinkAttributes
+from untanglepyut.Types import LinkableOglObject
+from untanglepyut.Types import LinkableOglObjects
 
 from untanglepyut.Types import UntangledControlPoints
 from untanglepyut.Types import UntangledOglLinks
@@ -47,48 +41,8 @@ from untanglepyut.Types import createUntangledOglLinks
 from untanglepyut.v10.UnTanglePyut import UnTanglePyut
 
 
-LinkableOglObject = Union[OglClass, OglNote, OglActor, OglUseCase]
-
-LinkableOglObjects = NewType('LinkableOglObjects',   Dict[int, LinkableOglObject])
-
-
-def createLinkableOglObjects() -> LinkableOglObjects:
-    return LinkableOglObjects({})
-
-
-@dataclass
-class GraphicLinkAttributes:
-
-    srcX:   int = -1
-    srcY:   int = -1
-    dstX:   int = -1
-    dstY:   int = -1
-    spline: bool = False
-
-
-def fromGraphicLink(graphicLink: Element) -> GraphicLinkAttributes:
-
-    gla: GraphicLinkAttributes = GraphicLinkAttributes()
-    gla.srcX = int(graphicLink['srcX'])
-    gla.srcY = int(graphicLink['srcY'])
-    gla.dstX = int(graphicLink['dstX'])
-    gla.dstY = int(graphicLink['dstY'])
-
-    gla.spline = str2bool(graphicLink['spline'])
-
-    return gla
-
-
 class UnTangleOglLinks:
     """
-    Currently, unsupported:
-
-    ```html
-      <LabelCenter x="579" y="300"/>
-      <LabelSrc x="579" y="300"/>
-      <LabelDst x="579" y="300"/>
-    ```
-    See:
     """
 
     def __init__(self):
@@ -137,7 +91,7 @@ class UnTangleOglLinks:
         """
 
         assert len(linkableOglObjects) != 0, 'Developer forgot to create dictionary'
-        gla: GraphicLinkAttributes = fromGraphicLink(graphicLink=graphicLink)
+        gla: GraphicLinkAttributes = GraphicLinkAttributes.fromGraphicLink(graphicLink=graphicLink)
 
         links: Element = graphicLink.get_elements('Link')
         assert len(links) == 1, 'Should only ever be one'

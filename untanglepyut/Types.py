@@ -21,6 +21,8 @@ from ogl.OglInterface2 import OglInterface2
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
+from untanglepyut.Common import str2bool
+
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
 
@@ -135,3 +137,34 @@ Documents     = NewType('Documents', dict[DocumentTitle, Document])
 # class SDDocument(Document):
 #     oglSDInstances:  OglSDInstances = field(default_factory=createOglSDInstances)
 #     oglSDMessages:   OGLSDMessages  = field(default_factory=createOGLSDMessages)
+
+LinkableOglObject = Union[OglClass, OglNote, OglActor, OglUseCase]
+
+LinkableOglObjects = NewType('LinkableOglObjects',   Dict[int, LinkableOglObject])
+
+
+def createLinkableOglObjects() -> LinkableOglObjects:
+    return LinkableOglObjects({})
+
+
+@dataclass
+class GraphicLinkAttributes:
+
+    srcX:   int = -1
+    srcY:   int = -1
+    dstX:   int = -1
+    dstY:   int = -1
+    spline: bool = False
+
+    @classmethod
+    def fromGraphicLink(cls, graphicLink: Element) -> 'GraphicLinkAttributes':
+
+        gla: GraphicLinkAttributes = GraphicLinkAttributes()
+        gla.srcX = int(graphicLink['srcX'])
+        gla.srcY = int(graphicLink['srcY'])
+        gla.dstX = int(graphicLink['dstX'])
+        gla.dstY = int(graphicLink['dstY'])
+
+        gla.spline = str2bool(graphicLink['spline'])
+
+        return gla

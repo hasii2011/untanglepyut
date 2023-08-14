@@ -27,13 +27,14 @@ from untanglepyut.Types import GraphicInformation
 from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
+from untanglepyut.Types import createLinkableOglObjects
 from untanglepyut.Types import createUntangledOglClasses
 from untanglepyut.Types import createUntangledOglNotes
 from untanglepyut.Types import createUntangledOglTexts
 
-from untanglepyut.UnTangleOglLinks import LinkableOglObjects
-from untanglepyut.UnTangleOglLinks import createLinkableOglObjects
 from untanglepyut.v10.UnTanglePyut import UnTanglePyut
+
+from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.UntangleSequenceDiagram import UntangleSequenceDiagram
