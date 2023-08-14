@@ -44,7 +44,7 @@ from untanglepyut.Types import UntangledControlPoints
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import createUntangledOglLinks
 
-from untanglepyut.UnTanglePyut import UnTanglePyut
+from untanglepyut.v10.UnTanglePyut import UnTanglePyut
 
 
 LinkableOglObject = Union[OglClass, OglNote, OglActor, OglUseCase]

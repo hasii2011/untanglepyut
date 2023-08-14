@@ -17,7 +17,7 @@ from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.Types import createUntangledOglActors
 from untanglepyut.Types import createUntangledOglUseCases
-from untanglepyut.UnTanglePyut import UnTanglePyut
+from untanglepyut.v10.UnTanglePyut import UnTanglePyut
 
 
 class UnTangleUseCaseDiagram(BaseUnTangle):

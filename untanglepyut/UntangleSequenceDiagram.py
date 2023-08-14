@@ -20,8 +20,8 @@ from untanglepyut.BaseUnTangle import BaseUnTangle
 from untanglepyut.Types import createOglSDInstances
 from untanglepyut.Types import createOglSDMessages
 
-from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
-from untanglepyut.UnTanglePyut import UnTanglePyut
+from untanglepyut.v10.UnTanglePyut import ConvolutedPyutSDMessageInformation
+from untanglepyut.v10.UnTanglePyut import UnTanglePyut
 
 
 class UntangleSequenceDiagram(BaseUnTangle):

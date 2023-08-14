@@ -33,7 +33,7 @@ from untanglepyut.Types import createUntangledOglTexts
 
 from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import createLinkableOglObjects
-from untanglepyut.UnTanglePyut import UnTanglePyut
+from untanglepyut.v10.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.UntangleSequenceDiagram import UntangleSequenceDiagram

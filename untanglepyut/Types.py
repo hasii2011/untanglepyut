@@ -7,6 +7,8 @@ from typing import Union
 from dataclasses import dataclass
 from dataclasses import field
 
+from untangle import Element
+
 from miniogl.ControlPoint import ControlPoint
 
 from ogl.OglActor import OglActor
@@ -18,7 +20,6 @@ from ogl.OglUseCase import OglUseCase
 from ogl.OglInterface2 import OglInterface2
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
-from untangle import Element
 
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
