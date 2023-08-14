@@ -33,11 +33,11 @@ from untanglepyut.Types import createUntangledOglNotes
 from untanglepyut.Types import createUntangledOglTexts
 
 from untanglepyut.v10.UnTanglePyut import UnTanglePyut
+from untanglepyut.v10.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
+from untanglepyut.v10.UntangleSequenceDiagram import UntangleSequenceDiagram
 
 from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
-from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
-from untanglepyut.UntangleSequenceDiagram import UntangleSequenceDiagram
 
 
 @dataclass
