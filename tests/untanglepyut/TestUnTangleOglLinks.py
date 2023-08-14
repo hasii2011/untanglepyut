@@ -26,10 +26,11 @@ from tests.TestBase import DIAGRAM_NAME_2
 from tests.TestBase import TEST_XML_FILENAME
 from tests.TestBase import TestBase
 
+from untanglepyut.Types import Document
+from untanglepyut.Types import DocumentTitle
 from untanglepyut.Types import UntangledOglLinks
-from untanglepyut.UnTangler import Document
-from untanglepyut.UnTangler import DocumentTitle
-from untanglepyut.UnTangler import UnTangler
+
+from untanglepyut.v10.UnTangler import UnTangler
 
 
 class TestUnTangleOglLinks(TestBase):
@@ -191,7 +192,7 @@ class TestUnTangleOglLinks(TestBase):
 
         untangler.untangleFile(fqFileName=self._fqFileName)
 
-        document:  Document             = untangler.documents[title]
+        document:  Document          = untangler.documents[title]
         oglLinks:  UntangledOglLinks = document.oglLinks
         return oglLinks
 

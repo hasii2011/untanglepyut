@@ -39,7 +39,7 @@ from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 
-from untanglepyut.UnTangler import UnTangler
+from untanglepyut.v10.UnTangler import UnTangler
 
 from tests.TestBase import TestBase
 

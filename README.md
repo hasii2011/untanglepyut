@@ -12,22 +12,27 @@ This project is intended to be used by [Pyut Plugin](https://github.com/hasii201
 Use as follows:
 
 ```python
-from untanglepyut.UnTangler import Document
-from untanglepyut.UnTangler import UnTangler
+from untanglepyut.Types import Document
+from untanglepyut.Types import DocumentTitle
 
 from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 
-untangler: UnTangler = UnTangler(fqFileName='MultiDocumentProject.xml')
+from untanglepyut.v10.UnTangler import UnTangler
 
-document: Document = untangler.documents['Diagram-1']
+fqFileName: str      = 'MultiLinkDocument.xml'
+untangler: UnTangler = UnTangler()
+
+untangler.untangleFile(fqFileName=fqFileName)
+
+document: Document = untangler.documents[DocumentTitle('Diagram-1')]
 
 oglClasses: UntangledOglClasses = document.oglClasses
-oglLinks:   UntangledOglLinks   = document.oglLinks
-oglNotes:   UntangledOglNotes   = document.oglNotes
-oglTexts:   UntangledOglTexts   = document.oglTexts
+oglLinks: UntangledOglLinks = document.oglLinks
+oglNotes: UntangledOglNotes = document.oglNotes
+oglTexts: UntangledOglTexts = document.oglTexts
 
 ```
 

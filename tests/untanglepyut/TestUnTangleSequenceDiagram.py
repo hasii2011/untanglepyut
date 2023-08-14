@@ -14,12 +14,12 @@ from pyutmodel.PyutSDMessage import PyutSDMessage
 
 from ogl.sd.OglSDInstance import OglSDInstance
 
+from untanglepyut.Types import Document
+from untanglepyut.Types import DocumentTitle
 from untanglepyut.Types import OglSDInstances
 from untanglepyut.Types import OglSDMessages
 
-from untanglepyut.UnTangler import Document
-from untanglepyut.UnTangler import DocumentTitle
-from untanglepyut.UnTangler import UnTangler
+from untanglepyut.v10.UnTangler import UnTangler
 
 from tests.TestBase import TestBase
 

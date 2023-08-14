@@ -6,18 +6,15 @@ from pyutmodel.PyutActor import PyutActor
 
 from ogl.OglActor import OglActor
 
+from untanglepyut.Types import Document
+from untanglepyut.Types import DocumentTitle
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import UntangledOglUseCases
 
-from untanglepyut.UnTangler import Document
-from untanglepyut.UnTangler import DocumentTitle
-from untanglepyut.UnTangler import UnTangler
+from untanglepyut.v10.UnTangler import UnTangler
 
 from tests.TestBase import TestBase
-
-# import the class you want to test here
-# from org.pyut.template import template
 
 
 class TestUnTangleUseCase(TestBase):
