@@ -35,9 +35,8 @@ from untanglepyut.Types import createUntangledOglTexts
 from untanglepyut.v10.UnTanglePyut import UnTanglePyut
 from untanglepyut.v10.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.v10.UntangleSequenceDiagram import UntangleSequenceDiagram
-
-from untanglepyut.UnTangleOglLinks import LinkableOglObjects
-from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
+from untanglepyut.v10.UnTangleOglLinks import LinkableOglObjects
+from untanglepyut.v10.UnTangleOglLinks import UnTangleOglLinks
 
 
 @dataclass
