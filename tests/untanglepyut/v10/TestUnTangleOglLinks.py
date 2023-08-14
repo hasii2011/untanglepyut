@@ -41,7 +41,7 @@ class TestUnTangleOglLinks(TestBase):
     def setUp(self):
 
         super().setUp()
-        self._fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, TEST_XML_FILENAME)
+        self._fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, TEST_XML_FILENAME)
 
         self._mockDC: MagicMock = MagicMock()
 
@@ -49,7 +49,7 @@ class TestUnTangleOglLinks(TestBase):
         super().tearDown()
 
     def testNoGraphicLinks(self):
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName)
@@ -66,7 +66,7 @@ class TestUnTangleOglLinks(TestBase):
 
     def testSimpleInheritance(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleInheritance.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleInheritance.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -159,7 +159,7 @@ class TestUnTangleOglLinks(TestBase):
 
     def testGetAssociationLabelPositions(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName)

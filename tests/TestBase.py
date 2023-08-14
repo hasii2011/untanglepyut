@@ -1,4 +1,7 @@
 
+from os import sep as osSep
+
+from hasiihelper.UnitTestBase import UnitTestBase
 from hasiicommon.ui.UnitTestBaseW import UnitTestBaseW
 
 from untanglepyut.v10.UnTangler import DocumentTitle
@@ -10,10 +13,7 @@ TEST_XML_FILENAME: str           = 'MultiDocumentProject.xml'
 
 class TestBase(UnitTestBaseW):
 
-    RESOURCES_TEST_CLASSES_PACKAGE_NAME:      str = 'tests.resources.testclass'
-    RESOURCES_TEST_JAVA_CLASSES_PACKAGE_NAME: str = 'tests.resources.testclass.ozzee'
-    RESOURCES_TEST_DATA_PACKAGE_NAME:         str = 'tests.resources.testdata'
-    RESOURCES_TEST_IMAGES_PACKAGE_NAME:       str = 'tests.resources.testimages'
+    V10_TEST_FILES_PACKAGE_NAME:  str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.v10'
 
     def setUp(self):
         super().setUp()

@@ -54,7 +54,7 @@ class TestUnTangler(TestBase):
 
         super().setUp()
 
-        traversable: Traversable = files(TestBase.RESOURCES_PACKAGE_NAME) / TEST_XML_FILENAME
+        traversable: Traversable = files(TestBase.V10_TEST_FILES_PACKAGE_NAME) / TEST_XML_FILENAME
         self._fqFileName: str = str(traversable)
 
     def tearDown(self):
@@ -92,7 +92,7 @@ class TestUnTangler(TestBase):
         self.assertEqual(2, len(untangler.documents), 'Incorrect number of documents created')
 
     def testControlPointsGenerated(self):
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(package=TestBase.RESOURCES_PACKAGE_NAME, fileName='ATM-Model.xml')
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(package=TestBase.V10_TEST_FILES_PACKAGE_NAME, fileName='ATM-Model.xml')
         untangler: UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -189,7 +189,7 @@ class TestUnTangler(TestBase):
 
     def testPyutMethodModifiers(self):
 
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'MultiMethodModifier.xml')
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'MultiMethodModifier.xml')
         untangler: UnTangler = UnTangler()
         untangler.untangleFile(fqFileName=fqFileName)
 
@@ -251,7 +251,7 @@ class TestUnTangler(TestBase):
         self._runTest(DIAGRAM_NAME_1, emptyTest)
 
     def testUmlNote(self):
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'MultiObject.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'MultiObject.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -269,7 +269,7 @@ class TestUnTangler(TestBase):
 
     def testMultiLineUmlNote(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLineNote.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'MultiLineNote.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -288,7 +288,7 @@ class TestUnTangler(TestBase):
 
     def testUmlText(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'MultiObject.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'MultiObject.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -299,7 +299,7 @@ class TestUnTangler(TestBase):
 
     def testOglClassModelUpdated(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'ATM-Model.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'ATM-Model.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -315,7 +315,7 @@ class TestUnTangler(TestBase):
 
     def testOglTextModelUpdated(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLinkDocument.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'MultiLinkDocument.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -331,7 +331,7 @@ class TestUnTangler(TestBase):
 
     def testOglClassesWithFields(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'MultiLinkDocument.xml')
+        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'MultiLinkDocument.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)

@@ -31,7 +31,7 @@ class TestUnTangleUseCase(TestBase):
         super().tearDown()
 
     def testUseCaseDiagramNotesTexts(self):
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'UseCasesTextNotes.xml')
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCasesTextNotes.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -69,7 +69,7 @@ class TestUnTangleUseCase(TestBase):
 
     def _retrieveUseCaseDocument(self) -> Document:
 
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.RESOURCES_PACKAGE_NAME, 'UseCaseDiagram.xml')
+        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCaseDiagram.xml')
         untangler:  UnTangler = UnTangler()
 
         untangler.untangleFile(fqFileName=fqFileName)
