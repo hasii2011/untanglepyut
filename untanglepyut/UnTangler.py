@@ -1,12 +1,10 @@
 
-from typing import NewType
 from typing import cast
 
 from logging import Logger
 from logging import getLogger
 
 from dataclasses import dataclass
-from dataclasses import field
 
 from untangle import parse
 from untangle import Element
@@ -21,30 +19,24 @@ from pyutmodel.PyutText import PyutText
 
 from untanglepyut.BaseUnTangle import BaseUnTangle
 
-from untanglepyut.Common import Elements
-from untanglepyut.Common import toGraphicInfo
-from untanglepyut.Common import GraphicInformation
-from untanglepyut.Common import UntangledOglLinks
-from untanglepyut.Common import createUntangledOglActors
-from untanglepyut.Common import createUntangledOglLinks
-from untanglepyut.Common import createUntangledOglUseCases
-
-from untanglepyut.Types import UntangledOglActors
+from untanglepyut.Types import Document
+from untanglepyut.Types import DocumentTitle
+from untanglepyut.Types import Documents
+from untanglepyut.Types import Elements
+from untanglepyut.Types import GraphicInformation
 from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
-from untanglepyut.Types import UntangledOglUseCases
+from untanglepyut.Types import createUntangledOglClasses
+from untanglepyut.Types import createUntangledOglNotes
+from untanglepyut.Types import createUntangledOglTexts
 
 from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import createLinkableOglObjects
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
-from untanglepyut.UntangleSequenceDiagram import OglSDMessages
-from untanglepyut.UntangleSequenceDiagram import OglSDInstances
 from untanglepyut.UntangleSequenceDiagram import UntangleSequenceDiagram
-from untanglepyut.UntangleSequenceDiagram import createOglSDMessages
-from untanglepyut.UntangleSequenceDiagram import createOglSDInstances
 
 
 @dataclass
@@ -52,59 +44,6 @@ class ProjectInformation:
     fileName: str = cast(str, None)
     version:  str = cast(str, None)
     codePath: str = cast(str, None)
-
-
-"""
-Factory methods for our dataclasses
-"""
-
-
-def createUntangledOglClasses() -> UntangledOglClasses:
-    """
-    Factory method to create  the UntangledClasses data structure;
-
-    Returns:  A new data structure
-    """
-    return UntangledOglClasses([])
-
-
-def createUntangledOglNotes() -> UntangledOglNotes:
-    return UntangledOglNotes([])
-
-
-def createUntangledOglTexts() -> UntangledOglTexts:
-    return UntangledOglTexts([])
-
-
-@dataclass
-class Document:
-    """
-    Create a UseCaseDocument and a ClassDiagramDocument
-    """
-    documentType:    str = ''
-    documentTitle:   str = ''
-    scrollPositionX: int = -1
-    scrollPositionY: int = -1
-    pixelsPerUnitX:  int = -1
-    pixelsPerUnitY:  int = -1
-    oglClasses:      UntangledOglClasses  = field(default_factory=createUntangledOglClasses)
-    oglLinks:        UntangledOglLinks    = field(default_factory=createUntangledOglLinks)
-    oglNotes:        UntangledOglNotes    = field(default_factory=createUntangledOglNotes)
-    oglTexts:        UntangledOglTexts    = field(default_factory=createUntangledOglTexts)
-    oglActors:       UntangledOglActors   = field(default_factory=createUntangledOglActors)
-    oglUseCases:     UntangledOglUseCases = field(default_factory=createUntangledOglUseCases)
-    oglSDInstances:  OglSDInstances = field(default_factory=createOglSDInstances)
-    oglSDMessages:   OglSDMessages  = field(default_factory=createOglSDMessages)
-
-
-# @dataclass
-# class SDDocument(Document):
-#     oglSDInstances:  OglSDInstances = field(default_factory=createOglSDInstances)
-#     oglSDMessages:   OGLSDMessages  = field(default_factory=createOGLSDMessages)
-
-
-DocumentTitle = NewType('DocumentTitle', str)
-Documents     = NewType('Documents', dict[DocumentTitle, Document])
 
 
 class UnTangler(BaseUnTangle):
@@ -240,7 +179,7 @@ class UnTangler(BaseUnTangle):
         for graphicClass in graphicClasses:
             self.logger.debug(f'{graphicClass=}')
 
-            graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicClass)
+            graphicInformation: GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicClass)
             oglClass: OglClass = OglClass(pyutClass=None, w=graphicInformation.width, h=graphicInformation.height)
             oglClass.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
             #
@@ -269,7 +208,7 @@ class UnTangler(BaseUnTangle):
         for graphicNote in graphicNotes:
             self.logger.debug(f'{graphicNote}')
 
-            graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicNote)
+            graphicInformation: GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicNote)
             oglNote:            OglNote            = OglNote(w=graphicInformation.width, h=graphicInformation.height)
             oglNote.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
             self._updateModel(oglObject=oglNote, graphicInformation=graphicInformation)
@@ -294,7 +233,7 @@ class UnTangler(BaseUnTangle):
         for graphicText in graphicTexts:
             self.logger.debug(f'{graphicText}')
 
-            graphicInformation: GraphicInformation = toGraphicInfo(graphicElement=graphicText)
+            graphicInformation: GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicText)
             pyutText:           PyutText           = self._untanglePyut.textToPyutText(graphicText=graphicText)
             oglText:            OglText            = OglText(pyutText=pyutText, width=graphicInformation.width, height=graphicInformation.height)
             oglText.SetPosition(x=graphicInformation.x, y=graphicInformation.y)

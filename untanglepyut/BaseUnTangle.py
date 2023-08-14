@@ -5,7 +5,7 @@ from logging import getLogger
 from miniogl.ShapeModel import ShapeModel
 from ogl.OglObject import OglObject
 
-from untanglepyut.Common import GraphicInformation
+from untanglepyut.Types import GraphicInformation
 
 
 class BaseUnTangle:
@@ -28,6 +28,3 @@ class BaseUnTangle:
         model.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
         return model
-
-
-

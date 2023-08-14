@@ -5,7 +5,6 @@ from typing import List
 from typing import Tuple
 from typing import cast
 
-
 from importlib.abc import Traversable
 
 from importlib.resources import files
@@ -33,14 +32,14 @@ from tests.TestBase import DIAGRAM_NAME_1
 from tests.TestBase import DIAGRAM_NAME_2
 from tests.TestBase import TEST_XML_FILENAME
 
+from untanglepyut.Types import Document
+from untanglepyut.Types import DocumentTitle
+from untanglepyut.Types import UntangledOglClasses
+from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
-from untanglepyut.UnTangler import Document
-from untanglepyut.UnTangler import DocumentTitle
 
 from untanglepyut.UnTangler import UnTangler
-from untanglepyut.UnTangler import UntangledOglClasses
-from untanglepyut.UnTangler import UntangledOglLinks
 
 from tests.TestBase import TestBase
 

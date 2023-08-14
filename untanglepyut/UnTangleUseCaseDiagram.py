@@ -10,15 +10,13 @@ from pyutmodel.PyutUseCase import PyutUseCase
 from ogl.OglActor import OglActor
 from ogl.OglUseCase import OglUseCase
 
-from untanglepyut.Common import GraphicInformation
-from untanglepyut.Common import toGraphicInfo
-from untanglepyut.Common import createUntangledOglActors
-from untanglepyut.Common import createUntangledOglUseCases
+from untanglepyut.BaseUnTangle import BaseUnTangle
+from untanglepyut.Types import GraphicInformation
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
-
-from untanglepyut.BaseUnTangle import BaseUnTangle
+from untanglepyut.Types import createUntangledOglActors
+from untanglepyut.Types import createUntangledOglUseCases
 from untanglepyut.UnTanglePyut import UnTanglePyut
 
 
@@ -72,7 +70,7 @@ class UnTangleUseCaseDiagram(BaseUnTangle):
 
         graphicActors: Element = pyutDocument.get_elements('GraphicActor')
         for graphicActor in graphicActors:
-            graphicInfo: GraphicInformation = toGraphicInfo(graphicActor)
+            graphicInfo: GraphicInformation = GraphicInformation.toGraphicInfo(graphicActor)
             oglActor:    OglActor           = OglActor(w=graphicInfo.width, h=graphicInfo.height)
             oglActor.SetPosition(x=graphicInfo.x, y=graphicInfo.y)
 
@@ -92,7 +90,7 @@ class UnTangleUseCaseDiagram(BaseUnTangle):
 
         graphicUseCases: Element = pyutDocument.get_elements('GraphicUseCase')
         for graphicUseCase in graphicUseCases:
-            graphicInfo: GraphicInformation = toGraphicInfo(graphicUseCase)
+            graphicInfo: GraphicInformation = GraphicInformation.toGraphicInfo(graphicUseCase)
             oglUseCase:  OglUseCase         = OglUseCase(w=graphicInfo.width, h=graphicInfo.height)
 
             oglUseCase.SetPosition(x=graphicInfo.x, y=graphicInfo.y)

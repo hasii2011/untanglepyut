@@ -1,7 +1,7 @@
-from dataclasses import dataclass
-from typing import List
-from typing import NewType
+
 from typing import cast
+
+from dataclasses import dataclass
 
 from logging import Logger
 from logging import getLogger
@@ -40,8 +40,7 @@ from pyutmodel.PyutSDMessage import PyutSDMessage
 
 from untanglepyut.Common import secureInteger
 from untanglepyut.Common import str2bool
-
-Elements = NewType('Elements',  List[Element])
+from untanglepyut.Types import Elements
 
 
 @dataclass
@@ -61,7 +60,7 @@ class UnTanglePyut:
     Converts PyutModel XML to Pyut Objects
     """
     # https://www.codetable.net/hex/a
-    END_OF_LINE_MARKER: str ='&#xA;'
+    END_OF_LINE_MARKER: str = '&#xA;'
 
     def __init__(self):
 

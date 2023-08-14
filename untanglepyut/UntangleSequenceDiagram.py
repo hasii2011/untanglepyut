@@ -12,24 +12,16 @@ from pyutmodel.PyutSDMessage import PyutSDMessage
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
+from untanglepyut.Types import GraphicInformation
 from untanglepyut.Types import OglSDInstances
 from untanglepyut.Types import OglSDMessages
 
 from untanglepyut.BaseUnTangle import BaseUnTangle
-
-from untanglepyut.Common import GraphicInformation
-from untanglepyut.Common import toGraphicInfo
+from untanglepyut.Types import createOglSDInstances
+from untanglepyut.Types import createOglSDMessages
 
 from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
-
-
-def createOglSDInstances() -> OglSDInstances:
-    return OglSDInstances({})
-
-
-def createOglSDMessages() -> OglSDMessages:
-    return OglSDMessages({})
 
 
 class UntangleSequenceDiagram(BaseUnTangle):
@@ -72,7 +64,7 @@ class UntangleSequenceDiagram(BaseUnTangle):
             pyutSDInstance: PyutSDInstance     = self._untanglePyut.sdInstanceToPyutSDInstance(graphicSDInstance=graphicSDInstance)
 
             oglSDInstance:  OglSDInstance      = OglSDInstance(pyutSDInstance)
-            graphicInfo:    GraphicInformation = toGraphicInfo(graphicElement=graphicSDInstance)
+            graphicInfo:    GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicSDInstance)
 
             oglSDInstance.SetSize(width=graphicInfo.width, height=graphicInfo.height)
             oglSDInstance.SetPosition(x=graphicInfo.x, y=graphicInfo.y)

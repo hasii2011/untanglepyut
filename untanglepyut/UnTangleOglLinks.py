@@ -37,10 +37,12 @@ from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglAssociationLabel import OglAssociationLabel
 
-from untanglepyut.Common import UntangledControlPoints
-from untanglepyut.Common import UntangledOglLinks
-from untanglepyut.Common import createUntangledOglLinks
+
 from untanglepyut.Common import str2bool
+
+from untanglepyut.Types import UntangledControlPoints
+from untanglepyut.Types import UntangledOglLinks
+from untanglepyut.Types import createUntangledOglLinks
 
 from untanglepyut.UnTanglePyut import UnTanglePyut
 
