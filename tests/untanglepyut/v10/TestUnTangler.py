@@ -88,7 +88,7 @@ class TestUnTangler(TestBase):
         untangler: UnTangler = UnTangler()
 
         rawXml: str = untangler.getRawXml(fqFileName=self._fqFileName)
-        untangler.untangleXml(xmlString=rawXml)
+        untangler.untangleXml(xmlString=rawXml, fqFileName=self._fqFileName)
         self.assertEqual(2, len(untangler.documents), 'Incorrect number of documents created')
 
     def testControlPointsGenerated(self):

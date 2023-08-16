@@ -3,6 +3,7 @@ from typing import Dict
 from typing import List
 from typing import NewType
 from typing import Union
+from typing import cast
 
 from dataclasses import dataclass
 from dataclasses import field
@@ -168,3 +169,10 @@ class GraphicLinkAttributes:
         gla.spline = str2bool(graphicLink['spline'])
 
         return gla
+
+
+@dataclass
+class ProjectInformation:
+    fileName: str = cast(str, None)
+    version:  str = cast(str, None)
+    codePath: str = cast(str, None)

@@ -3,14 +3,17 @@ from logging import Logger
 from logging import getLogger
 
 from miniogl.ShapeModel import ShapeModel
+
 from ogl.OglObject import OglObject
 
 from untanglepyut.Types import GraphicInformation
+from untanglepyut.UnTangleIO import UnTangleIO
 
 
-class BaseUnTangle:
+class BaseUnTangle(UnTangleIO):
 
     def __init__(self):
+        super().__init__()
         self.baseLogger: Logger = getLogger(__name__)
 
     def _updateModel(self, oglObject: OglObject, graphicInformation: GraphicInformation) -> ShapeModel:

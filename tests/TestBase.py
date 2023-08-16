@@ -1,6 +1,4 @@
 
-from os import sep as osSep
-
 from hasiihelper.UnitTestBase import UnitTestBase
 from hasiicommon.ui.UnitTestBaseW import UnitTestBaseW
 
@@ -14,6 +12,7 @@ TEST_XML_FILENAME: str           = 'MultiDocumentProject.xml'
 class TestBase(UnitTestBaseW):
 
     V10_TEST_FILES_PACKAGE_NAME:  str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.v10'
+    V11_TEST_FILES_PACKAGE_NAME:  str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.v11'
 
     def setUp(self):
         super().setUp()

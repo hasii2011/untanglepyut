@@ -1,10 +1,6 @@
 
-from typing import cast
-
 from logging import Logger
 from logging import getLogger
-
-from dataclasses import dataclass
 
 from untangle import parse
 from untangle import Element
@@ -24,6 +20,7 @@ from untanglepyut.Types import DocumentTitle
 from untanglepyut.Types import Documents
 from untanglepyut.Types import Elements
 from untanglepyut.Types import GraphicInformation
+from untanglepyut.Types import ProjectInformation
 from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
@@ -31,19 +28,13 @@ from untanglepyut.Types import createLinkableOglObjects
 from untanglepyut.Types import createUntangledOglClasses
 from untanglepyut.Types import createUntangledOglNotes
 from untanglepyut.Types import createUntangledOglTexts
+from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 
 from untanglepyut.v10.UnTanglePyut import UnTanglePyut
 from untanglepyut.v10.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.v10.UntangleSequenceDiagram import UntangleSequenceDiagram
 from untanglepyut.v10.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.v10.UnTangleOglLinks import UnTangleOglLinks
-
-
-@dataclass
-class ProjectInformation:
-    fileName: str = cast(str, None)
-    version:  str = cast(str, None)
-    codePath: str = cast(str, None)
 
 
 class UnTangler(BaseUnTangle):
@@ -81,20 +72,22 @@ class UnTangler(BaseUnTangle):
 
         """
         xmlString:   str     = self.getRawXml(fqFileName=fqFileName)
-        self.untangleXml(xmlString=xmlString)
+        self.untangleXml(xmlString=xmlString, fqFileName=fqFileName)
 
         self._projectInformation.fileName = fqFileName
 
-    def untangleXml(self, xmlString: str):
+    def untangleXml(self, xmlString: str, fqFileName: str):
         """
         Untangle the input Xml string to Ogl
         Args:
-            xmlString: The string wit the raw XML
+            fqFileName:  The file name from which the XML came frame
+            xmlString: The string with the raw XML
         """
         root:        Element = parse(xmlString)
         pyutProject: Element = root.PyutProject
 
-        self._populateProjectInformation(pyutProject=pyutProject)
+        unTangleProjectInformation: UnTangleProjectInformation = UnTangleProjectInformation(fqFileName=fqFileName)
+        self._projectInformation = unTangleProjectInformation.projectInformation
 
         for pyutDocument in pyutProject.PyutDocument:
             document: Document = self._updateCurrentDocumentInformation(pyutDocument=pyutDocument)
@@ -130,28 +123,6 @@ class UnTangler(BaseUnTangle):
                 document.oglLinks  = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
             else:
                 assert False, f'Unknown document type: {document.documentType}'
-
-    def getRawXml(self, fqFileName: str) -> str:
-        """
-        Convenience method to read a file.  Assumes the file has XML.
-        No check is done to verify this
-        Args:
-            fqFileName: The file to read
-
-        Returns:  The contents of the file
-        """
-        try:
-            with open(fqFileName, "r") as xmlFile:
-                xmlString: str = xmlFile.read()
-        except (ValueError, Exception) as e:
-            self.logger.error(f'xml open:  {e}')
-            raise e
-
-        return xmlString
-
-    def _populateProjectInformation(self, pyutProject: Element):
-        self._projectInformation.version  = pyutProject['version']
-        self._projectInformation.codePath = pyutProject['CodePath']
 
     def _updateCurrentDocumentInformation(self, pyutDocument: Element) -> Document:
 
