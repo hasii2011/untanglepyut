@@ -63,8 +63,7 @@ class TestUnTangler(TestBase):
     def testNoProjectInformation(self):
         untangler: UnTangler = UnTangler()
 
-        self.assertIsNone(untangler.projectInformation.version, 'Should be uninitialized')
-        self.assertIsNone(untangler.projectInformation.codePath, 'Should be uninitialized')
+        self.assertIsNone(untangler.projectInformation, 'Should be uninitialized')
 
     def testProjectInformation(self):
 

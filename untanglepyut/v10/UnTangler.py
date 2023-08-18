@@ -1,6 +1,7 @@
 
 from logging import Logger
 from logging import getLogger
+from typing import cast
 
 from untangle import parse
 from untangle import Element
@@ -45,7 +46,7 @@ class UnTangler(BaseUnTangle):
         super().__init__()
         self.logger: Logger = getLogger(__name__)
 
-        self._projectInformation: ProjectInformation = ProjectInformation()
+        self._projectInformation: ProjectInformation = cast(ProjectInformation, None)
         self._documents:          Documents          = Documents({})
 
         self._untanglePyut:     UnTanglePyut     = UnTanglePyut()
@@ -87,6 +88,7 @@ class UnTangler(BaseUnTangle):
         pyutProject: Element = root.PyutProject
 
         unTangleProjectInformation: UnTangleProjectInformation = UnTangleProjectInformation(fqFileName=fqFileName)
+
         self._projectInformation = unTangleProjectInformation.projectInformation
 
         for pyutDocument in pyutProject.PyutDocument:

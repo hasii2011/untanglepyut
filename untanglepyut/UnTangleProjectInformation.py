@@ -1,7 +1,6 @@
 
 from logging import Logger
 from logging import getLogger
-from typing import cast
 
 from untangle import Element
 from untangle import parse
@@ -16,10 +15,8 @@ class UnTangleProjectInformation(UnTangleIO):
     def __init__(self, fqFileName: str):
         super().__init__()
 
-        self.infoLogger: Logger = getLogger(__name__)
-
-        self._fqFileName:         str                = fqFileName
-        self._projectInformation: ProjectInformation = cast(ProjectInformation, None)
+        self.infoLogger:          Logger             = getLogger(__name__)
+        self._projectInformation: ProjectInformation = self._extractProjectInformationForFile(fqFileName=fqFileName)
 
     @property
     def projectInformation(self) -> ProjectInformation:
@@ -28,9 +25,6 @@ class UnTangleProjectInformation(UnTangleIO):
 
         Returns:  The project information of the untangled pyut file
         """
-        if self._projectInformation is None:
-            self._projectInformation = self._extractProjectInformationForFile(fqFileName=self._fqFileName)
-
         return self._projectInformation
 
     def _extractProjectInformationForFile(self, fqFileName: str) -> ProjectInformation:
@@ -45,15 +39,18 @@ class UnTangleProjectInformation(UnTangleIO):
         if fqFileName.endswith('.put') is False and fqFileName.endswith('.xml') is False:
             raise UnsupportedFileTypeException(message='File must end with .xml or .put extension')
 
-        projectInformation: ProjectInformation = ProjectInformation()
-
         if fqFileName.endswith('.xml'):
             xmlString:   str = self.getRawXml(fqFileName=fqFileName)
-            root:        Element = parse(xmlString)
-            pyutProject: Element = root.PyutProject
+        elif fqFileName.endswith('.put'):
+            xmlString = self.decompressFile(fqFileName=fqFileName)
+        else:
+            assert False, 'Unknown file suffix;  Should not get here'
 
-            projectInformation = self._populateProjectInformation(pyutProject=pyutProject)
-            projectInformation.fileName = fqFileName
+        root:        Element = parse(xmlString)
+        pyutProject: Element = root.PyutProject
+
+        projectInformation = self._populateProjectInformation(pyutProject=pyutProject)
+        projectInformation.fileName = fqFileName
 
         return projectInformation
 

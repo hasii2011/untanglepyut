@@ -8,10 +8,6 @@ from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 from untanglepyut.UnsupportedFileTypeException import UnsupportedFileTypeException
 
 
-# import the class you want to test here
-# from org.pyut.template import template
-
-
 class TestUnTangleProjectInformation(TestBase):
     """
     """
@@ -27,8 +23,9 @@ class TestUnTangleProjectInformation(TestBase):
         super().tearDown()
 
     def testIncorrectExtension(self):
-        unTangleProjectInformation: UnTangleProjectInformation = UnTangleProjectInformation(fqFileName='HokeyXmlFileName.opie')
-        self.assertRaises(UnsupportedFileTypeException, lambda: unTangleProjectInformation.projectInformation)
+        with self.assertRaises(UnsupportedFileTypeException):
+            # noinspection PyUnusedLocal
+            unTangleProjectInformation: UnTangleProjectInformation = UnTangleProjectInformation(fqFileName='HokeyXmlFileName.opie')
 
     def testV10ProjectInformation(self):
         self._testProjectInformation(package=TestBase.V10_TEST_FILES_PACKAGE_NAME, fileName='EmptyDiagram.xml', expectedVersion='10')
