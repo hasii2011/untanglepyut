@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="SingleClassDiagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="429" height="145" x="300" y="175">
+            <PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="Display" displayFields="True" displayStereotype="True" description="I am a single class">
+                <PyutMethod name="publicMethod" visibility="PUBLIC" returnType="str">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutMethod name="privateMethod" visibility="PRIVATE" returnType="int">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutMethod name="protectedMethod" visibility="PROTECTED" returnType="float">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutMethod name="staticMethod" visibility="PUBLIC" returnType="">
+                    <Modifier name="static" />
+                    <SourceCode />
+                </PyutMethod>
+                <PyutMethod name="methodWithModifiers" visibility="PUBLIC" returnType="">
+                    <Modifier name="modifier1" />
+                    <Modifier name="final" />
+                    <SourceCode />
+                </PyutMethod>
+                <PyutMethod name="methodWithCode" visibility="PUBLIC" returnType="">
+                    <SourceCode>
+                        <Code>x: int = 0</Code>
+                        <Code>y: int = 0</Code>
+                        <Code />
+                        <Code>z: int = x + y</Code>
+                    </SourceCode>
+                </PyutMethod>
+                <PyutMethod name="methodWithParameters" visibility="PUBLIC" returnType="">
+                    <SourceCode />
+                    <PyutParameter name="intParam" type="int" defaultValue="42" />
+                    <PyutParameter name="floatParam" type="float" defaultValue="32.0" />
+                    <PyutParameter name="strParam" type="str" defaultValue="Ozzee" />
+                </PyutMethod>
+                <PyutField name="publicField" visibility="PUBLIC" type="int" defaultValue="666" />
+                <PyutField name="privateField" visibility="PRIVATE" type="float" defaultValue="42.0" />
+                <PyutField name="protectedField" visibility="PROTECTED" type="str" defaultValue="Ozzee" />
+            </PyutClass>
+        </OglClass>
+    </PyutDocument>
+</PyutProject>

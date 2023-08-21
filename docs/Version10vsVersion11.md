@@ -11,6 +11,20 @@ PyutProject version="11"
 is now
 `<OglClass width="429" height="145" x="300" y="175">`
 
+
+
+## Class → PyutClass
+
+```xml
+<Class id="1" name="SingleClass" stereotype="noStereotype" filename="" description="I am a single class" showMethods="True" showFields="True" showStereotype="True" displayParameters="Display">
+```
+
+is now
+
+```xml
+<PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="Display" displayFields="True" displayStereotype="True" description="I am a single class">
+```
+
 ## GraphicLink → OglLink
 
 `<GraphicLink srcX="125" srcY="146" dstX="553" dstY="147" spline="False">`
