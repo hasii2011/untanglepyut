@@ -9,6 +9,8 @@ from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutField import PyutFields
+from pyutmodel.PyutLink import PyutLink
+from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutMethods
 from pyutmodel.PyutMethod import PyutParameters
@@ -67,6 +69,26 @@ V11_PYUT_CLASS: str = """
    </OglClass>
 """
 
+V11_SOURCE_PYUT_CLASS: str = """
+    <OglClass width="78" height="44" x="150" y="150">
+        <PyutClass id="1" name="Folder" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="">
+            <PyutField name="permissions" visibility="PRIVATE" type="" defaultValue="" />
+        </PyutClass>
+    </OglClass>
+"""
+
+V11_DESTINATION_PYUT_CLASS: str = """
+    <OglClass width="88" height="50" x="151" y="302">
+        <PyutClass id="2" name="File" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="">
+            <PyutField name="size" visibility="PRIVATE" type="" defaultValue="" />
+            <PyutField name="name" visibility="PRIVATE" type="" defaultValue="" />
+        </PyutClass>
+    </OglClass>
+"""
+
+V11_PYUT_LINK: str = """
+        <PyutLink name="organizes" type="COMPOSITION" cardinalitySource="1" cardinalityDestination="*" bidirectional="False" sourceId="1" destinationId="2" />
+"""
 MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
 FieldDictionary  = NewType('FieldDictionary',  Dict[str, PyutField])
 
@@ -85,7 +107,7 @@ class TestUnTanglePyut(TestBase):
         super().tearDown()
 
     def testPyutClass(self):
-        root:        Element = parse(V11_PYUT_CLASS)
+        root:     Element = parse(V11_PYUT_CLASS)
         oglClass: Element = root.OglClass
 
         untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
@@ -110,6 +132,23 @@ class TestUnTanglePyut(TestBase):
         self._checkMethods(methodDictionary)
         self._checkParameters(methodDictionary)
         self._checkFields(pyutClass=pyutClass)
+
+    def testPyutLinks(self):
+        sourcePyutClass:      PyutClass = self._getPyutClass(rawXml=V11_SOURCE_PYUT_CLASS)
+        destinationPyutClass: PyutClass = self._getPyutClass(rawXml=V11_DESTINATION_PYUT_CLASS)
+
+        rootElement:     Element = parse(V11_PYUT_LINK)
+        pyutLinkElement: Element = rootElement.PyutLink
+
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+
+        pyutLink: PyutLink = untanglepyut.linkToPyutLink(singleLink=pyutLinkElement, source=sourcePyutClass, destination=destinationPyutClass)
+        self.assertIsNotNone(pyutLink, '')
+        self.assertEqual('organizes', pyutLink.name, '')
+        self.assertEqual(PyutLinkType.COMPOSITION, pyutLink.linkType)
+        self.assertFalse(pyutLink.getBidir())
+        self.assertEqual('1', pyutLink.sourceCardinality, '')
+        self.assertEqual('*', pyutLink.destinationCardinality, '')
 
     def _checkFields(self, pyutClass: PyutClass):
 
@@ -140,6 +179,18 @@ class TestUnTanglePyut(TestBase):
         pyutMethod = methodDictionary['methodWithParameters']
         parameters: PyutParameters = pyutMethod.parameters
         self.assertEqual(3, len(parameters), '')
+
+    def _getPyutClass(self, rawXml: str) -> PyutClass:
+
+        root:           Element = parse(rawXml)
+        oglSourceClass: Element = root.OglClass
+
+        untanglepyut:     UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutClass:  PyutClass = untanglepyut.classToPyutClass(graphicClass=oglSourceClass)
+
+        self.logger.debug(f'{pyutClass}')
+
+        return pyutClass
 
 
 def suite() -> TestSuite:

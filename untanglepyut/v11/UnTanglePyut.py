@@ -80,6 +80,12 @@ class UnTanglePyut:
             self._attrDisplayParameters: str = XmlConstants.X10_ATTR_DISPLAY_PARAMETERS
             self._attrDisplayFields:     str = XmlConstants.X10_ATTR_DISPLAY_FIELDS
             self._attrDisplayStereoType: str = XmlConstants.X10_ATTR_DISPLAY_STEREOTYPE
+
+            self._attrCardinalitySource:      str = XmlConstants.X10_ATTR_CARDINALITY_SOURCE
+            self._attrCardinalityDestination: str = XmlConstants.X10_ATTR_CARDINALITY_DESTINATION
+            self._attrBidirectional:          str = XmlConstants.X10_ATTR_BIDIRECTIONAL
+            self._attrSourceId:               str = XmlConstants.X10_ATTR_SOURCE_ID
+            self._attrDestinationId:          str = XmlConstants.X10_ATTR_DESTINATION_ID
         else:
             self._elementParameter      = XmlConstants.X11_ELEMENT_PARAMETER
             self._elementMethod         = XmlConstants.X11_ELEMENT_METHOD
@@ -90,6 +96,12 @@ class UnTanglePyut:
             self._attrDisplayParameters = XmlConstants.X11_ATTR_DISPLAY_PARAMETERS
             self._attrDisplayFields     = XmlConstants.X11_ATTR_DISPLAY_FIELDS
             self._attrDisplayStereoType = XmlConstants.X11_ATTR_DISPLAY_STEREOTYPE
+
+            self._attrCardinalitySource      = XmlConstants.X11_ATTR_CARDINALITY_SOURCE
+            self._attrCardinalityDestination = XmlConstants.X11_ATTR_CARDINALITY_DESTINATION
+            self._attrBidirectional          = XmlConstants.X11_ATTR_BIDIRECTIONAL
+            self._attrSourceId               = XmlConstants.X11_ATTR_SOURCE_ID
+            self._attrDestinationId          = XmlConstants.X11_ATTR_DESTINATION_ID
 
     def classToPyutClass(self, graphicClass: Element) -> PyutClass:
         if self._xmlVersion == XmlVersion.V10:
@@ -217,10 +229,11 @@ class UnTanglePyut:
 
     def linkToPyutLink(self, singleLink: Element, source: PyutClass, destination: PyutClass) -> PyutLink:
         linkTypeStr:     str          = singleLink['type']
+
         linkType:        PyutLinkType = PyutLinkType.toEnum(linkTypeStr)
-        cardSrc:         str          = singleLink['cardSrc']
-        cardDest:        str          = singleLink['cardDestination']
-        bidir:           bool         = str2bool(singleLink['bidir'])
+        cardSrc:         str          = singleLink[self._attrCardinalitySource]
+        cardDest:        str          = singleLink[self._attrCardinalityDestination]
+        bidir:           bool         = str2bool(singleLink[self._attrBidirectional])
         linkDescription: str          = singleLink['name']
 
         pyutLink: PyutLink = PyutLink(name=linkDescription,
