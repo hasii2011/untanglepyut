@@ -14,7 +14,9 @@ from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutMethods
 from pyutmodel.PyutMethod import PyutParameters
+from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutStereotype import PyutStereotype
+from pyutmodel.PyutText import PyutText
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
@@ -89,6 +91,26 @@ V11_DESTINATION_PYUT_CLASS: str = """
 V11_PYUT_LINK: str = """
         <PyutLink name="organizes" type="COMPOSITION" cardinalitySource="1" cardinalityDestination="*" bidirectional="False" sourceId="1" destinationId="2" />
 """
+
+V10_PYUT_TEXT: str = """
+    <GraphicText width="138" height="88" x="100" y="325">
+        <Text id="4" content="This plain text&amp;#xA;With line breaks&amp;#xA;At least a few" />
+    </OglText>
+"""
+
+V11_PYUT_TEXT: str = """
+    <OglText width="138" height="88" x="100" y="325">
+        <PyutText id="4" content="This plain text&amp;#xA;With line breaks&amp;#xA;At least a few" />
+    </OglText>
+"""
+
+V11_PYUT_NOTE: str = """
+    <OglNote width="128" height="49" x="175" y="300">
+        <PyutNote id="1" content="I am a note linked to&amp;#xA;the LinkedToClass" filename="" />
+    </OglNote>
+"""
+
+
 MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
 FieldDictionary  = NewType('FieldDictionary',  Dict[str, PyutField])
 
@@ -149,6 +171,26 @@ class TestUnTanglePyut(TestBase):
         self.assertFalse(pyutLink.getBidir())
         self.assertEqual('1', pyutLink.sourceCardinality, '')
         self.assertEqual('*', pyutLink.destinationCardinality, '')
+
+    def testTextToPyutText(self):
+        rootElement:     Element = parse(V11_PYUT_TEXT)
+        oglTextElement: Element = rootElement.OglText
+
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutText:     PyutText     = untanglepyut.textToPyutText(graphicText=oglTextElement)
+        self.assertIsNotNone(pyutText, '')
+        self.assertEqual('This plain text\nWith line breaks\nAt least a few', pyutText.content, '')
+
+    def testNoteToPyutNote(self):
+        rootElement:    Element = parse(V11_PYUT_NOTE)
+        oglNoteElement: Element = rootElement.OglNote
+
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutNote:     PyutNote     = untanglepyut.noteToPyutNote(graphicNote=oglNoteElement)
+
+        self.assertIsNotNone(pyutNote, '')
+        self.assertEqual('I am a note linked to\nthe LinkedToClass', pyutNote.content, '')
+        self.assertEqual('', pyutNote.fileName, '')
 
     def _checkFields(self, pyutClass: PyutClass):
 

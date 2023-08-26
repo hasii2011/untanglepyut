@@ -144,7 +144,11 @@ class UnTanglePyut:
 
         Returns: A PyutText Object
         """
-        textElement: Element  = graphicText.Text
+        if self._xmlVersion == XmlVersion.V10:
+            textElement: Element  = graphicText.Text
+        else:
+            textElement = graphicText.PyutText
+
         pyutText:    PyutText = PyutText()
 
         pyutText.id  = textElement['id']
@@ -163,7 +167,11 @@ class UnTanglePyut:
 
         Returns: A PyutNote Object
         """
-        noteElement: Element = graphicNote.Note
+        if self._xmlVersion == XmlVersion.V10:
+            noteElement: Element = graphicNote.Note
+        else:
+            noteElement = graphicNote.PyutNote
+
         pyutNote: PyutNote = PyutNote()
 
         # fix line feeds
@@ -172,6 +180,12 @@ class UnTanglePyut:
         rawContent:   str = noteElement['content']
         cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
         pyutNote.content = cleanContent
+
+        fileName: str = noteElement['filename']
+        if fileName is None:
+            fileName = ''
+        pyutNote.fileName = fileName
+
         return pyutNote
 
     def interfaceToPyutInterface(self, interface: Element) -> PyutInterface:

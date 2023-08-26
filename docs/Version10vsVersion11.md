@@ -165,16 +165,16 @@ is now
 <OglNote width="128" height="49" x="175" y="300">
 ```
 
-## Note  → PyutNote
+## Text  → PyutText
 
 ```xml
-<Note id="4" content="I am a note linked to&amp;#xA;the LinkedToClass" filename=""/>
+<Text id="1" content="Donec eleifend luctus enim vel mollis"/>
 ```
 
 is now
 
 ```xml
-<PyutNote id="1" content="I am a note linked to&amp;#xA;the LinkedToClass" filename="" />
+<PyutText id="1" content="Donec eleifend luctus enim vel mollis"/>
 ```
 
 ## GraphicText → OglText
@@ -186,7 +186,7 @@ GraphicText width="138" height="88" x="100" y="325" textSize="14" isBold="False"
 is now
 
 ```xml
-<OglText width="138" height="88" x="100" y="325">
+<OglText width="138" height="88" x="100" y="325"  textSize="14" isBold="False" isItalicized="False" fontFamily="Swiss">
 ```
 
 ## Text → PyutText
