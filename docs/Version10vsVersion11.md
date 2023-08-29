@@ -205,15 +205,36 @@ is now
 ## GraphicUseCase → OglUseCase
 
 ```xml
-<GraphicUseCase width="100" height="60" x="475" y="275">
+<GraphicUseCase width="100" height="60" x="475" y="275"/>
 ```
 
 is now
 
 ```xml
-<OglUseCase width="100" height="60" x="475" y="275">
+<OglUseCase width="100" height="60" x="475" y="275"/>
 ```
 
+## GraphicActor → OglActor
+
+```xml
+<GraphicActor width="87" height="114" x="293" y="236"/>
+```
+is now
+```xml
+<OglActor width="87" height="114" x="293" y="236"/>
+```
+
+## Actor → PyutActor
+
+```xml
+<Actor id="1" name="BasicActor" filename=""/>
+```
+
+is now
+
+```xml
+<PyutActor id="1" name="BasicActor" filename="" />
+```
 
 ## UseCase → PyutUseCase
 ```xml

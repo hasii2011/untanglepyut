@@ -5,6 +5,7 @@ from typing import NewType
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutField import PyutField
@@ -110,6 +111,11 @@ V11_PYUT_NOTE: str = """
     </OglNote>
 """
 
+V11_PYUT_ACTOR: str = """
+    <OglActor width="87" height="114" x="50" y="100">
+        <PyutActor id="1" name="BasicActor" filename="" />
+    </OglActor>
+"""
 
 MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
 FieldDictionary  = NewType('FieldDictionary',  Dict[str, PyutField])
@@ -191,6 +197,17 @@ class TestUnTanglePyut(TestBase):
         self.assertIsNotNone(pyutNote, '')
         self.assertEqual('I am a note linked to\nthe LinkedToClass', pyutNote.content, '')
         self.assertEqual('', pyutNote.fileName, '')
+
+    def testActorToPyutActor(self):
+        rootElement:     Element = parse(V11_PYUT_ACTOR)
+        oglActorElement: Element = rootElement.OglActor
+
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutActor:    PyutActor    = untanglepyut.actorToPyutActor(graphicActor=oglActorElement)
+
+        self.assertIsNotNone(pyutActor, '')
+        self.assertEqual('BasicActor', pyutActor.name, '')
+        self.assertEqual('', pyutActor.fileName, '')
 
     def _checkFields(self, pyutClass: PyutClass):
 

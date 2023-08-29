@@ -216,11 +216,16 @@ class UnTanglePyut:
 
         Returns:   PyutActor
         """
-        actorElement: Element   = graphicActor.Actor
-        pyutActor:    PyutActor = PyutActor()
+        if self._xmlVersion == XmlVersion.V10:
+            actorElement: Element   = graphicActor.Actor
+        else:
+            actorElement = graphicActor.PyutActor
+
+        pyutActor: PyutActor = PyutActor()
 
         pyutActor = cast(PyutActor, self._addPyutObjectAttributes(pyutElement=actorElement, pyutObject=pyutActor))
 
+        pyutActor.fileName = actorElement['filename']
         return pyutActor
 
     def useCaseToPyutUseCase(self, graphicUseCase: Element) -> PyutUseCase:
