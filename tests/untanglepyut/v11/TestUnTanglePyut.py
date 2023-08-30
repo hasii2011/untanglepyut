@@ -19,6 +19,7 @@ from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutText import PyutText
 from pyutmodel.PyutType import PyutType
+from pyutmodel.PyutUseCase import PyutUseCase
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
 
 from untangle import Element
@@ -117,6 +118,12 @@ V11_PYUT_ACTOR: str = """
     </OglActor>
 """
 
+V11_PYUT_USE_CASE: str = """
+    <OglUseCase width="100" height="60" x="475" y="275">
+        <PyutUseCase id="2" name="Basic Use Case" filename="" />
+    </OglUseCase>
+"""
+
 MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
 FieldDictionary  = NewType('FieldDictionary',  Dict[str, PyutField])
 
@@ -208,6 +215,15 @@ class TestUnTanglePyut(TestBase):
         self.assertIsNotNone(pyutActor, '')
         self.assertEqual('BasicActor', pyutActor.name, '')
         self.assertEqual('', pyutActor.fileName, '')
+
+    def testUseCaseToPyutUseCase(self):
+        rootElement:       Element = parse(V11_PYUT_USE_CASE)
+        oglUseCaseElement: Element = rootElement.OglUseCase
+
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutUseCase:  PyutUseCase  = untanglepyut.useCaseToPyutUseCase(graphicUseCase=oglUseCaseElement)
+
+        self.assertIsNotNone(pyutUseCase, '')
 
     def _checkFields(self, pyutClass: PyutClass):
 

@@ -75,6 +75,7 @@ class UnTanglePyut:
             self._elementParameter:      str = XmlConstants.X10_ELEMENT_PARAMETER
             self._elementField:          str = XmlConstants.X10_ELEMENT_FIELD
 
+            self._attrId:                str = XmlConstants.X10_ATTR_ID
             self._attrStereoType:        str = XmlConstants.X10_ATTR_STEREOTYPE
             self._attrDisplayMethods:    str = XmlConstants.X10_ATTR_DISPLAY_METHODS
             self._attrDisplayParameters: str = XmlConstants.X10_ATTR_DISPLAY_PARAMETERS
@@ -86,11 +87,14 @@ class UnTanglePyut:
             self._attrBidirectional:          str = XmlConstants.X10_ATTR_BIDIRECTIONAL
             self._attrSourceId:               str = XmlConstants.X10_ATTR_SOURCE_ID
             self._attrDestinationId:          str = XmlConstants.X10_ATTR_DESTINATION_ID
+
+            self._attrFileName: str = XmlConstants.X10_ATTR_FILENAME
         else:
             self._elementParameter      = XmlConstants.X11_ELEMENT_PARAMETER
             self._elementMethod         = XmlConstants.X11_ELEMENT_METHOD
             self._elementField          = XmlConstants.X11_ELEMENT_FIELD
 
+            self._attrId                = XmlConstants.X11_ATTR_ID
             self._attrStereoType        = XmlConstants.X11_ATTR_STEREOTYPE
             self._attrDisplayMethods    = XmlConstants.X11_ATTR_DISPLAY_METHODS
             self._attrDisplayParameters = XmlConstants.X11_ATTR_DISPLAY_PARAMETERS
@@ -102,6 +106,8 @@ class UnTanglePyut:
             self._attrBidirectional          = XmlConstants.X11_ATTR_BIDIRECTIONAL
             self._attrSourceId               = XmlConstants.X11_ATTR_SOURCE_ID
             self._attrDestinationId          = XmlConstants.X11_ATTR_DESTINATION_ID
+
+            self._attrFileName = XmlConstants.X10_ATTR_FILENAME
 
     def classToPyutClass(self, graphicClass: Element) -> PyutClass:
         if self._xmlVersion == XmlVersion.V10:
@@ -181,11 +187,6 @@ class UnTanglePyut:
         cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
         pyutNote.content = cleanContent
 
-        fileName: str = noteElement['filename']
-        if fileName is None:
-            fileName = ''
-        pyutNote.fileName = fileName
-
         return pyutNote
 
     def interfaceToPyutInterface(self, interface: Element) -> PyutInterface:
@@ -207,9 +208,6 @@ class UnTanglePyut:
 
     def actorToPyutActor(self, graphicActor: Element) -> PyutActor:
         """
-        <GraphicActor width="87" height="114" x="293" y="236">
-            <Actor id="1" name="BasicActor" filename=""/>
-        </GraphicActor>
 
         Args:
             graphicActor:   untangle Element in the above format
@@ -225,21 +223,21 @@ class UnTanglePyut:
 
         pyutActor = cast(PyutActor, self._addPyutObjectAttributes(pyutElement=actorElement, pyutObject=pyutActor))
 
-        pyutActor.fileName = actorElement['filename']
         return pyutActor
 
     def useCaseToPyutUseCase(self, graphicUseCase: Element) -> PyutUseCase:
         """
-        <GraphicUseCase width="100" height="60" x="575" y="250">
-            <UseCase id="2" name="Basic Use Case" filename=""/>
-        </GraphicUseCase>
 
         Args:
             graphicUseCase:  An untangle Element in the above format
 
         Returns:  PyutUseCase
         """
-        useCaseElement: Element     = graphicUseCase.UseCase
+        if self._xmlVersion == XmlVersion.V10:
+            useCaseElement: Element     = graphicUseCase.UseCase
+        else:
+            useCaseElement = graphicUseCase.PyutUseCase
+
         pyutUseCase:    PyutUseCase = PyutUseCase()
 
         pyutUseCase = cast(PyutUseCase, self._addPyutObjectAttributes(pyutElement=useCaseElement, pyutObject=pyutUseCase))
@@ -447,8 +445,8 @@ class UnTanglePyut:
         Returns:  The updated pyutObject as
         """
 
-        pyutObject.id       = int(pyutElement['id'])    # TODO revisit this when we start using UUIDs
+        pyutObject.id       = int(pyutElement[self._attrId])    # TODO revisit this when we start using UUIDs
         pyutObject.name     = pyutElement['name']
-        pyutObject.fileName = pyutElement['fileName']
+        pyutObject.fileName = pyutElement[self._attrFileName]
 
         return pyutObject
