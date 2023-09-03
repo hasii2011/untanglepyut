@@ -189,21 +189,26 @@ class UnTanglePyut:
 
         return pyutNote
 
-    def interfaceToPyutInterface(self, interface: Element) -> PyutInterface:
+    def interfaceToPyutInterface(self, oglInterface2: Element) -> PyutInterface:
 
-        interfaceId: int = int(interface['id'])
-        name:        str = interface['name']
-        description: str = interface['description']
+        if self._xmlVersion == XmlVersion.V10:
+            pyutInterfaceElement: Element = oglInterface2.Interface
+        else:
+            pyutInterfaceElement  = oglInterface2.PyutInterface
+
+        interfaceId: int = int(pyutInterfaceElement['id'])
+        name:        str = pyutInterfaceElement['name']
+        description: str = pyutInterfaceElement['description']
 
         pyutInterface: PyutInterface = PyutInterface(name=name)
         pyutInterface.id          = interfaceId
         pyutInterface.description = description
 
-        implementors: Element = interface.get_elements('Implementor')
+        implementors: Element = pyutInterfaceElement.get_elements('Implementor')
         for implementor in implementors:
             pyutInterface.addImplementor(implementor['implementingClassName'])
 
-        pyutInterface.methods = self._interfaceMethodsToPyutMethods(interface=interface)
+        pyutInterface.methods = self._interfaceMethodsToPyutMethods(interface=pyutInterfaceElement)
         return pyutInterface
 
     def actorToPyutActor(self, graphicActor: Element) -> PyutActor:

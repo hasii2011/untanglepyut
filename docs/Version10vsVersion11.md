@@ -106,6 +106,29 @@ is now
 
 
 
+## GraphicLollipop → OglInterface2
+
+```xml
+<GraphicLollipop attachmentPoint="EAST" x="465" y="649"/>
+```
+
+is now
+
+```xml
+<OglInterface2 attachmentPoint="EAST" x="465" y="649"/>
+```
+## Interface → PyutInterface
+
+```xml
+<Interface id="10" name="IClassInterface" description="">
+```
+
+is now
+
+```xml
+<PyutInterface id="10" name="IClassInterface" description="">
+```
+
 
 # Sequence Diagrams
 

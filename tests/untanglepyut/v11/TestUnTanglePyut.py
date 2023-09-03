@@ -10,6 +10,7 @@ from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutField import PyutFields
+from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutMethod import PyutMethod
@@ -124,6 +125,19 @@ V11_PYUT_USE_CASE: str = """
     </OglUseCase>
 """
 
+V11_PYUT_INTERFACE: str = """
+        <OglInterface2 attachmentPoint="EAST" x="465" y="649">
+            <PyutInterface id="7" name="IClassInterface" description="">
+                <PyutMethod name="methodWithParameters" visibility="PUBLIC" returnType="">
+                    <SourceCode />
+                    <PyutParameter name="strParam" type="str" defaultValue="''" />
+                    <PyutParameter name="intParam" type="int" defaultValue="1" />
+                    <PyutParameter name="floatParam" type="float" defaultValue="1.0" />
+                </PyutMethod>
+                <Implementor implementingClassName="LollipopImplementor" />
+            </PyutInterface>
+        </OglInterface2>"""
+
 MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
 FieldDictionary  = NewType('FieldDictionary',  Dict[str, PyutField])
 
@@ -215,6 +229,16 @@ class TestUnTanglePyut(TestBase):
         self.assertIsNotNone(pyutActor, '')
         self.assertEqual('BasicActor', pyutActor.name, '')
         self.assertEqual('', pyutActor.fileName, '')
+
+    def testInterfaceToPyutInterface(self):
+        rootElement:          Element = parse(V11_PYUT_INTERFACE)
+        oglInterface2Element: Element = rootElement.OglInterface2
+
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+
+        pyutInterface: PyutInterface = untanglepyut.interfaceToPyutInterface(oglInterface2=oglInterface2Element)
+
+        self.assertIsNotNone(pyutInterface, '')
 
     def testUseCaseToPyutUseCase(self):
         rootElement:       Element = parse(V11_PYUT_USE_CASE)
