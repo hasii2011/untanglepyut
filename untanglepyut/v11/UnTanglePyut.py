@@ -87,6 +87,8 @@ class UnTanglePyut:
             self._attrBidirectional:          str = XmlConstants.X10_ATTR_BIDIRECTIONAL
             self._attrSourceId:               str = XmlConstants.X10_ATTR_SOURCE_ID
             self._attrDestinationId:          str = XmlConstants.X10_ATTR_DESTINATION_ID
+            self._attrSourceTime:             str = XmlConstants.X10_ATTR_SOURCE_TIME
+            self._attrDestinationTime:        str = XmlConstants.X10_ATTR_DESTINATION_TIME
 
             self._attrFileName: str = XmlConstants.X10_ATTR_FILENAME
         else:
@@ -106,6 +108,8 @@ class UnTanglePyut:
             self._attrBidirectional          = XmlConstants.X11_ATTR_BIDIRECTIONAL
             self._attrSourceId               = XmlConstants.X11_ATTR_SOURCE_ID
             self._attrDestinationId          = XmlConstants.X11_ATTR_DESTINATION_ID
+            self._attrSourceTime             = XmlConstants.X11_ATTR_SOURCE_TIME
+            self._attrDestinationTime        = XmlConstants.X11_ATTR_DESTINATION_TIME
 
             self._attrFileName = XmlConstants.X10_ATTR_FILENAME
 
@@ -281,27 +285,30 @@ class UnTanglePyut:
 
         return pyutSDInstance
 
-    def sdMessageToPyutSDMessage(self, graphicSDMessage: Element) -> ConvolutedPyutSDMessageInformation:
+    def sdMessageToPyutSDMessage(self, oglSDMessageElement: Element) -> ConvolutedPyutSDMessageInformation:
         """
         TODO:  Need to fix how SD Messages are created
         Args:
-            graphicSDMessage:
+            oglSDMessageElement:
 
         Returns:  Bogus data class
         """
+        if self._xmlVersion == XmlVersion.V10:
+            messageElement: Element = oglSDMessageElement.SDMessage
+        else:
+            messageElement = oglSDMessageElement.PyutSDMessage
 
-        messageElement: Element       = graphicSDMessage.SDMessage
         pyutSDMessage:  PyutSDMessage = PyutSDMessage()
 
         pyutSDMessage.id = int(messageElement['id'])
         pyutSDMessage.message = messageElement['message']
         pyutSDMessage.linkType = PyutLinkType.SD_MESSAGE
 
-        srcID: int = int(messageElement['srcID'])
-        dstID: int = int(messageElement['dstID'])
+        srcID: int = int(messageElement[self._attrSourceId])
+        dstID: int = int(messageElement[self._attrDestinationId])
 
-        srcTime: int = int(messageElement['srcTime'])
-        dstTime: int = int(messageElement['dstTime'])
+        srcTime: int = int(messageElement[self._attrSourceTime])
+        dstTime: int = int(messageElement[self._attrDestinationTime])
 
         pyutSDMessage.sourceY      = srcTime
         pyutSDMessage.destinationY = dstTime

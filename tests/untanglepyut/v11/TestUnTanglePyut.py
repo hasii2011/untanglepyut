@@ -7,7 +7,6 @@ from unittest import main as unitTestMain
 
 from pyutmodel.PyutActor import PyutActor
 from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodel.PyutField import PyutField
 from pyutmodel.PyutField import PyutFields
 from pyutmodel.PyutInterface import PyutInterface
@@ -18,20 +17,23 @@ from pyutmodel.PyutMethod import PyutMethods
 from pyutmodel.PyutMethod import PyutParameters
 from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutSDInstance import PyutSDInstance
+from pyutmodel.PyutSDMessage import PyutSDMessage
 from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutText import PyutText
 from pyutmodel.PyutType import PyutType
 from pyutmodel.PyutUseCase import PyutUseCase
 from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
 
 from untangle import Element
-
-from tests.TestBase import TestBase
-
 from untangle import parse
 
 from untanglepyut.XmlVersion import XmlVersion
+from untanglepyut.v11.UnTanglePyut import ConvolutedPyutSDMessageInformation
 from untanglepyut.v11.UnTanglePyut import UnTanglePyut
+
+from tests.TestBase import TestBase
+
 
 V11_PYUT_CLASS: str = """
     <OglClass width="429" height="145" x="300" y="175">
@@ -143,7 +145,12 @@ V11_PYUT_SD_INSTANCE: str = """
     <OglSDInstance width="100" height="400" x="803" y="50">
         <PyutSDInstance id="3" instanceName="OzzeeInstance" lifeLineLength="200" />
     </OglSDInstance>
+"""
 
+V11_PYUT_SD_MESSAGE: str = """
+    <OglSDMessage>
+        <PyutSDMessage id="4" message="calls()" sourceTime="148" destinationTime="150" sourceID="1" destinationID="2" />
+    </OglSDMessage>
 """
 
 MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
@@ -270,6 +277,19 @@ class TestUnTanglePyut(TestBase):
         self.assertIsNotNone(pyutSdInstance, '')
         self.assertEqual('OzzeeInstance', pyutSdInstance.instanceName, '')
         self.assertEqual(200, pyutSdInstance.instanceLifeLineLength, '')
+
+    def testSdMessageToPyutSDMessage(self):
+        rootElement:         Element = parse(V11_PYUT_SD_MESSAGE)
+        oglSDMessageElement: Element = rootElement.OglSDMessage
+
+        untanglepyut:  UnTanglePyut                        = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        convoluted: ConvolutedPyutSDMessageInformation = untanglepyut.sdMessageToPyutSDMessage(oglSDMessageElement=oglSDMessageElement)
+
+        self.assertIsNotNone(convoluted, '')
+        message: PyutSDMessage = convoluted.pyutSDMessage
+        self.assertEqual('calls()', message.message, '')
+        self.assertEqual(148, message.sourceY)
+        self.assertEqual(150, message.destinationY)
 
     def _checkFields(self, pyutClass: PyutClass):
 

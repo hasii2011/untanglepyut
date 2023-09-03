@@ -19,6 +19,8 @@ X10_ATTR_CARDINALITY_DESTINATION: str = 'cardDestination'
 X10_ATTR_BIDIRECTIONAL:           str = 'bidir'
 X10_ATTR_SOURCE_ID:               str = 'sourceId'
 X10_ATTR_DESTINATION_ID:          str = 'destId'
+X10_ATTR_SOURCE_TIME:             str = 'srcTime'
+X10_ATTR_DESTINATION_TIME:        str = 'dstTime'
 
 X10_ATTR_FILENAME: str = 'filename'
 
@@ -40,7 +42,9 @@ X11_ATTR_DEFAULT_VALUE:      str = 'defaultValue'
 X11_ATTR_CARDINALITY_SOURCE:      str = 'cardinalitySource'
 X11_ATTR_CARDINALITY_DESTINATION: str = 'cardinalityDestination'
 X11_ATTR_BIDIRECTIONAL:           str = 'bidirectional'
-X11_ATTR_SOURCE_ID:               str = 'sourceId'
-X11_ATTR_DESTINATION_ID:          str = 'destinationId'
+X11_ATTR_SOURCE_ID:               str = 'sourceID'
+X11_ATTR_DESTINATION_ID:          str = 'destinationID'
+X11_ATTR_SOURCE_TIME:             str = 'sourceTime'
+X11_ATTR_DESTINATION_TIME:        str = 'destinationTime'
 
 X11_ATTR_FILENAME: str = X10_ATTR_FILENAME
