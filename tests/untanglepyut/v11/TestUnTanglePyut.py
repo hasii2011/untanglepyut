@@ -17,6 +17,7 @@ from pyutmodel.PyutMethod import PyutMethod
 from pyutmodel.PyutMethod import PyutMethods
 from pyutmodel.PyutMethod import PyutParameters
 from pyutmodel.PyutNote import PyutNote
+from pyutmodel.PyutSDInstance import PyutSDInstance
 from pyutmodel.PyutStereotype import PyutStereotype
 from pyutmodel.PyutText import PyutText
 from pyutmodel.PyutType import PyutType
@@ -138,6 +139,13 @@ V11_PYUT_INTERFACE: str = """
             </PyutInterface>
         </OglInterface2>"""
 
+V11_PYUT_SD_INSTANCE: str = """
+    <OglSDInstance width="100" height="400" x="803" y="50">
+        <PyutSDInstance id="3" instanceName="OzzeeInstance" lifeLineLength="200" />
+    </OglSDInstance>
+
+"""
+
 MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
 FieldDictionary  = NewType('FieldDictionary',  Dict[str, PyutField])
 
@@ -239,6 +247,8 @@ class TestUnTanglePyut(TestBase):
         pyutInterface: PyutInterface = untanglepyut.interfaceToPyutInterface(oglInterface2=oglInterface2Element)
 
         self.assertIsNotNone(pyutInterface, '')
+        self.assertEqual('IClassInterface', pyutInterface.name)
+        self.assertTrue(len(pyutInterface.implementors) == 1, '')
 
     def testUseCaseToPyutUseCase(self):
         rootElement:       Element = parse(V11_PYUT_USE_CASE)
@@ -248,6 +258,18 @@ class TestUnTanglePyut(TestBase):
         pyutUseCase:  PyutUseCase  = untanglepyut.useCaseToPyutUseCase(graphicUseCase=oglUseCaseElement)
 
         self.assertIsNotNone(pyutUseCase, '')
+        self.assertEqual('Basic Use Case', pyutUseCase.name, '')
+
+    def testSdInstanceToPyutSDInstance(self):
+        rootElement:          Element = parse(V11_PYUT_SD_INSTANCE)
+        oglSDInstanceElement: Element = rootElement.OglSDInstance
+
+        untanglepyut:    UnTanglePyut   = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutSdInstance:  PyutSDInstance = untanglepyut.sdInstanceToPyutSDInstance(oglSDInstanceElement=oglSDInstanceElement)
+
+        self.assertIsNotNone(pyutSdInstance, '')
+        self.assertEqual('OzzeeInstance', pyutSdInstance.instanceName, '')
+        self.assertEqual(200, pyutSdInstance.instanceLifeLineLength, '')
 
     def _checkFields(self, pyutClass: PyutClass):
 

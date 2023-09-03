@@ -267,9 +267,12 @@ class UnTanglePyut:
 
         return pyutLink
 
-    def sdInstanceToPyutSDInstance(self, graphicSDInstance: Element) -> PyutSDInstance:
+    def sdInstanceToPyutSDInstance(self, oglSDInstanceElement: Element) -> PyutSDInstance:
 
-        instanceElement: Element        = graphicSDInstance.SDInstance
+        if self._xmlVersion == XmlVersion.V10:
+            instanceElement: Element = oglSDInstanceElement.SDInstance
+        else:
+            instanceElement = oglSDInstanceElement.PyutSDInstance
         pyutSDInstance:  PyutSDInstance = PyutSDInstance()
 
         pyutSDInstance.id                     = int(instanceElement['id'])
