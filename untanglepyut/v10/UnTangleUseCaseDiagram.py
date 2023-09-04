@@ -12,12 +12,13 @@ from ogl.OglUseCase import OglUseCase
 
 from untanglepyut.BaseUnTangle import BaseUnTangle
 from untanglepyut.Types import GraphicInformation
+from untanglepyut.UnTanglePyut import UnTanglePyut
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.Types import createUntangledOglActors
 from untanglepyut.Types import createUntangledOglUseCases
-from untanglepyut.v10.UnTanglePyut import UnTanglePyut
+from untanglepyut.XmlVersion import XmlVersion
 
 
 class UnTangleUseCaseDiagram(BaseUnTangle):
@@ -45,7 +46,7 @@ class UnTangleUseCaseDiagram(BaseUnTangle):
 
         self._untangledOglActors:   UntangledOglActors   = createUntangledOglActors()
         self._untangledOglUseCases: UntangledOglUseCases = createUntangledOglUseCases()
-        self._untanglePyut:         UnTanglePyut         = UnTanglePyut()
+        self._untanglePyut:         UnTanglePyut         = UnTanglePyut(xmlVersion=XmlVersion.V10)
 
     def unTangle(self, pyutDocument: Element):
         """

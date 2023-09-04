@@ -19,9 +19,9 @@ from untanglepyut.Types import OglSDMessages
 from untanglepyut.BaseUnTangle import BaseUnTangle
 from untanglepyut.Types import createOglSDInstances
 from untanglepyut.Types import createOglSDMessages
-
-from untanglepyut.v10.UnTanglePyut import ConvolutedPyutSDMessageInformation
-from untanglepyut.v10.UnTanglePyut import UnTanglePyut
+from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
+from untanglepyut.UnTanglePyut import UnTanglePyut
+from untanglepyut.XmlVersion import XmlVersion
 
 
 class UntangleSequenceDiagram(BaseUnTangle):
@@ -35,7 +35,7 @@ class UntangleSequenceDiagram(BaseUnTangle):
         self._oglSDInstances: OglSDInstances = createOglSDInstances()
         self._oglSDMessages:  OglSDMessages  = createOglSDMessages()
 
-        self._untanglePyut: UnTanglePyut = UnTanglePyut()
+        self._untanglePyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V10)
 
     def unTangle(self, pyutDocument: Element):
         """
@@ -61,7 +61,7 @@ class UntangleSequenceDiagram(BaseUnTangle):
 
         for graphicSDInstance in graphicSDInstances:
             self.logger.debug(f'{graphicSDInstance=}')
-            pyutSDInstance: PyutSDInstance     = self._untanglePyut.sdInstanceToPyutSDInstance(graphicSDInstance=graphicSDInstance)
+            pyutSDInstance: PyutSDInstance     = self._untanglePyut.sdInstanceToPyutSDInstance(oglSDInstanceElement=graphicSDInstance)
 
             oglSDInstance:  OglSDInstance      = OglSDInstance(pyutSDInstance)
             graphicInfo:    GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicSDInstance)
@@ -80,7 +80,7 @@ class UntangleSequenceDiagram(BaseUnTangle):
         graphicSDMessages: List[Element] = pyutDocument.get_elements('GraphicSDMessage')
 
         for graphicSDMessage in graphicSDMessages:
-            bogus: ConvolutedPyutSDMessageInformation = self._untanglePyut.sdMessageToPyutSDMessage(graphicSDMessage=graphicSDMessage)
+            bogus: ConvolutedPyutSDMessageInformation = self._untanglePyut.sdMessageToPyutSDMessage(oglSDMessageElement=graphicSDMessage)
 
             pyutSDMessage: PyutSDMessage = bogus.pyutSDMessage
 

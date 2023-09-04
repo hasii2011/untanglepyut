@@ -29,8 +29,8 @@ from untangle import Element
 from untangle import parse
 
 from untanglepyut.XmlVersion import XmlVersion
-from untanglepyut.v11.UnTanglePyut import ConvolutedPyutSDMessageInformation
-from untanglepyut.v11.UnTanglePyut import UnTanglePyut
+from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
+from untanglepyut.UnTanglePyut import UnTanglePyut
 
 from tests.TestBase import TestBase
 

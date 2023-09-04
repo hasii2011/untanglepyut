@@ -5,14 +5,13 @@ from typing import cast
 from logging import Logger
 from logging import getLogger
 
-from pyutmodel.PyutClass import PyutClass
-
 from untangle import Element
 
 from miniogl.AttachmentSide import AttachmentSide
 from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
+from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutLinkType import PyutLinkType
 from pyutmodel.PyutInterface import PyutInterface
 from pyutmodel.PyutLink import PyutLink
@@ -24,7 +23,6 @@ from ogl.OglComposition import OglComposition
 from ogl.OglInheritance import OglInheritance
 from ogl.OglInterface import OglInterface
 from ogl.OglNoteLink import OglNoteLink
-
 from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
@@ -33,12 +31,12 @@ from ogl.OglAssociationLabel import OglAssociationLabel
 from untanglepyut.Types import GraphicLinkAttributes
 from untanglepyut.Types import LinkableOglObject
 from untanglepyut.Types import LinkableOglObjects
-
 from untanglepyut.Types import UntangledControlPoints
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import createUntangledOglLinks
 
-from untanglepyut.v10.UnTanglePyut import UnTanglePyut
+from untanglepyut.UnTanglePyut import UnTanglePyut
+from untanglepyut.XmlVersion import XmlVersion
 
 
 class UnTangleOglLinks:
@@ -49,7 +47,7 @@ class UnTangleOglLinks:
 
         self.logger: Logger = getLogger(__name__)
 
-        self._untanglePyut:     UnTanglePyut     = UnTanglePyut()
+        self._untanglePyut:     UnTanglePyut     = UnTanglePyut(xmlVersion=XmlVersion.V10)
 
     def graphicLinksToOglLinks(self, pyutDocument: Element, linkableOglObjects: LinkableOglObjects) -> UntangledOglLinks:
         """
@@ -202,8 +200,8 @@ class UnTangleOglLinks:
 
         elements: Element = graphicLollipop.get_elements('Interface')
         assert len(elements) == 1, 'If more than one interface tag the XML is invalid'
-        interfaceElement: Element        = elements[0]
-        pyutInterface:    PyutInterface = self._untanglePyut.interfaceToPyutInterface(interface=interfaceElement)
+        # interfaceElement: Element        = elements[0]
+        pyutInterface:    PyutInterface = self._untanglePyut.interfaceToPyutInterface(oglInterface2=graphicLollipop)
 
         oglClass:    OglClass    = self._getOglClassFromName(pyutInterface.implementors[0], linkableOglObjects)
         oglPosition: OglPosition = self._determineAttachmentPoint(attachmentSide, oglClass)
