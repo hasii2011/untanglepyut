@@ -71,47 +71,47 @@ class UnTanglePyut:
 
         self._xmlVersion: XmlVersion = xmlVersion
         if self._xmlVersion == XmlVersion.V10:
-            self._elementMethod:         str = XmlConstants.X10_ELEMENT_METHOD
-            self._elementParameter:      str = XmlConstants.X10_ELEMENT_PARAMETER
-            self._elementField:          str = XmlConstants.X10_ELEMENT_FIELD
+            self._elementMethod:         str = XmlConstants.V10_ELEMENT_METHOD
+            self._elementParameter:      str = XmlConstants.V10_ELEMENT_PARAMETER
+            self._elementField:          str = XmlConstants.V10_ELEMENT_FIELD
 
-            self._attrId:                str = XmlConstants.X10_ATTR_ID
-            self._attrStereoType:        str = XmlConstants.X10_ATTR_STEREOTYPE
-            self._attrDisplayMethods:    str = XmlConstants.X10_ATTR_DISPLAY_METHODS
-            self._attrDisplayParameters: str = XmlConstants.X10_ATTR_DISPLAY_PARAMETERS
-            self._attrDisplayFields:     str = XmlConstants.X10_ATTR_DISPLAY_FIELDS
-            self._attrDisplayStereoType: str = XmlConstants.X10_ATTR_DISPLAY_STEREOTYPE
+            self._attrId:                str = XmlConstants.V10_ATTR_ID
+            self._attrStereoType:        str = XmlConstants.V10_ATTR_STEREOTYPE
+            self._attrDisplayMethods:    str = XmlConstants.V10_ATTR_DISPLAY_METHODS
+            self._attrDisplayParameters: str = XmlConstants.V10_ATTR_DISPLAY_PARAMETERS
+            self._attrDisplayFields:     str = XmlConstants.V10_ATTR_DISPLAY_FIELDS
+            self._attrDisplayStereoType: str = XmlConstants.V10_ATTR_DISPLAY_STEREOTYPE
 
-            self._attrCardinalitySource:      str = XmlConstants.X10_ATTR_CARDINALITY_SOURCE
-            self._attrCardinalityDestination: str = XmlConstants.X10_ATTR_CARDINALITY_DESTINATION
-            self._attrBidirectional:          str = XmlConstants.X10_ATTR_BIDIRECTIONAL
-            self._attrSourceId:               str = XmlConstants.X10_ATTR_SOURCE_ID
-            self._attrDestinationId:          str = XmlConstants.X10_ATTR_DESTINATION_ID
-            self._attrSourceTime:             str = XmlConstants.X10_ATTR_SOURCE_TIME
-            self._attrDestinationTime:        str = XmlConstants.X10_ATTR_DESTINATION_TIME
+            self._attrCardinalitySource:      str = XmlConstants.V10_ATTR_CARDINALITY_SOURCE
+            self._attrCardinalityDestination: str = XmlConstants.V10_ATTR_CARDINALITY_DESTINATION
+            self._attrBidirectional:          str = XmlConstants.V10_ATTR_BIDIRECTIONAL
+            self._attrSourceId:               str = XmlConstants.V10_ATTR_SOURCE_ID
+            self._attrDestinationId:          str = XmlConstants.V10_ATTR_DESTINATION_ID
+            self._attrSourceTime:             str = XmlConstants.V10_ATTR_SOURCE_TIME
+            self._attrDestinationTime:        str = XmlConstants.V10_ATTR_DESTINATION_TIME
 
-            self._attrFileName: str = XmlConstants.X10_ATTR_FILENAME
+            self._attrFileName: str = XmlConstants.V10_ATTR_FILENAME
         else:
-            self._elementParameter      = XmlConstants.X11_ELEMENT_PARAMETER
-            self._elementMethod         = XmlConstants.X11_ELEMENT_METHOD
-            self._elementField          = XmlConstants.X11_ELEMENT_FIELD
+            self._elementParameter      = XmlConstants.V11_ELEMENT_PARAMETER
+            self._elementMethod         = XmlConstants.V11_ELEMENT_METHOD
+            self._elementField          = XmlConstants.V11_ELEMENT_FIELD
 
-            self._attrId                = XmlConstants.X11_ATTR_ID
-            self._attrStereoType        = XmlConstants.X11_ATTR_STEREOTYPE
-            self._attrDisplayMethods    = XmlConstants.X11_ATTR_DISPLAY_METHODS
-            self._attrDisplayParameters = XmlConstants.X11_ATTR_DISPLAY_PARAMETERS
-            self._attrDisplayFields     = XmlConstants.X11_ATTR_DISPLAY_FIELDS
-            self._attrDisplayStereoType = XmlConstants.X11_ATTR_DISPLAY_STEREOTYPE
+            self._attrId                = XmlConstants.V11_ATTR_ID
+            self._attrStereoType        = XmlConstants.V11_ATTR_STEREOTYPE
+            self._attrDisplayMethods    = XmlConstants.V11_ATTR_DISPLAY_METHODS
+            self._attrDisplayParameters = XmlConstants.V11_ATTR_DISPLAY_PARAMETERS
+            self._attrDisplayFields     = XmlConstants.V11_ATTR_DISPLAY_FIELDS
+            self._attrDisplayStereoType = XmlConstants.V11_ATTR_DISPLAY_STEREOTYPE
 
-            self._attrCardinalitySource      = XmlConstants.X11_ATTR_CARDINALITY_SOURCE
-            self._attrCardinalityDestination = XmlConstants.X11_ATTR_CARDINALITY_DESTINATION
-            self._attrBidirectional          = XmlConstants.X11_ATTR_BIDIRECTIONAL
-            self._attrSourceId               = XmlConstants.X11_ATTR_SOURCE_ID
-            self._attrDestinationId          = XmlConstants.X11_ATTR_DESTINATION_ID
-            self._attrSourceTime             = XmlConstants.X11_ATTR_SOURCE_TIME
-            self._attrDestinationTime        = XmlConstants.X11_ATTR_DESTINATION_TIME
+            self._attrCardinalitySource      = XmlConstants.V11_ATTR_CARDINALITY_SOURCE
+            self._attrCardinalityDestination = XmlConstants.V11_ATTR_CARDINALITY_DESTINATION
+            self._attrBidirectional          = XmlConstants.V11_ATTR_BIDIRECTIONAL
+            self._attrSourceId               = XmlConstants.V11_ATTR_SOURCE_ID
+            self._attrDestinationId          = XmlConstants.V11_ATTR_DESTINATION_ID
+            self._attrSourceTime             = XmlConstants.V11_ATTR_SOURCE_TIME
+            self._attrDestinationTime        = XmlConstants.V11_ATTR_DESTINATION_TIME
 
-            self._attrFileName = XmlConstants.X10_ATTR_FILENAME
+            self._attrFileName = XmlConstants.V10_ATTR_FILENAME
 
     def classToPyutClass(self, graphicClass: Element) -> PyutClass:
         if self._xmlVersion == XmlVersion.V10:
@@ -373,15 +373,15 @@ class UnTanglePyut:
                 assert len(paramElements) == 1, 'Curiously there should be only one'
 
                 paramElement: Element = paramElements[0]
-                fieldName:    str       = paramElement[XmlConstants.X10_ATTR_NAME]
-                pyutType:     PyutType  = PyutType(paramElement[XmlConstants.X10_ATTR_TYPE])
-                defaultValue: str       = paramElement[XmlConstants.X10_ATTR_DEFAULT_VALUE]
+                fieldName:    str       = paramElement[XmlConstants.V10_ATTR_NAME]
+                pyutType:     PyutType  = PyutType(paramElement[XmlConstants.V10_ATTR_TYPE])
+                defaultValue: str       = paramElement[XmlConstants.V10_ATTR_DEFAULT_VALUE]
                 if defaultValue is None:
                     defaultValue = ''
             elif self._xmlVersion == XmlVersion.V11:
-                fieldName    = fieldElement[XmlConstants.X11_ATTR_NAME]
-                pyutType     = PyutType(fieldElement[XmlConstants.X11_ATTR_TYPE])
-                defaultValue = fieldElement[XmlConstants.X11_ATTR_DEFAULT_VALUE]
+                fieldName    = fieldElement[XmlConstants.V11_ATTR_NAME]
+                pyutType     = PyutType(fieldElement[XmlConstants.V11_ATTR_TYPE])
+                defaultValue = fieldElement[XmlConstants.V11_ATTR_DEFAULT_VALUE]
             else:
                 assert False, f'Unsupported Xml Version {self._xmlVersion}'
 
