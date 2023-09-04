@@ -48,3 +48,13 @@ V11_ATTR_SOURCE_TIME:             str = 'sourceTime'
 V11_ATTR_DESTINATION_TIME:        str = 'destinationTime'
 
 V11_ATTR_FILENAME: str = V10_ATTR_FILENAME
+
+#
+# Use Case Diagrams
+#
+
+V10_ELEMENT_ACTOR:    str = 'GraphicActor'
+V10_ELEMENT_USE_CASE: str = 'GraphicUseCase'
+
+V11_ELEMENT_ACTOR:    str = 'OglActor'
+V11_ELEMENT_USE_CASE: str = 'OglUseCase'
