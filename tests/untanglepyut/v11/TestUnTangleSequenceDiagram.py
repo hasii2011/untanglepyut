@@ -15,7 +15,7 @@ from untanglepyut.Types import OglSDMessages
 
 from untanglepyut.XmlVersion import XmlVersion
 
-from untanglepyut.v11.UnTangleSequenceDiagram import UnTangleSequenceDiagram
+from untanglepyut.UnTangleSequenceDiagram import UnTangleSequenceDiagram
 
 
 V11_SEQUENCE_DIAGRAM_DOCUMENT: str = """

@@ -33,9 +33,9 @@ from untanglepyut.Types import createUntangledOglTexts
 from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
+from untanglepyut.UnTangleSequenceDiagram import UnTangleSequenceDiagram
 from untanglepyut.XmlVersion import XmlVersion
 
-from untanglepyut.v10.UntangleSequenceDiagram import UntangleSequenceDiagram
 from untanglepyut.v10.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.v10.UnTangleOglLinks import UnTangleOglLinks
 
@@ -109,7 +109,7 @@ class UnTangler(BaseUnTangle):
                 document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument=pyutDocument,
                                                                                     linkableOglObjects=linkableOglObjects)
             elif document.documentType == 'SEQUENCE_DIAGRAM':
-                untangleSequenceDiagram: UntangleSequenceDiagram = UntangleSequenceDiagram()
+                untangleSequenceDiagram: UnTangleSequenceDiagram = UnTangleSequenceDiagram(xmlVersion=self._xmlVersion)
 
                 untangleSequenceDiagram.unTangle(pyutDocument=pyutDocument)
                 document.oglSDInstances = untangleSequenceDiagram.oglSDInstances
