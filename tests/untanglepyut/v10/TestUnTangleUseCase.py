@@ -12,6 +12,8 @@ from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import UntangledOglUseCases
 
+from untanglepyut.XmlVersion import XmlVersion
+
 from untanglepyut.v10.UnTangler import UnTangler
 
 from tests.TestBase import TestBase
@@ -32,7 +34,7 @@ class TestUnTangleUseCase(TestBase):
 
     def testUseCaseDiagramNotesTexts(self):
         fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCasesTextNotes.xml')
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)
 
@@ -70,7 +72,7 @@ class TestUnTangleUseCase(TestBase):
     def _retrieveUseCaseDocument(self) -> Document:
 
         fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCaseDiagram.xml')
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)
 

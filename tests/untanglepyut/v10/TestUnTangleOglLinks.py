@@ -30,6 +30,8 @@ from untanglepyut.Types import Document
 from untanglepyut.Types import DocumentTitle
 from untanglepyut.Types import UntangledOglLinks
 
+from untanglepyut.XmlVersion import XmlVersion
+
 from untanglepyut.v10.UnTangler import UnTangler
 
 
@@ -50,7 +52,7 @@ class TestUnTangleOglLinks(TestBase):
 
     def testNoGraphicLinks(self):
         fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(xmlVersion=XmlVersion.V10)
 
         untangler.untangleFile(fqFileName)
 
@@ -67,7 +69,7 @@ class TestUnTangleOglLinks(TestBase):
     def testSimpleInheritance(self):
 
         fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleInheritance.xml')
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)
 
@@ -160,7 +162,7 @@ class TestUnTangleOglLinks(TestBase):
     def testGetAssociationLabelPositions(self):
 
         fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName)
 
@@ -188,7 +190,7 @@ class TestUnTangleOglLinks(TestBase):
             self.assertEqual(249, dumbPosition[1], 'Bad destination y')
 
     def _getOglLinksFromDocument(self, title: DocumentTitle) -> UntangledOglLinks:
-        untangler: UnTangler = UnTangler()
+        untangler: UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=self._fqFileName)
 

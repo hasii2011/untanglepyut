@@ -32,9 +32,9 @@ from untanglepyut.Types import createUntangledOglTexts
 
 from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
+from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.XmlVersion import XmlVersion
 
-from untanglepyut.v10.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.v10.UntangleSequenceDiagram import UntangleSequenceDiagram
 from untanglepyut.v10.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.v10.UnTangleOglLinks import UnTangleOglLinks
@@ -42,16 +42,17 @@ from untanglepyut.v10.UnTangleOglLinks import UnTangleOglLinks
 
 class UnTangler(BaseUnTangle):
 
-    def __init__(self):
+    def __init__(self, xmlVersion: XmlVersion):
         """
         """
         super().__init__()
         self.logger: Logger = getLogger(__name__)
 
+        self._xmlVersion:         XmlVersion         = xmlVersion
         self._projectInformation: ProjectInformation = cast(ProjectInformation, None)
         self._documents:          Documents          = Documents({})
 
-        self._untanglePyut:     UnTanglePyut     = UnTanglePyut(xmlVersion=XmlVersion.V10)
+        self._untanglePyut:     UnTanglePyut     = UnTanglePyut(xmlVersion=xmlVersion)
         self._untangleOglLinks: UnTangleOglLinks = UnTangleOglLinks()
 
     @property
@@ -116,7 +117,7 @@ class UnTangler(BaseUnTangle):
 
             elif document.documentType == 'USECASE_DIAGRAM':
 
-                unTangleUseCaseDiagram: UnTangleUseCaseDiagram = UnTangleUseCaseDiagram()
+                unTangleUseCaseDiagram: UnTangleUseCaseDiagram = UnTangleUseCaseDiagram(xmlVersion=self._xmlVersion)
 
                 unTangleUseCaseDiagram.unTangle(pyutDocument=pyutDocument)
                 document.oglActors   = unTangleUseCaseDiagram.oglActors

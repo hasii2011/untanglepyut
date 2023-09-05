@@ -1,3 +1,4 @@
+
 from typing import List
 from typing import Tuple
 from typing import cast
@@ -18,6 +19,8 @@ from untanglepyut.Types import Document
 from untanglepyut.Types import DocumentTitle
 from untanglepyut.Types import OglSDInstances
 from untanglepyut.Types import OglSDMessages
+
+from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.v10.UnTangler import UnTangler
 
@@ -89,7 +92,7 @@ class TestUnTangleSequenceDiagram(TestBase):
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
         fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SequenceDiagram.xml')
-        untangler:  UnTangler = UnTangler()
+        untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)
 

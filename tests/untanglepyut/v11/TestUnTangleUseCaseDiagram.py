@@ -11,7 +11,7 @@ from tests.TestBase import TestBase
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.XmlVersion import XmlVersion
-from untanglepyut.v11.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
+from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 
 V11_USE_CASE_DOCUMENT: str = """
     <PyutDocument type="USECASE_DIAGRAM" title="Use-Cases" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
