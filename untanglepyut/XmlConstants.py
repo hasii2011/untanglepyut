@@ -55,6 +55,10 @@ V11_ATTR_FILENAME: str = V10_ATTR_FILENAME
 
 V10_ELEMENT_ACTOR:    str = 'GraphicActor'
 V10_ELEMENT_USE_CASE: str = 'GraphicUseCase'
+V10_ELEMENT_INSTANCE: str = 'GraphicSDInstance'
+V10_ELEMENT_MESSAGE:  str = 'GraphicSDMessage'
 
 V11_ELEMENT_ACTOR:    str = 'OglActor'
 V11_ELEMENT_USE_CASE: str = 'OglUseCase'
+V11_ELEMENT_INSTANCE: str = 'OglSDInstance'
+V11_ELEMENT_MESSAGE:  str = 'OglSDMessage'
