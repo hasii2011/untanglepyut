@@ -1,7 +1,9 @@
 
-V10_ELEMENT_FIELD:     str = 'Field'
-V10_ELEMENT_METHOD:    str = 'Method'
-V10_ELEMENT_PARAMETER: str = 'Param'
+V10_ELEMENT_CLASS:      str = 'GraphicClass'
+V10_ELEMENT_FIELD:      str = 'Field'
+V10_ELEMENT_METHOD:     str = 'Method'
+V10_ELEMENT_PARAMETER:  str = 'Param'
+V10_ELEMENT_INTERFACE2: str = 'Interface'
 
 V10_ATTR_ID:                 str = 'id'
 V10_ATTR_NAME:               str = 'name'
@@ -24,9 +26,12 @@ V10_ATTR_DESTINATION_TIME:        str = 'dstTime'
 
 V10_ATTR_FILENAME: str = 'filename'
 
-V11_ELEMENT_FIELD:     str = 'PyutField'
-V11_ELEMENT_METHOD:    str = 'PyutMethod'
-V11_ELEMENT_PARAMETER: str = 'PyutParameter'
+V11_ELEMENT_CLASS:      str = 'OglClass'
+V11_ELEMENT_FIELD:      str = 'PyutField'
+V11_ELEMENT_METHOD:     str = 'PyutMethod'
+V11_ELEMENT_PARAMETER:  str = 'PyutParameter'
+V11_ELEMENT_INTERFACE2: str = 'PyutInterface'
+
 
 V11_ATTR_STEREOTYPE:         str = 'stereotype'
 V11_ATTR_DISPLAY_STEREOTYPE: str = 'displayStereotype'
@@ -62,3 +67,11 @@ V11_ELEMENT_ACTOR:    str = 'OglActor'
 V11_ELEMENT_USE_CASE: str = 'OglUseCase'
 V11_ELEMENT_INSTANCE: str = 'OglSDInstance'
 V11_ELEMENT_MESSAGE:  str = 'OglSDMessage'
+#
+# Links
+#
+V10_ELEMENT_OGL_LINK:       str = 'GraphicLink'
+V10_ELEMENT_OGL_INTERFACE2: str = 'GraphicLollipop'
+
+V11_ELEMENT_OGL_LINK:       str = 'OglLink'
+V11_ELEMENT_OGL_INTERFACE2: str = 'OglInterface2'
