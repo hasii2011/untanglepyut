@@ -5,6 +5,10 @@ V10_ELEMENT_METHOD:     str = 'Method'
 V10_ELEMENT_PARAMETER:  str = 'Param'
 V10_ELEMENT_INTERFACE2: str = 'Interface'
 
+V10_ELEMENT_LABEL_CENTER:      str = 'LabelCenter'
+V10_ELEMENT_LABEL_SOURCE:      str = 'LabelSrc'
+V10_ELEMENT_LABEL_DESTINATION: str = 'LabelDst'
+
 V10_ATTR_ID:                 str = 'id'
 V10_ATTR_NAME:               str = 'name'
 V10_ATTR_TYPE:               str = 'type'
@@ -73,5 +77,12 @@ V11_ELEMENT_MESSAGE:  str = 'OglSDMessage'
 V10_ELEMENT_OGL_LINK:       str = 'GraphicLink'
 V10_ELEMENT_OGL_INTERFACE2: str = 'GraphicLollipop'
 
+V11_ELEMENT_LABEL_CENTER:      str = 'LabelCenter'
+V11_ELEMENT_LABEL_SOURCE:      str = 'LabelSource'
+V11_ELEMENT_LABEL_DESTINATION: str = 'LabelDestination'
+
+V10_ELEMENT_LINK:           str = 'Link'
+
 V11_ELEMENT_OGL_LINK:       str = 'OglLink'
 V11_ELEMENT_OGL_INTERFACE2: str = 'OglInterface2'
+V11_ELEMENT_LINK:           str = 'PyutLink'

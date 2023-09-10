@@ -1,4 +1,4 @@
-
+from dataclasses import dataclass
 from typing import List
 from typing import cast
 
@@ -28,17 +28,51 @@ from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglAssociationLabel import OglAssociationLabel
 
-from untanglepyut.Types import GraphicLinkAttributes
+
 from untanglepyut.Types import LinkableOglObject
 from untanglepyut.Types import LinkableOglObjects
 from untanglepyut.Types import UntangledControlPoints
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import createUntangledOglLinks
 
+from untanglepyut.Common import str2bool
+
 from untanglepyut import XmlConstants
 
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.XmlVersion import XmlVersion
+
+
+#
+# TODO:   This class goes back to Types.py when we have a full V10/V11 Untangler
+#
+@dataclass
+class GraphicLinkAttributes:
+
+    srcX:   int = -1
+    srcY:   int = -1
+    dstX:   int = -1
+    dstY:   int = -1
+    spline: bool = False
+
+    @classmethod
+    def fromGraphicLink(cls, xmlVersion: XmlVersion, graphicLink: Element) -> 'GraphicLinkAttributes':
+
+        gla: GraphicLinkAttributes = GraphicLinkAttributes()
+        if xmlVersion == XmlVersion.V10:
+            gla.srcX = int(graphicLink['srcX'])
+            gla.srcY = int(graphicLink['srcY'])
+            gla.dstX = int(graphicLink['dstX'])
+            gla.dstY = int(graphicLink['dstY'])
+        else:
+            gla.srcX = int(graphicLink['sourceAnchorX'])
+            gla.srcY = int(graphicLink['sourceAnchorY'])
+            gla.dstX = int(graphicLink['destinationAnchorX'])
+            gla.dstY = int(graphicLink['destinationAnchorY'])
+
+        gla.spline = str2bool(graphicLink['spline'])
+
+        return gla
 
 
 class UnTangleOglLinks:
@@ -55,10 +89,22 @@ class UnTangleOglLinks:
             self._elementOglLink:       str = XmlConstants.V10_ELEMENT_OGL_LINK
             self._elementOglInterface2: str = XmlConstants.V10_ELEMENT_OGL_INTERFACE2
             self._elementInterface2:    str = XmlConstants.V10_ELEMENT_INTERFACE2
+            self._elementLink:          str = XmlConstants.V10_ELEMENT_LINK
+            self._elementCenter:        str = XmlConstants.V10_ELEMENT_LABEL_CENTER
+            self._elementSource:        str = XmlConstants.V10_ELEMENT_LABEL_SOURCE
+            self._elementDestination:   str = XmlConstants.V10_ELEMENT_LABEL_DESTINATION
+            self._attrSourceId:         str = XmlConstants.V10_ATTR_SOURCE_ID
+            self._attrDestinationId:    str = XmlConstants.V10_ATTR_DESTINATION_ID
         else:
             self._elementOglLink       = XmlConstants.V11_ELEMENT_OGL_LINK
             self._elementOglInterface2 = XmlConstants.V11_ELEMENT_OGL_INTERFACE2
             self._elementInterface2    = XmlConstants.V11_ELEMENT_INTERFACE2
+            self._elementLink          = XmlConstants.V11_ELEMENT_LINK
+            self._elementCenter        = XmlConstants.V11_ELEMENT_LABEL_CENTER
+            self._elementSource        = XmlConstants.V11_ELEMENT_LABEL_SOURCE
+            self._elementDestination   = XmlConstants.V11_ELEMENT_LABEL_DESTINATION
+            self._attrSourceId         = XmlConstants.V11_ATTR_SOURCE_ID
+            self._attrDestinationId    = XmlConstants.V11_ATTR_DESTINATION_ID
 
     def unTangle(self, pyutDocument: Element, linkableOglObjects: LinkableOglObjects) -> UntangledOglLinks:
         """
@@ -100,14 +146,14 @@ class UnTangleOglLinks:
         """
 
         assert len(linkableOglObjects) != 0, 'Developer forgot to create dictionary'
-        gla: GraphicLinkAttributes = GraphicLinkAttributes.fromGraphicLink(graphicLink=graphicLink)
+        gla: GraphicLinkAttributes = GraphicLinkAttributes.fromGraphicLink(xmlVersion=self._xmlVersion, graphicLink=graphicLink)
 
-        links: Element = graphicLink.get_elements('Link')
+        links: Element = graphicLink.get_elements(self._elementLink)
         assert len(links) == 1, 'Should only ever be one'
 
         singleLink:  Element = links[0]
-        sourceId:    int = int(singleLink['sourceId'])
-        dstId:       int = int(singleLink['destId'])
+        sourceId:    int = int(singleLink[self._attrSourceId])
+        dstId:       int = int(singleLink[self._attrDestinationId])
         self.logger.debug(f'graphicLink= {gla.srcX=} {gla.srcY=} {gla.dstX=} {gla.dstY=} {gla.spline=}')
 
         try:
@@ -336,9 +382,12 @@ class UnTangleOglLinks:
 
         pyutLink:         PyutLink            = oglAssociation.pyutObject
 
-        oglAssociation.centerLabel            = self._createALabel(oglAssociation, graphicLink, text=pyutLink.name, tagName='LabelCenter')
-        oglAssociation.sourceCardinality      = self._createALabel(oglAssociation, graphicLink, text=pyutLink.sourceCardinality, tagName='LabelSrc')
-        oglAssociation.destinationCardinality = self._createALabel(oglAssociation, graphicLink, text=pyutLink.destinationCardinality, tagName='LabelDst')
+        oglAssociation.centerLabel            = self._createALabel(oglAssociation, graphicLink, text=pyutLink.name,
+                                                                   tagName=self._elementCenter)
+        oglAssociation.sourceCardinality      = self._createALabel(oglAssociation, graphicLink, text=pyutLink.sourceCardinality,
+                                                                   tagName=self._elementSource)
+        oglAssociation.destinationCardinality = self._createALabel(oglAssociation, graphicLink, text=pyutLink.destinationCardinality,
+                                                                   tagName=self._elementDestination)
 
     def _createALabel(self, parentAssociation: OglAssociation, graphicLink: Element, text: str, tagName: str) -> OglAssociationLabel:
 

@@ -55,9 +55,9 @@ class GraphicInformation:
 
 
 UntangledOglClasses    = NewType('UntangledOglClasses', List[OglClass])
-UntangledLinks         = Union[OglLink, OglInterface2]
+UntangledLink          = Union[OglLink, OglInterface2]
 
-UntangledOglLinks      = NewType('UntangledOglLinks',    List[UntangledLinks])
+UntangledOglLinks      = NewType('UntangledOglLinks',    List[UntangledLink])
 UntangledOglNotes      = NewType('UntangledOglNotes',    List[OglNote])
 UntangledOglTexts      = NewType('UntangledOglTexts',    List[OglText])
 UntangledOglActors     = NewType('UntangledOglActors',   List[OglActor])
