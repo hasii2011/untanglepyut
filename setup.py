@@ -18,12 +18,10 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/hasii2011/untanglepyut",
     packages=[
-        'untanglepyut', 'untanglepyut.v10', 'untanglepyut.v11'
+        'untanglepyut',
     ],
     package_data={
         'untanglepyut': ['py.typed'],
-        'untanglepyut.v10': ['py.typed'],
-        'untanglepyut.v11': ['py.typed'],
     },
 
     install_requires=['hasiihelper==0.2.1', 'hasiicommon==0.3.1', 'pyutmodel~=1.4.4', 'ogl==0.85.0', 'untangle==1.2.1'],

@@ -37,7 +37,7 @@ from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
-from untanglepyut.v11.UnTangleOglClasses import UnTangleOglClasses
+from untanglepyut.UnTangleOglClasses import UnTangleOglClasses
 
 
 class UnTangler(BaseUnTangle):

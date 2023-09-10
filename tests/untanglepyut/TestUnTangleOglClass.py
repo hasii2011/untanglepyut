@@ -20,7 +20,7 @@ from untanglepyut.Types import UntangledOglClasses
 
 from untanglepyut.XmlVersion import XmlVersion
 
-from untanglepyut.v11.UnTangleOglClasses import UnTangleOglClasses
+from untanglepyut.UnTangleOglClasses import UnTangleOglClasses
 
 from tests.TestBase import TestBase
 
