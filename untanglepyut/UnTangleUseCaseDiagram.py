@@ -43,13 +43,12 @@ class UnTangleUseCaseDiagram(BaseUnTangle):
 
     def __init__(self, xmlVersion: XmlVersion):
 
-        super().__init__()
+        super().__init__(xmlVersion)
         self.logger: Logger = getLogger(__name__)
 
         self._untangledOglActors:   UntangledOglActors   = createUntangledOglActors()
         self._untangledOglUseCases: UntangledOglUseCases = createUntangledOglUseCases()
         self._untanglePyut:         UnTanglePyut         = UnTanglePyut(xmlVersion=xmlVersion)
-        self._xmlVersion:           XmlVersion           = xmlVersion
 
         if xmlVersion == XmlVersion.V10:
             self._elementActor:   str = XmlConstants.V10_ELEMENT_ACTOR

@@ -29,7 +29,7 @@ class UnTangleSequenceDiagram(BaseUnTangle):
 
     def __init__(self, xmlVersion: XmlVersion):
 
-        super().__init__()
+        super().__init__(xmlVersion)
 
         self.logger: Logger = getLogger(__name__)
 
@@ -44,8 +44,6 @@ class UnTangleSequenceDiagram(BaseUnTangle):
         else:
             self._elementInstance = XmlConstants.V11_ELEMENT_INSTANCE
             self._elementMessage  = XmlConstants.V11_ELEMENT_MESSAGE
-
-        self._xmlVersion: XmlVersion = xmlVersion
 
     def unTangle(self, pyutDocument: Element):
         """

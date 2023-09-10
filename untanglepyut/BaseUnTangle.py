@@ -7,14 +7,18 @@ from miniogl.ShapeModel import ShapeModel
 from ogl.OglObject import OglObject
 
 from untanglepyut.Types import GraphicInformation
+
 from untanglepyut.UnTangleIO import UnTangleIO
+from untanglepyut.XmlVersion import XmlVersion
 
 
 class BaseUnTangle(UnTangleIO):
 
-    def __init__(self):
+    def __init__(self, xmlVersion: XmlVersion):
         super().__init__()
         self.baseLogger: Logger = getLogger(__name__)
+
+        self._xmlVersion = xmlVersion
 
     def _updateModel(self, oglObject: OglObject, graphicInformation: GraphicInformation) -> ShapeModel:
         """

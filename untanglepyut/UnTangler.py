@@ -45,10 +45,9 @@ class UnTangler(BaseUnTangle):
     def __init__(self, xmlVersion: XmlVersion):
         """
         """
-        super().__init__()
+        super().__init__(xmlVersion)
         self.logger: Logger = getLogger(__name__)
 
-        self._xmlVersion:         XmlVersion         = xmlVersion
         self._projectInformation: ProjectInformation = cast(ProjectInformation, None)
         self._documents:          Documents          = Documents({})
 
