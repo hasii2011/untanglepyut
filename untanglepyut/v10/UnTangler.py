@@ -36,8 +36,8 @@ from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.UnTangleSequenceDiagram import UnTangleSequenceDiagram
 from untanglepyut.XmlVersion import XmlVersion
 
-from untanglepyut.v10.UnTangleOglLinks import LinkableOglObjects
-from untanglepyut.v10.UnTangleOglLinks import UnTangleOglLinks
+from untanglepyut.UnTangleOglLinks import LinkableOglObjects
+from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 
 
 class UnTangler(BaseUnTangle):
@@ -53,7 +53,7 @@ class UnTangler(BaseUnTangle):
         self._documents:          Documents          = Documents({})
 
         self._untanglePyut:     UnTanglePyut     = UnTanglePyut(xmlVersion=xmlVersion)
-        self._untangleOglLinks: UnTangleOglLinks = UnTangleOglLinks()
+        self._untangleOglLinks: UnTangleOglLinks = UnTangleOglLinks(xmlVersion=xmlVersion)
 
     @property
     def projectInformation(self) -> ProjectInformation:
@@ -106,8 +106,7 @@ class UnTangler(BaseUnTangle):
                 document.oglTexts   = self._graphicalTextToOglTexts(pyutDocument=pyutDocument)
 
                 linkableOglObjects: LinkableOglObjects = self._buildDictionary(document=document)
-                document.oglLinks   = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument=pyutDocument,
-                                                                                    linkableOglObjects=linkableOglObjects)
+                document.oglLinks   = self._untangleOglLinks.unTangle(pyutDocument=pyutDocument, linkableOglObjects=linkableOglObjects)
             elif document.documentType == 'SEQUENCE_DIAGRAM':
                 untangleSequenceDiagram: UnTangleSequenceDiagram = UnTangleSequenceDiagram(xmlVersion=self._xmlVersion)
 
@@ -126,7 +125,7 @@ class UnTangler(BaseUnTangle):
                 document.oglTexts    = self._graphicalTextToOglTexts(pyutDocument=pyutDocument)
 
                 linkableOglObjects = self._buildDictionary(document=document)
-                document.oglLinks  = self._untangleOglLinks.graphicLinksToOglLinks(pyutDocument, linkableOglObjects=linkableOglObjects)
+                document.oglLinks  = self._untangleOglLinks.unTangle(pyutDocument, linkableOglObjects=linkableOglObjects)
             else:
                 assert False, f'Unknown document type: {document.documentType}'
 

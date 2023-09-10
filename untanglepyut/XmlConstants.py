@@ -23,10 +23,13 @@ V10_ATTR_DISPLAY_PARAMETERS: str = 'displayParameters'
 V10_ATTR_CARDINALITY_SOURCE:      str = 'cardSrc'
 V10_ATTR_CARDINALITY_DESTINATION: str = 'cardDestination'
 V10_ATTR_BIDIRECTIONAL:           str = 'bidir'
-V10_ATTR_SOURCE_ID:               str = 'srcID'
-V10_ATTR_DESTINATION_ID:          str = 'dstID'
+V10_ATTR_SOURCE_ID:               str = 'sourceId'
+V10_ATTR_DESTINATION_ID:          str = 'destId'
 V10_ATTR_SOURCE_TIME:             str = 'srcTime'
 V10_ATTR_DESTINATION_TIME:        str = 'dstTime'
+
+V10_ATTR_SD_MESSAGE_SOURCE_ID:       str = 'srcID'
+V10_ATTR_SD_MESSAGE_DESTINATION_ID:  str = 'dstID'
 
 V10_ATTR_FILENAME: str = 'filename'
 
@@ -55,6 +58,9 @@ V11_ATTR_SOURCE_ID:               str = 'sourceID'
 V11_ATTR_DESTINATION_ID:          str = 'destinationID'
 V11_ATTR_SOURCE_TIME:             str = 'sourceTime'
 V11_ATTR_DESTINATION_TIME:        str = 'destinationTime'
+
+V11_ATTR_SD_MESSAGE_SOURCE_ID:       str = V11_ATTR_SOURCE_ID
+V11_ATTR_SD_MESSAGE_DESTINATION_ID:  str = V11_ATTR_DESTINATION_ID
 
 V11_ATTR_FILENAME: str = V10_ATTR_FILENAME
 

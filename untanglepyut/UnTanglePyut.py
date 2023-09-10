@@ -87,6 +87,9 @@ class UnTanglePyut:
             self._attrBidirectional:          str = XmlConstants.V10_ATTR_BIDIRECTIONAL
             self._attrSourceId:               str = XmlConstants.V10_ATTR_SOURCE_ID
             self._attrDestinationId:          str = XmlConstants.V10_ATTR_DESTINATION_ID
+            self._attrSDMessageSourceId:      str = XmlConstants.V10_ATTR_SD_MESSAGE_SOURCE_ID
+            self._attrSDMessageDestinationId: str = XmlConstants.V10_ATTR_SD_MESSAGE_DESTINATION_ID
+
             self._attrSourceTime:             str = XmlConstants.V10_ATTR_SOURCE_TIME
             self._attrDestinationTime:        str = XmlConstants.V10_ATTR_DESTINATION_TIME
 
@@ -108,6 +111,9 @@ class UnTanglePyut:
             self._attrBidirectional          = XmlConstants.V11_ATTR_BIDIRECTIONAL
             self._attrSourceId               = XmlConstants.V11_ATTR_SOURCE_ID
             self._attrDestinationId          = XmlConstants.V11_ATTR_DESTINATION_ID
+            self._attrSDMessageSourceId      = XmlConstants.V11_ATTR_SD_MESSAGE_SOURCE_ID
+            self._attrSDMessageDestinationId = XmlConstants.V11_ATTR_SD_MESSAGE_DESTINATION_ID
+
             self._attrSourceTime             = XmlConstants.V11_ATTR_SOURCE_TIME
             self._attrDestinationTime        = XmlConstants.V11_ATTR_DESTINATION_TIME
 
@@ -304,8 +310,8 @@ class UnTanglePyut:
         pyutSDMessage.message = messageElement['message']
         pyutSDMessage.linkType = PyutLinkType.SD_MESSAGE
 
-        srcID: int = int(messageElement[self._attrSourceId])
-        dstID: int = int(messageElement[self._attrDestinationId])
+        srcID: int = int(messageElement[self._attrSDMessageSourceId])
+        dstID: int = int(messageElement[self._attrSDMessageDestinationId])
 
         srcTime: int = int(messageElement[self._attrSourceTime])
         dstTime: int = int(messageElement[self._attrDestinationTime])

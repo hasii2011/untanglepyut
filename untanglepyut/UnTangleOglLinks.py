@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+
 from typing import List
 from typing import cast
 
@@ -28,51 +28,17 @@ from ogl.OglLink import OglLink
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglAssociationLabel import OglAssociationLabel
 
+from untanglepyut import XmlConstants
 
+from untanglepyut.Types import GraphicLinkAttributes
 from untanglepyut.Types import LinkableOglObject
 from untanglepyut.Types import LinkableOglObjects
 from untanglepyut.Types import UntangledControlPoints
 from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.Types import createUntangledOglLinks
 
-from untanglepyut.Common import str2bool
-
-from untanglepyut import XmlConstants
-
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.XmlVersion import XmlVersion
-
-
-#
-# TODO:   This class goes back to Types.py when we have a full V10/V11 Untangler
-#
-@dataclass
-class GraphicLinkAttributes:
-
-    srcX:   int = -1
-    srcY:   int = -1
-    dstX:   int = -1
-    dstY:   int = -1
-    spline: bool = False
-
-    @classmethod
-    def fromGraphicLink(cls, xmlVersion: XmlVersion, graphicLink: Element) -> 'GraphicLinkAttributes':
-
-        gla: GraphicLinkAttributes = GraphicLinkAttributes()
-        if xmlVersion == XmlVersion.V10:
-            gla.srcX = int(graphicLink['srcX'])
-            gla.srcY = int(graphicLink['srcY'])
-            gla.dstX = int(graphicLink['dstX'])
-            gla.dstY = int(graphicLink['dstY'])
-        else:
-            gla.srcX = int(graphicLink['sourceAnchorX'])
-            gla.srcY = int(graphicLink['sourceAnchorY'])
-            gla.dstX = int(graphicLink['destinationAnchorX'])
-            gla.dstY = int(graphicLink['destinationAnchorY'])
-
-        gla.spline = str2bool(graphicLink['spline'])
-
-        return gla
 
 
 class UnTangleOglLinks:

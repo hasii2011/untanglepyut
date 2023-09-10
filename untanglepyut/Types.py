@@ -23,7 +23,7 @@ from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
 from untanglepyut.Common import str2bool
-
+from untanglepyut.XmlVersion import XmlVersion
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
 
@@ -158,13 +158,19 @@ class GraphicLinkAttributes:
     spline: bool = False
 
     @classmethod
-    def fromGraphicLink(cls, graphicLink: Element) -> 'GraphicLinkAttributes':
+    def fromGraphicLink(cls, xmlVersion: XmlVersion, graphicLink: Element) -> 'GraphicLinkAttributes':
 
         gla: GraphicLinkAttributes = GraphicLinkAttributes()
-        gla.srcX = int(graphicLink['srcX'])
-        gla.srcY = int(graphicLink['srcY'])
-        gla.dstX = int(graphicLink['dstX'])
-        gla.dstY = int(graphicLink['dstY'])
+        if xmlVersion == XmlVersion.V10:
+            gla.srcX = int(graphicLink['srcX'])
+            gla.srcY = int(graphicLink['srcY'])
+            gla.dstX = int(graphicLink['dstX'])
+            gla.dstY = int(graphicLink['dstY'])
+        else:
+            gla.srcX = int(graphicLink['sourceAnchorX'])
+            gla.srcY = int(graphicLink['sourceAnchorY'])
+            gla.dstX = int(graphicLink['destinationAnchorX'])
+            gla.dstY = int(graphicLink['destinationAnchorY'])
 
         gla.spline = str2bool(graphicLink['spline'])
 

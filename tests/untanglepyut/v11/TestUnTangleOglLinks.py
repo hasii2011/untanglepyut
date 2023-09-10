@@ -22,7 +22,7 @@ from untanglepyut.Types import UntangledOglLinks
 from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.v11.UnTangleOglClasses import UnTangleOglClasses
-from untanglepyut.v11.UnTangleOglLinks import UnTangleOglLinks
+from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 
 from tests.TestBase import TestBase
 
