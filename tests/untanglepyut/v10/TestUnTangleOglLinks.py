@@ -32,7 +32,7 @@ from untanglepyut.Types import UntangledOglLinks
 
 from untanglepyut.XmlVersion import XmlVersion
 
-from untanglepyut.v10.UnTangler import UnTangler
+from untanglepyut.UnTangler import UnTangler
 
 
 class TestUnTangleOglLinks(TestBase):

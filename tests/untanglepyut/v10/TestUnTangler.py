@@ -41,7 +41,7 @@ from untanglepyut.Types import UntangledOglTexts
 
 from untanglepyut.XmlVersion import XmlVersion
 
-from untanglepyut.v10.UnTangler import UnTangler
+from untanglepyut.UnTangler import UnTangler
 
 from tests.TestBase import TestBase
 

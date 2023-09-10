@@ -2,7 +2,7 @@
 from hasiihelper.UnitTestBase import UnitTestBase
 from hasiicommon.ui.UnitTestBaseW import UnitTestBaseW
 
-from untanglepyut.v10.UnTangler import DocumentTitle
+from untanglepyut.UnTangler import DocumentTitle
 
 DIAGRAM_NAME_1:    DocumentTitle = DocumentTitle('Diagram-1')
 DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
