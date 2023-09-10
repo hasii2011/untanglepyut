@@ -126,7 +126,9 @@ class UnTangleOglLinks:
             srcShape: LinkableOglObject = linkableOglObjects[sourceId]
             dstShape: LinkableOglObject = linkableOglObjects[dstId]
         except KeyError as ke:
-            self.logger.error(f'Developer Error -- srcId: {sourceId} - dstId: {dstId}  KeyError index: {ke}')
+            self.logger.error(f'{linkableOglObjects=}')
+            self.logger.error(f'Developer Error -- {singleLink=}')
+            self.logger.error(f'Developer Error -- {sourceId=} {dstId=}  KeyError index: {ke}')
             return cast(OglLink, None)
 
         pyutLink: PyutLink = self._untanglePyut.linkToPyutLink(singleLink, source=srcShape.pyutObject, destination=dstShape.pyutObject)

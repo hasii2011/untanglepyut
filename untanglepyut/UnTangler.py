@@ -1,18 +1,17 @@
 
+from typing import cast
+
 from logging import Logger
 from logging import getLogger
-from typing import cast
 
 from untangle import parse
 from untangle import Element
 
-from ogl.OglClass import OglClass
-from ogl.OglNote import OglNote
-from ogl.OglText import OglText
-
-from pyutmodel.PyutClass import PyutClass
 from pyutmodel.PyutNote import PyutNote
 from pyutmodel.PyutText import PyutText
+
+from ogl.OglNote import OglNote
+from ogl.OglText import OglText
 
 from untanglepyut.BaseUnTangle import BaseUnTangle
 
@@ -26,7 +25,6 @@ from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 from untanglepyut.Types import createLinkableOglObjects
-from untanglepyut.Types import createUntangledOglClasses
 from untanglepyut.Types import createUntangledOglNotes
 from untanglepyut.Types import createUntangledOglTexts
 
@@ -34,10 +32,12 @@ from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.UnTangleSequenceDiagram import UnTangleSequenceDiagram
+
 from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
+from untanglepyut.v11.UnTangleOglClasses import UnTangleOglClasses
 
 
 class UnTangler(BaseUnTangle):
@@ -149,24 +149,8 @@ class UnTangler(BaseUnTangle):
 
     def _graphicClassesToOglClasses(self, pyutDocument: Element) -> UntangledOglClasses:
 
-        oglClasses:     UntangledOglClasses = createUntangledOglClasses()
-        graphicClasses: Elements            = pyutDocument.get_elements('GraphicClass')
-        
-        for graphicClass in graphicClasses:
-            self.logger.debug(f'{graphicClass=}')
-
-            graphicInformation: GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicClass)
-            oglClass: OglClass = OglClass(pyutClass=None, w=graphicInformation.width, h=graphicInformation.height)
-            oglClass.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
-            #
-            # This is necessary if it is never added to a diagram
-            # and immediately serialized
-            #
-            self._updateModel(oglObject=oglClass, graphicInformation=graphicInformation)
-
-            pyutClass: PyutClass = self._untanglePyut.classToPyutClass(graphicClass=graphicClass)
-            oglClass.pyutObject = pyutClass
-            oglClasses.append(oglClass)
+        unTangleOglClasses: UnTangleOglClasses  = UnTangleOglClasses(xmlVersion=self._xmlVersion)
+        oglClasses:         UntangledOglClasses = unTangleOglClasses.unTangle(pyutDocument=pyutDocument)
 
         return oglClasses
 

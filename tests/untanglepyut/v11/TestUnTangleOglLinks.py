@@ -5,6 +5,7 @@ from unittest import TestSuite
 from unittest import main as unitTestMain
 
 from ogl.OglLink import OglLink
+from pyutmodel.PyutClass import PyutClass
 from untangle import Element
 from untangle import parse
 
@@ -189,8 +190,10 @@ class TestUnTangleOglLinks(TestBase):
 
         linkableOglObjects: LinkableOglObjects = LinkableOglObjects({})
         for aClass in unTangledOglClasses:
-            oglClass: OglClass = cast(OglClass, aClass)
-            linkableOglObjects[oglClass.id] = oglClass
+            oglClass:  OglClass  = cast(OglClass, aClass)
+            pyutClass: PyutClass = oglClass.pyutObject
+            linkableOglObjects[pyutClass.id] = oglClass
+            self.logger.warning(f'{oglClass.id=}')
 
         return linkableOglObjects
 
@@ -207,7 +210,8 @@ class TestUnTangleOglLinks(TestBase):
 
         for link in untangledLinks:
             untangledLink: UntangledLink = cast(UntangledLink, link)
-            linkDict[untangledLink.pyutObject.name] = untangledLink
+            if isinstance(untangledLink, OglLink):
+                linkDict[untangledLink.pyutObject.name] = untangledLink
 
         hasLink: OglLink = cast(OglLink, linkDict[TEST_LINK_NAME])
 

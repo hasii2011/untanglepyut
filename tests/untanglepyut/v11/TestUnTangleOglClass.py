@@ -68,6 +68,27 @@ V11_OGL_CLASS_DOCUMENT: str = """
 </PyutDocument>
 """
 
+V10_OGL_CLASS_DOCUMENT: str = """
+<PyutDocument type="CLASS_DIAGRAM" title="UnitTest" scrollPositionX="100" scrollPositionY="100" pixelsPerUnitX="1" pixelsPerUnitY="1">
+    <GraphicClass width="120" height="140" x="175" y="100">
+        <Class id="1" name="ClassName0" filename="/Users/humberto.a.sanchez.ii/PycharmProjects/PyUt/src/UnitTest.py" description="" showMethods="True" showFields="True" showStereotype="True" displayParameters="Unspecified">
+            <Method name="OzzeeElGatoDiablo" visibility="PUBLIC">
+                <Modifier name="static"/>
+                <Modifier name="bogus"/>
+                <Return type="str"/>
+                <SourceCode>
+                    <Code>weLeft:           bool = True</Code>
+                    <Code>isOzzeeAGoodGato: bool = False</Code>
+                    <Code>if weLeft is True:</Code>
+                    <Code>    isOzzeeAGoodGato = True</Code>
+                    <Code>return isOzzeeAGoodGato</Code>
+                </SourceCode>
+            </Method>
+        </Class>
+    </GraphicClass>
+</PyutDocument>
+"""
+
 
 class TestUnTangleOglClass(TestBase):
     """
@@ -86,7 +107,29 @@ class TestUnTangleOglClass(TestBase):
     def tearDown(self):
         super().tearDown()
 
-    def testOglClass(self):
+    def testV10OglClass(self):
+        root:          Element = parse(V10_OGL_CLASS_DOCUMENT)
+        classDocument: Element = root.PyutDocument
+
+        unTangleOglClass: UnTangleOglClasses = UnTangleOglClasses(xmlVersion=XmlVersion.V10)
+
+        unTangledOglClasses: UntangledOglClasses = unTangleOglClass.unTangle(pyutDocument=classDocument)
+
+        self.assertEqual(1, len(unTangledOglClasses), '')
+
+        oglClass:  OglClass  = unTangledOglClasses[0]
+
+        width, height = oglClass.GetSize()
+
+        self.assertEqual(120, width, '')
+        self.assertEqual(140, height, '')
+
+        x, y = oglClass.GetPosition()
+
+        self.assertEqual(175, x, '')
+        self.assertEqual(100, y, '')
+
+    def testV11OglClass(self):
 
         root:          Element = parse(V11_OGL_CLASS_DOCUMENT)
         classDocument: Element = root.PyutDocument
