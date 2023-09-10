@@ -118,6 +118,12 @@ class TestUnTangleOglClass(TestBase):
         self.assertEqual(1, len(unTangledOglClasses), '')
 
         oglClass:  OglClass  = unTangledOglClasses[0]
+        #
+        # TODO:  This test really belongs in a unit test for the V10 version of untangle Pyut for classes
+        #
+        pyutClass: PyutClass = oglClass.pyutObject
+
+        self.assertTrue(pyutClass.displayStereoType, 'True in XML')
 
         width, height = oglClass.GetSize()
 

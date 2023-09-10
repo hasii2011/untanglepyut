@@ -15,7 +15,7 @@ V10_ATTR_TYPE:               str = 'type'
 V10_ATTR_STEREOTYPE:         str = 'stereotype'
 V10_ATTR_DEFAULT_VALUE:      str = 'defaultValue'
 
-V10_ATTR_DISPLAY_STEREOTYPE: str = 'showStereoType'
+V10_ATTR_DISPLAY_STEREOTYPE: str = 'showStereotype'
 V10_ATTR_DISPLAY_METHODS:    str = 'showMethods'
 V10_ATTR_DISPLAY_FIELDS:     str = 'showFields'
 V10_ATTR_DISPLAY_PARAMETERS: str = 'displayParameters'
