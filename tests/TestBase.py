@@ -1,6 +1,6 @@
 
-from hasiihelper.UnitTestBase import UnitTestBase
-from hasiicommon.ui.UnitTestBaseW import UnitTestBaseW
+from codeallybasic.UnitTestBase import UnitTestBase
+from codeallyadvanced.ui.UnitTestBaseW import UnitTestBaseW
 
 from untanglepyut.UnTangler import DocumentTitle
 
