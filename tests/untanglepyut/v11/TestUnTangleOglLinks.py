@@ -96,16 +96,16 @@ V11_OGL_LINKS: str = """
         <LabelCenter x="401" y="-8" />
         <LabelSource x="0" y="-53" />
         <LabelDestination x="0" y="-53" />
-        <PyutLink name="organizes" type="COMPOSITION" cardinalitySource="1" cardinalityDestination="*" bidirectional="False" sourceID="1" destinationID="2" />
+        <PyutLink name="organizes" type="COMPOSITION" cardinalitySource="1" cardinalityDestination="*" bidirectional="False" sourceId="1" destinationId="2" />
     </OglLink>
     <OglLink sourceAnchorX="573" sourceAnchorY="194" destinationAnchorX="573" destinationAnchorY="300" spline="False">
         <LabelCenter x="-371" y="-8" />
         <LabelSource x="0" y="-53" />
         <LabelDestination x="0" y="-53" />
-        <PyutLink name="has" type="AGGREGATION" cardinalitySource="1" cardinalityDestination="4" bidirectional="False" sourceID="3" destinationID="4" />
+        <PyutLink name="has" type="AGGREGATION" cardinalitySource="1" cardinalityDestination="4" bidirectional="False" sourceId="3" destinationId="4" />
     </OglLink>
     <OglLink sourceAnchorX="924" sourceAnchorY="350" destinationAnchorX="924" destinationAnchorY="249" spline="False">
-        <PyutLink name="" type="INTERFACE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceID="5" destinationID="6" />
+        <PyutLink name="" type="INTERFACE" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="5" destinationId="6" />
     </OglLink>
     <OglInterface2 attachmentPoint="EAST" x="465" y="649">
         <PyutInterface id="7" name="IClassInterface" description="">

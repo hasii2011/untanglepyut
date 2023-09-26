@@ -149,7 +149,7 @@ V11_PYUT_SD_INSTANCE: str = """
 
 V11_PYUT_SD_MESSAGE: str = """
     <OglSDMessage>
-        <PyutSDMessage id="4" message="calls()" sourceTime="148" destinationTime="150" sourceID="1" destinationID="2" />
+        <PyutSDMessage id="4" message="calls()" sourceTime="148" destinationTime="150" sourceId="1" destinationId="2" />
     </OglSDMessage>
 """
 

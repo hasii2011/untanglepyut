@@ -30,13 +30,13 @@ V11_SEQUENCE_DIAGRAM_DOCUMENT: str = """
         <PyutSDInstance id="3" instanceName="OzzeeInstance" lifeLineLength="200" />
     </OglSDInstance>
     <OglSDMessage>
-        <PyutSDMessage id="4" message="calls()" sourceTime="148" destinationTime="150" sourceID="1" destinationID="2" />
+        <PyutSDMessage id="4" message="calls()" sourceTime="148" destinationTime="150" sourceId="1" destinationId="2" />
     </OglSDMessage>
     <OglSDMessage>
-        <PyutSDMessage id="5" message="spanks()" sourceTime="201" destinationTime="194" sourceID="2" destinationID="3" />
+        <PyutSDMessage id="5" message="spanks()" sourceTime="201" destinationTime="194" sourceId="2" destinationId="3" />
     </OglSDMessage>
     <OglSDMessage>
-        <PyutSDMessage id="6" message="bites()" sourceTime="328" destinationTime="338" sourceID="3" destinationID="2" />
+        <PyutSDMessage id="6" message="bites()" sourceTime="328" destinationTime="338" sourceId="3" destinationId="2" />
     </OglSDMessage>
 </PyutDocument>
 """
