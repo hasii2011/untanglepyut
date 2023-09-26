@@ -34,8 +34,8 @@ jobs:
             pip install attrdict3
             pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04  wxPython
             pip install codeallybasic==0.5.2
-            pip install codeallyadvanced==0.5.1
-            pip install ogl==0.90.0
+            pip install codeallyadvanced==0.5.2
+            pip install ogl==0.90.2
             pip install untangle==1.2.1
             pip install buildlackey==1.3.3
       - run:
