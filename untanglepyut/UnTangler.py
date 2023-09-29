@@ -7,37 +7,30 @@ from logging import getLogger
 from untangle import parse
 from untangle import Element
 
-from pyutmodel.PyutNote import PyutNote
-from pyutmodel.PyutText import PyutText
-
-from ogl.OglNote import OglNote
-from ogl.OglText import OglText
-
 from untanglepyut.BaseUnTangle import BaseUnTangle
 
 from untanglepyut.Types import Document
 from untanglepyut.Types import DocumentTitle
 from untanglepyut.Types import Documents
-from untanglepyut.Types import Elements
-from untanglepyut.Types import GraphicInformation
+
 from untanglepyut.Types import ProjectInformation
 from untanglepyut.Types import UntangledOglClasses
 from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.Types import UntangledOglTexts
 from untanglepyut.Types import createLinkableOglObjects
-from untanglepyut.Types import createUntangledOglNotes
-from untanglepyut.Types import createUntangledOglTexts
+
+from untanglepyut.UnTangleOglTexts import UnTangleOglTexts
 
 from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
 from untanglepyut.UnTangleUseCaseDiagram import UnTangleUseCaseDiagram
 from untanglepyut.UnTangleSequenceDiagram import UnTangleSequenceDiagram
-
-from untanglepyut.XmlVersion import XmlVersion
-
 from untanglepyut.UnTangleOglLinks import LinkableOglObjects
 from untanglepyut.UnTangleOglLinks import UnTangleOglLinks
 from untanglepyut.UnTangleOglClasses import UnTangleOglClasses
+from untanglepyut.UnTangleOglNotes import UnTangleOglNotes
+
+from untanglepyut.XmlVersion import XmlVersion
 
 
 class UnTangler(BaseUnTangle):
@@ -161,19 +154,8 @@ class UnTangler(BaseUnTangle):
 
         Returns: untangled OglNote objects if any exist, else an empty list
         """
-        oglNotes:     UntangledOglNotes = createUntangledOglNotes()
-        graphicNotes: Elements          = pyutDocument.get_elements('GraphicNote')
-
-        for graphicNote in graphicNotes:
-            self.logger.debug(f'{graphicNote}')
-
-            graphicInformation: GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicNote)
-            oglNote:            OglNote            = OglNote(w=graphicInformation.width, h=graphicInformation.height)
-            oglNote.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
-            self._updateModel(oglObject=oglNote, graphicInformation=graphicInformation)
-            pyutNote: PyutNote = self._untanglePyut.noteToPyutNote(graphicNote=graphicNote)
-            oglNote.pyutObject = pyutNote
-            oglNotes.append(oglNote)
+        unTangleOglNotes: UnTangleOglNotes  = UnTangleOglNotes(xmlVersion=self._xmlVersion)
+        oglNotes:         UntangledOglNotes = unTangleOglNotes.unTangle(pyutDocument=pyutDocument)
 
         return oglNotes
 
@@ -186,23 +168,9 @@ class UnTangler(BaseUnTangle):
 
         Returns:  untangled OglText objects if any exist, else an empty list
         """
-        oglTexts:     UntangledOglTexts = createUntangledOglTexts()
-        graphicTexts: Elements          = pyutDocument.get_elements('GraphicText')
 
-        for graphicText in graphicTexts:
-            self.logger.debug(f'{graphicText}')
-
-            graphicInformation: GraphicInformation = GraphicInformation.toGraphicInfo(graphicElement=graphicText)
-            pyutText:           PyutText           = self._untanglePyut.textToPyutText(graphicText=graphicText)
-            oglText:            OglText            = OglText(pyutText=pyutText, width=graphicInformation.width, height=graphicInformation.height)
-            oglText.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
-            #
-            # This is necessary if it is never added to a diagram
-            # and immediately serialized
-            #
-            self._updateModel(oglObject=oglText, graphicInformation=graphicInformation)
-            oglText.pyutText = pyutText
-            oglTexts.append(oglText)
+        unTangleOglTexts: UnTangleOglTexts  = UnTangleOglTexts(xmlVersion=self._xmlVersion)
+        oglTexts:         UntangledOglTexts = unTangleOglTexts.unTangle(pyutDocument=pyutDocument)
 
         return oglTexts
 

@@ -4,6 +4,8 @@ V10_ELEMENT_FIELD:      str = 'Field'
 V10_ELEMENT_METHOD:     str = 'Method'
 V10_ELEMENT_PARAMETER:  str = 'Param'
 V10_ELEMENT_INTERFACE2: str = 'Interface'
+V10_ELEMENT_NOTE:       str = 'GraphicNote'
+V10_ELEMENT_TEXT:       str = 'GraphicText'
 
 V10_ELEMENT_LABEL_CENTER:      str = 'LabelCenter'
 V10_ELEMENT_LABEL_SOURCE:      str = 'LabelSrc'
@@ -38,6 +40,8 @@ V11_ELEMENT_FIELD:      str = 'PyutField'
 V11_ELEMENT_METHOD:     str = 'PyutMethod'
 V11_ELEMENT_PARAMETER:  str = 'PyutParameter'
 V11_ELEMENT_INTERFACE2: str = 'PyutInterface'
+V11_ELEMENT_NOTE:       str = 'OglNote'
+V11_ELEMENT_TEXT:       str = 'OglText'
 
 
 V11_ATTR_STEREOTYPE:         str = 'stereotype'

@@ -2,12 +2,14 @@
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from ogl.OglActor import OglActor
-from ogl.OglUseCase import OglUseCase
 from untangle import Element
 from untangle import parse
 
+from ogl.OglActor import OglActor
+from ogl.OglUseCase import OglUseCase
+
 from tests.TestBase import TestBase
+
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
 from untanglepyut.XmlVersion import XmlVersion

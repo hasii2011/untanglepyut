@@ -167,7 +167,7 @@ class UnTanglePyut:
 
         pyutText:    PyutText = PyutText()
 
-        pyutText.id  = textElement['id']
+        pyutText.id  = int(textElement[self._attrId])
 
         rawContent:   str = textElement['content']
         cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
@@ -466,8 +466,8 @@ class UnTanglePyut:
         Returns:  The updated pyutObject as
         """
 
-        pyutObject.id       = int(pyutElement[self._attrId])    # TODO revisit this when we start using UUIDs
-        pyutObject.name     = pyutElement['name']
+        pyutObject.id      = int(pyutElement[self._attrId])    # TODO revisit this when we start using UUIDs
+        pyutObject.name    = pyutElement['name']
         pyutObject.fileName = pyutElement[self._attrFileName]
 
         return pyutObject
