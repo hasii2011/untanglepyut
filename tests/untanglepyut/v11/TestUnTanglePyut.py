@@ -79,7 +79,7 @@ V11_PYUT_CLASS: str = """
 
 V11_SOURCE_PYUT_CLASS: str = """
     <OglClass width="78" height="44" x="150" y="150">
-        <PyutClass id="1" name="Folder" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="">
+        <PyutClass id="1" name="Folder" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="", fileName="">
             <PyutField name="permissions" visibility="PRIVATE" type="" defaultValue="" />
         </PyutClass>
     </OglClass>
@@ -87,7 +87,7 @@ V11_SOURCE_PYUT_CLASS: str = """
 
 V11_DESTINATION_PYUT_CLASS: str = """
     <OglClass width="88" height="50" x="151" y="302">
-        <PyutClass id="2" name="File" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="">
+        <PyutClass id="2" name="File" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="" fileName="">
             <PyutField name="size" visibility="PRIVATE" type="" defaultValue="" />
             <PyutField name="name" visibility="PRIVATE" type="" defaultValue="" />
         </PyutClass>
@@ -112,19 +112,19 @@ V11_PYUT_TEXT: str = """
 
 V11_PYUT_NOTE: str = """
     <OglNote width="128" height="49" x="175" y="300">
-        <PyutNote id="1" content="I am a note linked to&amp;#xA;the LinkedToClass" filename="" />
+        <PyutNote id="1" content="I am a note linked to&amp;#xA;the LinkedToClass" fileName="" />
     </OglNote>
 """
 
 V11_PYUT_ACTOR: str = """
     <OglActor width="87" height="114" x="50" y="100">
-        <PyutActor id="1" name="BasicActor" filename="" />
+        <PyutActor id="1" name="BasicActor" fileName="" />
     </OglActor>
 """
 
 V11_PYUT_USE_CASE: str = """
     <OglUseCase width="100" height="60" x="475" y="275">
-        <PyutUseCase id="2" name="Basic Use Case" filename="" />
+        <PyutUseCase id="2" name="Basic Use Case" fileName="" />
     </OglUseCase>
 """
 

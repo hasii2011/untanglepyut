@@ -28,7 +28,7 @@ V11_MANY_NOTES_DOCUMENT: str = """
             <PyutNote id="2" content="I am note 2" filename="" />
         </OglNote>
         <OglNote width="100" height="50" x="196" y="483">
-            <PyutNote id="3" content="I am note 3" filename="/tmp/Note3.txt" />
+            <PyutNote id="3" content="I am note 3" fileName="/tmp/Note3.txt" />
         </OglNote>
     </PyutDocument>
 """

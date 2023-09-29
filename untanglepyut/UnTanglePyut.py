@@ -117,7 +117,7 @@ class UnTanglePyut:
             self._attrSourceTime             = XmlConstants.V11_ATTR_SOURCE_TIME
             self._attrDestinationTime        = XmlConstants.V11_ATTR_DESTINATION_TIME
 
-            self._attrFileName = XmlConstants.V10_ATTR_FILENAME
+            self._attrFileName = XmlConstants.V11_ATTR_FILENAME
 
     def classToPyutClass(self, graphicClass: Element) -> PyutClass:
         if self._xmlVersion == XmlVersion.V10:
@@ -137,6 +137,7 @@ class UnTanglePyut:
         showFields:        bool = bool(classElement[self._attrDisplayFields])
         showMethods:       bool = bool(classElement[self._attrDisplayMethods])
         stereotypeStr:     str  = classElement[self._attrStereoType]
+        fileName:          str  = classElement[self._attrFileName]
 
         pyutClass.displayParameters = displayParameters
 
@@ -145,7 +146,8 @@ class UnTanglePyut:
         pyutClass.showMethods       = showMethods
 
         pyutClass.description = classElement['description']
-        pyutClass.stereotype = PyutStereotype.toEnum(stereotypeStr)
+        pyutClass.stereotype  = PyutStereotype.toEnum(stereotypeStr)
+        pyutClass.fileName    = fileName
 
         pyutClass.methods = self._methodToPyutMethods(classElement=classElement)
         pyutClass.fields  = self._fieldToPyutFields(classElement=classElement)
