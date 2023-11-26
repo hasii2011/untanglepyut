@@ -37,7 +37,7 @@ jobs:
             pip install codeallyadvanced==0.5.2
             pip install ogl==1.0.0
             pip install untangle==1.2.1
-            pip install buildlackey==1.3.3
+            pip install buildlackey==1.6.0
       - run:
             name: run tests
             command: | 
