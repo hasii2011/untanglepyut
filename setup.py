@@ -24,5 +24,5 @@ setup(
         'untanglepyut': ['py.typed'],
     },
 
-    install_requires=['codeallybasic==0.5.2', 'codeallyadvanced==0.5.2', 'pyutmodel==1.5.0', 'ogl==0.90.3', 'untangle==1.2.1'],
+    install_requires=['codeallybasic==0.5.2', 'codeallyadvanced==0.5.2', 'pyutmodel==1.5.1', 'ogl==1.0.0', 'untangle==1.2.1'],
 )

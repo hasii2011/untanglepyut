@@ -79,7 +79,7 @@ V11_PYUT_CLASS: str = """
 
 V11_SOURCE_PYUT_CLASS: str = """
     <OglClass width="78" height="44" x="150" y="150">
-        <PyutClass id="1" name="Folder" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="", fileName="">
+        <PyutClass id="1" name="Folder" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayFields="True" displayStereotype="True" description="" fileName="">
             <PyutField name="permissions" visibility="PRIVATE" type="" defaultValue="" />
         </PyutClass>
     </OglClass>
@@ -166,7 +166,7 @@ class TestUnTanglePyut(TestBase):
 
     def setUp(self):
         super().setUp()
-        
+
     def tearDown(self):
         super().tearDown()
 
@@ -198,8 +198,8 @@ class TestUnTanglePyut(TestBase):
         self._checkFields(pyutClass=pyutClass)
 
     def testPyutLinks(self):
-        sourcePyutClass:      PyutClass = self._getPyutClass(rawXml=V11_SOURCE_PYUT_CLASS)
         destinationPyutClass: PyutClass = self._getPyutClass(rawXml=V11_DESTINATION_PYUT_CLASS)
+        sourcePyutClass:      PyutClass = self._getPyutClass(rawXml=V11_SOURCE_PYUT_CLASS)
 
         rootElement:     Element = parse(V11_PYUT_LINK)
         pyutLinkElement: Element = rootElement.PyutLink
@@ -326,8 +326,8 @@ class TestUnTanglePyut(TestBase):
         root:           Element = parse(rawXml)
         oglSourceClass: Element = root.OglClass
 
-        untanglepyut:     UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
-        pyutClass:  PyutClass = untanglepyut.classToPyutClass(graphicClass=oglSourceClass)
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutClass:    PyutClass    = untanglepyut.classToPyutClass(graphicClass=oglSourceClass)
 
         self.logger.debug(f'{pyutClass}')
 

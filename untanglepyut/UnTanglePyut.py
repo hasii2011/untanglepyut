@@ -195,6 +195,7 @@ class UnTanglePyut:
         # fix line feeds
         pyutNote = cast(PyutNote, self._addPyutObjectAttributes(pyutElement=noteElement, pyutObject=pyutNote))
 
+        # TODO:  Update when code-ally-basic has common code
         rawContent:   str = noteElement['content']
         cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
         pyutNote.content = cleanContent
