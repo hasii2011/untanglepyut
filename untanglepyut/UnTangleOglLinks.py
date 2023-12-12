@@ -31,6 +31,7 @@ from ogl.OglAssociationLabel import OglAssociationLabel
 
 from untanglepyut import XmlConstants
 
+from untanglepyut.Types import Elements
 from untanglepyut.Types import GraphicLinkAttributes
 from untanglepyut.Types import LinkableOglObject
 from untanglepyut.Types import LinkableOglObjects
@@ -86,12 +87,12 @@ class UnTangleOglLinks:
 
         oglLinks: UntangledOglLinks = createUntangledOglLinks()
 
-        graphicLinks: Element = pyutDocument.get_elements(self._elementOglLink)
+        graphicLinks: Elements = cast(Elements, pyutDocument.get_elements(self._elementOglLink))
         for graphicLink in graphicLinks:
             oglLink: OglLink = self._graphicLinkToOglLink(graphicLink, linkableOglObjects=linkableOglObjects)
             oglLinks.append(oglLink)
 
-        graphicLollipops: Element = pyutDocument.get_elements(self._elementOglInterface2)
+        graphicLollipops: Elements = cast(Elements, pyutDocument.get_elements(self._elementOglInterface2))
         for graphicLollipop in graphicLollipops:
             oglInterface2: OglInterface2 = self._graphicLollipopToOglInterface(graphicLollipop, linkableOglObjects)
             oglLinks.append(oglInterface2)
@@ -115,7 +116,7 @@ class UnTangleOglLinks:
         assert len(linkableOglObjects) != 0, 'Developer forgot to create dictionary'
         gla: GraphicLinkAttributes = GraphicLinkAttributes.fromGraphicLink(xmlVersion=self._xmlVersion, graphicLink=graphicLink)
 
-        links: Element = graphicLink.get_elements(self._elementLink)
+        links: Elements = cast(Elements, graphicLink.get_elements(self._elementLink))
         assert len(links) == 1, 'Should only ever be one'
 
         singleLink:  Element = links[0]
@@ -138,7 +139,7 @@ class UnTangleOglLinks:
                                                   srcPos=(gla.srcX, gla.srcY),
                                                   dstPos=(gla.dstX, gla.dstY)
                                                   )
-        oglLink.SetSpline(gla.spline)
+        oglLink.spline = gla.spline
         srcShape.addLink(oglLink)
         dstShape.addLink(oglLink)
 
@@ -224,7 +225,7 @@ class UnTangleOglLinks:
         attachmentLocationStr: str            = graphicLollipop['attachmentPoint']
         attachmentSide:        AttachmentSide = AttachmentSide.toEnum(attachmentLocationStr)
 
-        elements: Element = graphicLollipop.get_elements(self._elementInterface2)
+        elements: Elements = cast(Elements, graphicLollipop.get_elements(self._elementInterface2))
         assert len(elements) == 1, 'If more than one interface tag the XML is invalid'
 
         pyutInterface:    PyutInterface = self._untanglePyut.interfaceToPyutInterface(oglInterface2=graphicLollipop)
@@ -305,7 +306,7 @@ class UnTangleOglLinks:
 
         controlPoints: UntangledControlPoints = UntangledControlPoints([])
 
-        controlPointElements: Element = graphicLink.get_elements('ControlPoint')
+        controlPointElements: Elements = cast(Elements, graphicLink.get_elements('ControlPoint'))
         for controlPointElement in controlPointElements:
             x: int = int(controlPointElement['x'])
             y: int = int(controlPointElement['y'])
