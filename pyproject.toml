@@ -1,0 +1,35 @@
+[build-system]
+requires = ['setuptools', 'wheel']
+build-backend = "setuptools.build_meta"
+
+[project]
+name='untanglepyut'
+dynamic     = ["version"]
+description = 'XML to Ogl Object Model'
+readme      = "README.md"
+license     = {text = 'GNU AFFERO GENERAL PUBLIC LICENSE'}
+authors     = [{name = 'Humberto A. Sanchez II', email = 'Humbert.A.Sanchez.II@gmail.com'}]
+maintainers = [{name = 'Humberto A. Sanchez II', email = 'Humbert.A.Sanchez.II@gmail.com'}]
+keywords    = ['pyut', 'graphical shapes', 'python', 'xml']
+
+dependencies = [
+  'untangle==1.2.1',
+  'codeallybasic==0.5.2',
+  'codeallyadvanced==0.5.2',
+  'pyutmodelv2==2.0.0a5',
+  'ogl==2.0.0a5',
+]
+
+[project.urls]
+Repository = 'https://github.com/hasii2011/untanglepyut'
+
+
+[tool.setuptools.packages.find]
+where = ['src']
+
+[tool.setuptools.package-data]
+untanglepyut = ['py.typed']
+
+
+[tool.setuptools.dynamic]
+version = {attr = 'untanglepyut.__version__'}
