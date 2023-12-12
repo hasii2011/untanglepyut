@@ -28,7 +28,7 @@ setup(
         'untangle==1.2.1',
         'codeallybasic==0.5.2',
         'codeallyadvanced==0.5.2',
-        'pyutmodelv2==2.0.0a3',
-        'ogl==2.0.0a3',
+        'pyutmodelv2==2.0.0a4',
+        'ogl==2.0.0a4',
     ],
 )
