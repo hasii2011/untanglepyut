@@ -20,13 +20,14 @@ from ogl.OglClass import OglClass
 from ogl.OglLink import OglLink
 from ogl.OglNote import OglNote
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutMethod import PyutModifiers
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutModifier import PyutModifier
-from pyutmodel.PyutNote import PyutNote
-from pyutmodel.PyutStereotype import PyutStereotype
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutMethod import PyutModifiers
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutModifier import PyutModifier
+from pyutmodelv2.PyutNote import PyutNote
+
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 
 from tests.TestBase import DIAGRAM_NAME_1
 from tests.TestBase import DIAGRAM_NAME_2

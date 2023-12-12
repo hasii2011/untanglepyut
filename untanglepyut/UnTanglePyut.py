@@ -10,33 +10,33 @@ from os import linesep as osLineSep
 
 from untangle import Element
 
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutField import PyutFields
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutField import PyutFields
 
-from pyutmodel.PyutObject import PyutObject
-from pyutmodel.PyutUseCase import PyutUseCase
-from pyutmodel.PyutActor import PyutActor
-from pyutmodel.PyutInterface import PyutInterface
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodelv2.PyutObject import PyutObject
+from pyutmodelv2.PyutUseCase import PyutUseCase
+from pyutmodelv2.PyutActor import PyutActor
+from pyutmodelv2.PyutInterface import PyutInterface
+from pyutmodelv2.PyutLink import PyutLink
+from pyutmodelv2.PyutMethod import PyutMethods
+from pyutmodelv2.PyutMethod import PyutParameters
+from pyutmodelv2.PyutMethod import SourceCode
+from pyutmodelv2.PyutParameter import PyutParameter
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutMethod import PyutModifiers
+from pyutmodelv2.PyutModifier import PyutModifier
+from pyutmodelv2.PyutType import PyutType
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutNote import PyutNote
+from pyutmodelv2.PyutText import PyutText
 
-from pyutmodel.PyutMethod import PyutMethods
-from pyutmodel.PyutMethod import PyutParameters
-from pyutmodel.PyutMethod import SourceCode
-from pyutmodel.PyutParameter import PyutParameter
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutMethod import PyutModifiers
+from pyutmodelv2.PyutSDInstance import PyutSDInstance
+from pyutmodelv2.PyutSDMessage import PyutSDMessage
 
-from pyutmodel.PyutModifier import PyutModifier
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutNote import PyutNote
-from pyutmodel.PyutText import PyutText
-from pyutmodel.PyutStereotype import PyutStereotype
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
-from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
-from pyutmodel.PyutSDInstance import PyutSDInstance
-from pyutmodel.PyutSDMessage import PyutSDMessage
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
+from pyutmodelv2.enumerations.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from untanglepyut import XmlConstants
 
@@ -49,7 +49,7 @@ from untanglepyut.Types import Elements
 @dataclass
 class ConvolutedPyutSDMessageInformation:
     """
-    This class is necessary because I do not want to mix Ogl and PyutModel code;  Unfortunately,
+    This class is necessary because I do not want to mix Ogl and pyutmodel code;  Unfortunately,
     the IDs of the PyutSDInstance are buried and require a lookup
 
     """
@@ -60,7 +60,7 @@ class ConvolutedPyutSDMessageInformation:
 
 class UnTanglePyut:
     """
-    Converts PyutModel Version 11 XML to Pyut Objects
+    Converts pyutmodel Version 11 XML to Pyut Objects
     """
     # https://www.codetable.net/hex/a
     END_OF_LINE_MARKER: str = '&#xA;'
@@ -131,7 +131,9 @@ class UnTanglePyut:
 
         pyutClass = cast(PyutClass, self._addPyutObjectAttributes(pyutElement=classElement, pyutObject=pyutClass))
 
-        displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(classElement[self._attrDisplayParameters])
+        # displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(classElement[self._attrDisplayParameters])
+        displayStr: str = classElement[self._attrDisplayParameters]
+        displayParameters: PyutDisplayParameters = PyutDisplayParameters(displayStr)
 
         showStereotype:    bool = bool(classElement[self._attrDisplayStereoType])
         showFields:        bool = bool(classElement[self._attrDisplayFields])
@@ -217,7 +219,7 @@ class UnTanglePyut:
         pyutInterface.id          = interfaceId
         pyutInterface.description = description
 
-        implementors: Element = pyutInterfaceElement.get_elements('Implementor')
+        implementors: Elements = cast(Elements, pyutInterfaceElement.get_elements('Implementor'))
         for implementor in implementors:
             pyutInterface.addImplementor(implementor['implementingClassName'])
 
@@ -273,8 +275,8 @@ class UnTanglePyut:
 
         pyutLink: PyutLink = PyutLink(name=linkDescription,
                                       linkType=linkType,
-                                      cardSrc=cardSrc, cardDest=cardDest,
-                                      bidir=bidir,
+                                      cardinalitySource=cardSrc, cardinalityDestination=cardDest,
+                                      bidirectional=bidir,
                                       source=source,
                                       destination=destination)
 
@@ -340,11 +342,11 @@ class UnTanglePyut:
         """
         untangledPyutMethods: PyutMethods = PyutMethods([])
 
-        methodElements: Elements = classElement.get_elements(self._elementMethod)
+        methodElements: Elements = cast(Elements, classElement.get_elements(self._elementMethod))
 
         for methodElement in methodElements:
-            methodName: str                = methodElement['name']
-            visibility: PyutVisibilityEnum = PyutVisibilityEnum.toEnum(methodElement['visibility'])
+            methodName: str            = methodElement['name']
+            visibility: PyutVisibility = PyutVisibility.toEnum(methodElement['visibility'])
             self.logger.debug(f"{methodName=} - {visibility=}")
 
             pyutMethod: PyutMethod = PyutMethod(name=methodName, visibility=visibility)
@@ -373,10 +375,10 @@ class UnTanglePyut:
     def _fieldToPyutFields(self, classElement: Element) -> PyutFields:
         untangledPyutFields: PyutFields = PyutFields([])
 
-        fieldElements: Elements = classElement.get_elements(self._elementField)
+        fieldElements: Elements = cast(Elements, classElement.get_elements(self._elementField))
 
         for fieldElement in fieldElements:
-            visibility:    PyutVisibilityEnum = PyutVisibilityEnum.toEnum(fieldElement['visibility'])
+            visibility: PyutVisibility = PyutVisibility.toEnum(fieldElement['visibility'])
             if self._xmlVersion == XmlVersion.V10:
                 paramElements: Elements           = fieldElement.get_elements('Param')
                 assert len(paramElements) == 1, 'Curiously there should be only one'
@@ -421,7 +423,7 @@ class UnTanglePyut:
         if len(modifierElements) > 0:
             for modifierElement in modifierElements:
                 modifierName:           str       = modifierElement['name']
-                pyutModifier: PyutModifier = PyutModifier(modifierTypeName=modifierName)
+                pyutModifier: PyutModifier = PyutModifier(name=modifierName)
                 pyutModifiers.append(pyutModifier)
 
         return pyutModifiers

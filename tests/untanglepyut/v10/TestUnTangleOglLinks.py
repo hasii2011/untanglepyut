@@ -16,10 +16,11 @@ from ogl.OglInheritance import OglInheritance
 from ogl.OglInterface2 import OglInterface2
 from ogl.OglLink import OglLink
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutInterface import PyutInterface
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutLinkType import PyutLinkType
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutInterface import PyutInterface
+from pyutmodelv2.PyutLink import PyutLink
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from tests.TestBase import DIAGRAM_NAME_1
 from tests.TestBase import DIAGRAM_NAME_2

@@ -5,25 +5,26 @@ from typing import NewType
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutmodel.PyutActor import PyutActor
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutField import PyutFields
-from pyutmodel.PyutInterface import PyutInterface
-from pyutmodel.PyutLink import PyutLink
-from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutMethod import PyutMethods
-from pyutmodel.PyutMethod import PyutParameters
-from pyutmodel.PyutNote import PyutNote
-from pyutmodel.PyutSDInstance import PyutSDInstance
-from pyutmodel.PyutSDMessage import PyutSDMessage
-from pyutmodel.PyutStereotype import PyutStereotype
-from pyutmodel.PyutText import PyutText
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutUseCase import PyutUseCase
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
-from pyutmodel.PyutDisplayParameters import PyutDisplayParameters
+from pyutmodelv2.PyutActor import PyutActor
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutField import PyutFields
+from pyutmodelv2.PyutInterface import PyutInterface
+from pyutmodelv2.PyutLink import PyutLink
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutMethod import PyutMethods
+from pyutmodelv2.PyutMethod import PyutParameters
+from pyutmodelv2.PyutNote import PyutNote
+from pyutmodelv2.PyutSDInstance import PyutSDInstance
+from pyutmodelv2.PyutSDMessage import PyutSDMessage
+from pyutmodelv2.PyutText import PyutText
+from pyutmodelv2.PyutType import PyutType
+from pyutmodelv2.PyutUseCase import PyutUseCase
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
+from pyutmodelv2.enumerations.PyutDisplayParameters import PyutDisplayParameters
 
 from untangle import Element
 from untangle import parse
@@ -37,7 +38,7 @@ from tests.TestBase import TestBase
 
 V11_PYUT_CLASS: str = """
     <OglClass width="429" height="145" x="300" y="175">
-        <PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="Display" displayFields="True" displayStereotype="True" description="I am a single class">
+        <PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="DisplayParameters" displayFields="True" displayStereotype="True" description="I am a single class">
             <PyutMethod name="publicMethod" visibility="PUBLIC" returnType="str">
                 <SourceCode />
             </PyutMethod>
@@ -184,7 +185,7 @@ class TestUnTanglePyut(TestBase):
         self.assertTrue(pyutClass.showMethods, '')
         self.assertTrue(pyutClass.showFields, '')
         self.assertTrue(pyutClass.displayStereoType, '')
-        self.assertEqual(PyutDisplayParameters.DISPLAY,  pyutClass.displayParameters)
+        self.assertEqual(PyutDisplayParameters.WITH_PARAMETERS,  pyutClass.displayParameters)
 
         methods: PyutMethods = pyutClass.methods
         self.assertTrue(len(methods) == 7, '')
@@ -210,7 +211,7 @@ class TestUnTanglePyut(TestBase):
         self.assertIsNotNone(pyutLink, '')
         self.assertEqual('organizes', pyutLink.name, '')
         self.assertEqual(PyutLinkType.COMPOSITION, pyutLink.linkType)
-        self.assertFalse(pyutLink.getBidir())
+        self.assertFalse(pyutLink.bidirectional, 'Should not be bidirectional')
         self.assertEqual('1', pyutLink.sourceCardinality, '')
         self.assertEqual('*', pyutLink.destinationCardinality, '')
 
@@ -304,7 +305,7 @@ class TestUnTanglePyut(TestBase):
         protectedField: PyutField = fieldDictionary['protectedField']
 
         self.assertIsNotNone(protectedField, '')
-        self.assertEqual(PyutVisibilityEnum.PROTECTED, protectedField.visibility,  '')
+        self.assertEqual(PyutVisibility.PROTECTED, protectedField.visibility,  '')
         self.assertEqual('Ozzee',              protectedField.defaultValue, '')
 
     def _checkMethods(self, methodDictionary:  MethodDictionary):
@@ -312,7 +313,7 @@ class TestUnTanglePyut(TestBase):
         pyutMethod: PyutMethod = methodDictionary['publicMethod']
 
         self.assertEqual('publicMethod', pyutMethod.name, '')
-        self.assertEqual(PyutVisibilityEnum.PUBLIC, pyutMethod.visibility, '')
+        self.assertEqual(PyutVisibility.PUBLIC, pyutMethod.visibility, '')
         self.assertEqual(PyutType('str'), pyutMethod.returnType, '')
 
     def _checkParameters(self, methodDictionary: MethodDictionary):

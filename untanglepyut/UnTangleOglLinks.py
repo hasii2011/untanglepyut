@@ -11,10 +11,11 @@ from miniogl.AttachmentSide import AttachmentSide
 from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutInterface import PyutInterface
-from pyutmodel.PyutLink import PyutLink
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutInterface import PyutInterface
+from pyutmodelv2.PyutLink import PyutLink
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from ogl.OglPosition import OglPosition
 from ogl.OglAggregation import OglAggregation

@@ -9,9 +9,10 @@ from unittest import main as unitTestMain
 from ogl.OglDimensions import OglDimensions
 from ogl.preferences.OglPreferences import OglPreferences
 
-from pyutmodel.PyutLinkType import PyutLinkType
-from pyutmodel.PyutSDInstance import PyutSDInstance
-from pyutmodel.PyutSDMessage import PyutSDMessage
+from pyutmodelv2.PyutSDInstance import PyutSDInstance
+from pyutmodelv2.PyutSDMessage import PyutSDMessage
+
+from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
 from ogl.sd.OglSDInstance import OglSDInstance
 
@@ -70,8 +71,12 @@ class TestUnTangleSequenceDiagram(TestBase):
         for sdMessage in sdMessages.values():
             pyutSDMessage: PyutSDMessage = sdMessage.pyutSDMessage
 
-            pyutSrcInstance: PyutSDInstance = pyutSDMessage.getSource()
-            pyutDstInstance: PyutSDInstance = pyutSDMessage.getDest()
+            # pyutSrcInstance: PyutSDInstance = pyutSDMessage.getSource()
+            # pyutDstInstance: PyutSDInstance = pyutSDMessage.getDest()
+
+            # Wah, wah, I do not really understand Union
+            pyutSrcInstance: PyutSDInstance = pyutSDMessage.source          # type: ignore
+            pyutDstInstance: PyutSDInstance = pyutSDMessage.destination     # type: ignore
 
             self.assertIsNotNone(pyutSrcInstance, 'Missing source sd instance')
             self.assertIsNotNone(pyutDstInstance, 'Missing source sd instance')

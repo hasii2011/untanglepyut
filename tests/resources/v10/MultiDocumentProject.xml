@@ -25,7 +25,7 @@
 			</Class>
 		</GraphicClass>
 		<GraphicClass width="416" height="70" x="225" y="75">
-			<Class id="2" name="BaseClass" filename="" stereotype="" description="I am a righteous boomer" showMethods="True" showFields="True" showStereotype="True" displayParameters="Display">
+			<Class id="2" name="BaseClass" filename="" stereotype="" description="I am a righteous boomer" showMethods="True" showFields="True" showStereotype="True" displayParameters="DisplayParameters">
 				<Method name="method1" visibility="PUBLIC">
 					<Modifier name="static"/>
 					<Return type="float"/>

@@ -1,10 +1,12 @@
 
+from typing import cast
+
 from logging import Logger
 from logging import getLogger
 
 from untangle import Element
 
-from pyutmodel.PyutClass import PyutClass
+from pyutmodelv2.PyutClass import PyutClass
 
 from ogl.OglClass import OglClass
 
@@ -23,7 +25,7 @@ from untanglepyut.XmlVersion import XmlVersion
 
 
 class UnTangleOglClasses(BaseUnTangle):
-    
+
     def __init__(self, xmlVersion: XmlVersion):
 
         super().__init__(xmlVersion)
@@ -38,7 +40,7 @@ class UnTangleOglClasses(BaseUnTangle):
 
     def unTangle(self, pyutDocument: Element) -> UntangledOglClasses:
         oglClasses:     UntangledOglClasses = createUntangledOglClasses()
-        graphicClasses: Elements            = pyutDocument.get_elements(self._elementOglClass)
+        graphicClasses: Elements            = cast(Elements, pyutDocument.get_elements(self._elementOglClass))
 
         for graphicClass in graphicClasses:
             self.logger.debug(f'{graphicClass=}')

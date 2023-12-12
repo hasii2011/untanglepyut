@@ -1,3 +1,4 @@
+
 from typing import Dict
 from typing import cast
 from unittest import TestSuite
@@ -6,13 +7,14 @@ from unittest import main as unitTestMain
 from untangle import Element
 from untangle import parse
 
-from pyutmodel.PyutClass import PyutClass
-from pyutmodel.PyutField import PyutField
-from pyutmodel.PyutField import PyutFields
-from pyutmodel.PyutMethod import PyutMethod
-from pyutmodel.PyutMethod import PyutMethods
-from pyutmodel.PyutType import PyutType
-from pyutmodel.PyutVisibilityEnum import PyutVisibilityEnum
+from pyutmodelv2.PyutClass import PyutClass
+from pyutmodelv2.PyutField import PyutField
+from pyutmodelv2.PyutField import PyutFields
+from pyutmodelv2.PyutMethod import PyutMethod
+from pyutmodelv2.PyutMethod import PyutMethods
+from pyutmodelv2.PyutType import PyutType
+
+from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 
 from ogl.OglClass import OglClass
 
@@ -27,7 +29,7 @@ from tests.TestBase import TestBase
 V11_OGL_CLASS_DOCUMENT: str = """
 <PyutDocument type="CLASS_DIAGRAM" title="SingleClassDiagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
     <OglClass width="429" height="145" x="300" y="175">
-        <PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="Display" displayFields="True" displayStereotype="True" description="I am a single class">
+        <PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="DisplayParameters" displayFields="True" displayStereotype="True" description="I am a single class">
             <PyutMethod name="publicMethod" visibility="PUBLIC" returnType="str">
                 <SourceCode />
             </PyutMethod>
@@ -175,7 +177,7 @@ class TestUnTangleOglClass(TestBase):
 
         self.assertEqual('42.0', knownField.defaultValue, '')
         self.assertEqual(PyutType('float'), knownField.type, '')
-        self.assertEqual(PyutVisibilityEnum.PRIVATE, knownField.visibility, '')
+        self.assertEqual(PyutVisibility.PRIVATE, knownField.visibility, '')
 
 
 def suite() -> TestSuite:

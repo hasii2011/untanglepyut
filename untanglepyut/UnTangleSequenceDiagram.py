@@ -6,8 +6,8 @@ from logging import getLogger
 
 from untangle import Element
 
-from pyutmodel.PyutSDInstance import PyutSDInstance
-from pyutmodel.PyutSDMessage import PyutSDMessage
+from pyutmodelv2.PyutSDInstance import PyutSDInstance
+from pyutmodelv2.PyutSDMessage import PyutSDMessage
 
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
@@ -95,8 +95,11 @@ class UnTangleSequenceDiagram(BaseUnTangle):
             srcInstance: OglSDInstance = self._oglSDInstances[bogus.sourceId]
             dstInstance: OglSDInstance = self._oglSDInstances[bogus.destinationId]
 
-            pyutSDMessage.setSource(srcInstance.pyutObject)          # Ugh, time was set by sdMessageToPyutSDMessage
-            pyutSDMessage.setDestination(dstInstance.pyutObject)     # This "split" functionality must be fixed
+            # pyutSDMessage.setSource(srcInstance.pyutObject)          # Ugh, time was set by sdMessageToPyutSDMessage
+            # pyutSDMessage.setDestination(dstInstance.pyutObject)     # This "split" functionality must be fixed
+            pyutSDMessage.source      = srcInstance.pyutObject         # Ugh, time was set by sdMessageToPyutSDMessage
+            pyutSDMessage.destination = dstInstance.pyutObject         # This "split" functionality must be fixed
+
             oglSDMessage: OglSDMessage = OglSDMessage(srcSDInstance=srcInstance, pyutSDMessage=pyutSDMessage, dstSDInstance=dstInstance)
 
             srcInstance.addLink(link=oglSDMessage)

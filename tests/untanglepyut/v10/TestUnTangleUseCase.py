@@ -2,7 +2,7 @@
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutmodel.PyutActor import PyutActor
+from pyutmodelv2.PyutActor import PyutActor
 
 from ogl.OglActor import OglActor
 

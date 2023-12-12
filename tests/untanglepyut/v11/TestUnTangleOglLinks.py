@@ -4,8 +4,10 @@ from typing import cast
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from pyutmodelv2.PyutClass import PyutClass
+
 from ogl.OglLink import OglLink
-from pyutmodel.PyutClass import PyutClass
+
 from untangle import Element
 from untangle import parse
 
