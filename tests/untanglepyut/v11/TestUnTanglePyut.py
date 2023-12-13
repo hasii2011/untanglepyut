@@ -33,7 +33,7 @@ from untanglepyut.XmlVersion import XmlVersion
 from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 V11_PYUT_CLASS: str = """

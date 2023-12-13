@@ -24,7 +24,7 @@ from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangleOglClasses import UnTangleOglClasses
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 V11_OGL_CLASS_DOCUMENT: str = """
 <PyutDocument type="CLASS_DIAGRAM" title="SingleClassDiagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">

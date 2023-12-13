@@ -22,5 +22,5 @@ codeallyadvanced==0.5.2
 
 # pyutmodel==1.5.1
 # ogl==1.0.0
-pyutmodelv2==2.0.0a5
-ogl==2.0.0a5
+pyutmodelv2==2.0.0a6
+ogl==2.0.0a6

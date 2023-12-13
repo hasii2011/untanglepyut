@@ -8,7 +8,7 @@ from untangle import parse
 from ogl.OglActor import OglActor
 from ogl.OglUseCase import OglUseCase
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
@@ -47,7 +47,7 @@ class TestUnTangleUseCaseDiagram(TestBase):
 
     def setUp(self):
         super().setUp()
-        
+
     def tearDown(self):
         super().tearDown()
 

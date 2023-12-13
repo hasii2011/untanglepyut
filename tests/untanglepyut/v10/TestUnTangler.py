@@ -29,9 +29,9 @@ from pyutmodelv2.PyutNote import PyutNote
 
 from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 
-from tests.TestBase import DIAGRAM_NAME_1
-from tests.TestBase import DIAGRAM_NAME_2
-from tests.TestBase import TEST_XML_FILENAME
+from tests.ProjectTestBase import DIAGRAM_NAME_1
+from tests.ProjectTestBase import DIAGRAM_NAME_2
+from tests.ProjectTestBase import TEST_XML_FILENAME
 
 from untanglepyut.Types import Document
 from untanglepyut.Types import DocumentTitle
@@ -44,7 +44,7 @@ from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangler import UnTangler
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 ATM_DIAGRAM_NAME:   DocumentTitle = DocumentTitle('Class Diagram')
 SIMPLE_DIAGRAM_NAME: DocumentTitle = DocumentTitle('Simple')

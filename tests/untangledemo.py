@@ -3,7 +3,7 @@ from pkg_resources import resource_filename
 
 import untangle
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiDocumentProject.xml')
 

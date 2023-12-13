@@ -396,7 +396,7 @@ class UnTanglePyut:
             else:
                 assert False, f'Unsupported Xml Version {self._xmlVersion}'
 
-            pyutField: PyutField = PyutField(name=fieldName, visibility=visibility, fieldType=pyutType, defaultValue=defaultValue)
+            pyutField: PyutField = PyutField(name=fieldName, visibility=visibility, type=pyutType, defaultValue=defaultValue)
 
             untangledPyutFields.append(pyutField)
 
@@ -438,7 +438,7 @@ class UnTanglePyut:
             defaultValue:   str = parameterElement['defaultValue']
             parameterType:  PyutType = PyutType(parameterElement['type'])
 
-            pyutParameter: PyutParameter = PyutParameter(name=name, parameterType=parameterType, defaultValue=defaultValue)
+            pyutParameter: PyutParameter = PyutParameter(name=name, type=parameterType, defaultValue=defaultValue)
 
             untangledPyutMethodParameters.append(pyutParameter)
 

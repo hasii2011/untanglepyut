@@ -25,7 +25,7 @@ from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangler import UnTangler
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 
 class TestUnTangleSequenceDiagram(TestBase):

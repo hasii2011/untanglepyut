@@ -7,7 +7,7 @@ __pycache__/
 .DS_Store
 /build/
 /dist/
-/untanglepyut.egg-info/
+src/untanglepyut.egg-info/
 /pyenv-3.11.5/
 .python-version
 .envrc

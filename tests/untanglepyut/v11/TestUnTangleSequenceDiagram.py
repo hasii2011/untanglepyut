@@ -4,7 +4,7 @@ from unittest import main as unitTestMain
 from untangle import Element
 from untangle import parse
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage

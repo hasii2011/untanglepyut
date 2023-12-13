@@ -2,7 +2,7 @@
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 from untanglepyut.Types import ProjectInformation
 from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 from untanglepyut.UnsupportedFileTypeException import UnsupportedFileTypeException
@@ -18,7 +18,7 @@ class TestUnTangleProjectInformation(TestBase):
 
     def setUp(self):
         super().setUp()
-        
+
     def tearDown(self):
         super().tearDown()
 

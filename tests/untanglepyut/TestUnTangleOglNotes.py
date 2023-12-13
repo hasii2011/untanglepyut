@@ -17,7 +17,7 @@ from untanglepyut.Types import UntangledOglNotes
 from untanglepyut.UnTangleOglNotes import UnTangleOglNotes
 
 
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import TestBase
 
 V11_MANY_NOTES_DOCUMENT: str = """
     <PyutDocument type="CLASS_DIAGRAM" title="Class Diagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
@@ -57,7 +57,7 @@ class TestUnTangleOglNotes(TestBase):
 
     def setUp(self):
         super().setUp()
-        
+
     def tearDown(self):
         super().tearDown()
 

@@ -22,10 +22,10 @@ from pyutmodelv2.PyutLink import PyutLink
 
 from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 
-from tests.TestBase import DIAGRAM_NAME_1
-from tests.TestBase import DIAGRAM_NAME_2
-from tests.TestBase import TEST_XML_FILENAME
-from tests.TestBase import TestBase
+from tests.ProjectTestBase import DIAGRAM_NAME_1
+from tests.ProjectTestBase import DIAGRAM_NAME_2
+from tests.ProjectTestBase import TEST_XML_FILENAME
+from tests.ProjectTestBase import TestBase
 
 from untanglepyut.Types import Document
 from untanglepyut.Types import DocumentTitle
