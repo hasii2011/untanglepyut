@@ -16,8 +16,8 @@ dependencies = [
   'untangle==1.2.1',
   'codeallybasic==0.5.2',
   'codeallyadvanced==0.5.2',
-  'pyutmodelv2==2.0.0a7',
-  'ogl==2.0.0a7',
+  'pyutmodelv2==2.0.0',
+  'ogl==2.0.0',
 ]
 
 [project.urls]
