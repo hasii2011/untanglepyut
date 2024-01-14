@@ -10,6 +10,8 @@ from os import linesep as osLineSep
 
 from untangle import Element
 
+from codeallybasic.SecureConversions import SecureConversions
+
 from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutField import PyutFields
 
@@ -41,8 +43,7 @@ from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 from untanglepyut import XmlConstants
 
 from untanglepyut.XmlVersion import XmlVersion
-from untanglepyut.Common import secureInteger
-from untanglepyut.Common import str2bool
+
 from untanglepyut.Types import Elements
 
 
@@ -158,7 +159,7 @@ class UnTanglePyut:
 
     def textToPyutText(self, graphicText: Element) -> PyutText:
         """
-        Parses Text elements
+        Parses the Text elements
         Args:
             graphicText:   Of the form:   <Text id="3" content="I am standalone text"/>
 
@@ -249,7 +250,7 @@ class UnTanglePyut:
         """
 
         Args:
-            graphicUseCase:  An untangle Element in the above format
+            graphicUseCase:  An `untangle` Element in the above format
 
         Returns:  PyutUseCase
         """
@@ -270,7 +271,7 @@ class UnTanglePyut:
         linkType:        PyutLinkType = PyutLinkType.toEnum(linkTypeStr)
         cardSrc:         str          = singleLink[self._attrCardinalitySource]
         cardDest:        str          = singleLink[self._attrCardinalityDestination]
-        bidir:           bool         = str2bool(singleLink[self._attrBidirectional])
+        bidir:           bool         = SecureConversions.secureBoolean(singleLink[self._attrBidirectional])
         linkDescription: str          = singleLink['name']
 
         pyutLink: PyutLink = PyutLink(name=linkDescription,
@@ -292,7 +293,7 @@ class UnTanglePyut:
 
         pyutSDInstance.id                     = int(instanceElement['id'])
         pyutSDInstance.instanceName           = instanceElement['instanceName']
-        pyutSDInstance.instanceLifeLineLength = secureInteger(instanceElement['lifeLineLength'])
+        pyutSDInstance.instanceLifeLineLength = SecureConversions.secureInteger(instanceElement['lifeLineLength'])
 
         return pyutSDInstance
 
@@ -414,7 +415,7 @@ class UnTanglePyut:
         Args:
             methodElement:
 
-        Returns:  PyutModifiers if not exist returns an empty
+        Returns:   A PyutModifiers object that may be empty.
         """
 
         modifierElements = methodElement.get_elements('Modifier')

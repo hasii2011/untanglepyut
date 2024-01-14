@@ -10,6 +10,8 @@ from dataclasses import field
 
 from untangle import Element
 
+from codeallybasic.SecureConversions import SecureConversions
+
 from miniogl.ControlPoint import ControlPoint
 
 from ogl.OglActor import OglActor
@@ -22,7 +24,6 @@ from ogl.OglInterface2 import OglInterface2
 from ogl.sd.OglSDInstance import OglSDInstance
 from ogl.sd.OglSDMessage import OglSDMessage
 
-from untanglepyut.Common import str2bool
 from untanglepyut.XmlVersion import XmlVersion
 
 UntangledControlPoints = NewType('UntangledControlPoints', List[ControlPoint])
@@ -172,7 +173,7 @@ class GraphicLinkAttributes:
             gla.dstX = int(graphicLink['destinationAnchorX'])
             gla.dstY = int(graphicLink['destinationAnchorY'])
 
-        gla.spline = str2bool(graphicLink['spline'])
+        gla.spline = SecureConversions.secureBoolean(graphicLink['spline'])
 
         return gla
 
