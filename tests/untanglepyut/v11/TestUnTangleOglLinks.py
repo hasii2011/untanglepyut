@@ -1,21 +1,22 @@
+
 from typing import Dict
 from typing import cast
 
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from pyutmodelv2.PyutClass import PyutClass
-
-from ogl.OglLink import OglLink
-
 from untangle import Element
 from untangle import parse
 
+from codeallyadvanced.ui.AttachmentSide import AttachmentSide
+
+from pyutmodelv2.PyutClass import PyutClass
+
 from miniogl.AnchorPoint import AnchorPoint
-from miniogl.AttachmentSide import AttachmentSide
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
 from ogl.OglClass import OglClass
+from ogl.OglLink import OglLink
 
 from untanglepyut.Types import LinkableOglObjects
 from untanglepyut.Types import UntangledLink

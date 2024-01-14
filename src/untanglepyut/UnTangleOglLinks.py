@@ -7,7 +7,8 @@ from logging import getLogger
 
 from untangle import Element
 
-from miniogl.AttachmentSide import AttachmentSide
+from codeallyadvanced.ui.AttachmentSide import AttachmentSide
+
 from miniogl.ControlPoint import ControlPoint
 from miniogl.SelectAnchorPoint import SelectAnchorPoint
 
@@ -176,7 +177,7 @@ class UnTangleOglLinks:
 
     def _oglLinkFactory(self, srcShape, pyutLink, destShape, linkType: PyutLinkType, srcPos=None, dstPos=None):
         """
-        Used to get a OglLink of the given linkType.
+        Used to get an OglLink of the given linkType.
 
         Args:
             srcShape:   Source shape
@@ -317,7 +318,7 @@ class UnTangleOglLinks:
 
     def _reconstituteLinkDataModel(self, oglLink: OglLink):
         """
-        Updates one the following lists in a PyutLinkedObject:
+        Updates one of the following lists in a PyutLinkedObject:
 
         ._parents   for Inheritance links
         ._links     for all other link types

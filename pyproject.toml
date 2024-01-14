@@ -14,10 +14,10 @@ keywords    = ['pyut', 'graphical shapes', 'python', 'xml']
 
 dependencies = [
   'untangle==1.2.1',
-  'codeallybasic==0.5.2',
-  'codeallyadvanced==0.5.2',
-  'pyutmodelv2==2.0.0',
-  'ogl==2.0.0',
+  'codeallybasic==1.0.0',
+  'codeallyadvanced==1.0.0',
+  'pyutmodelv2==2.1.0',
+  'ogl==2.1.0',
 ]
 
 [project.urls]
