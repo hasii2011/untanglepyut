@@ -39,6 +39,7 @@ from pyutmodelv2.enumerations.PyutStereotype import PyutStereotype
 from pyutmodelv2.enumerations.PyutVisibility import PyutVisibility
 from pyutmodelv2.enumerations.PyutDisplayParameters import PyutDisplayParameters
 from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
+from pyutmodelv2.enumerations.PyutDisplayMethods import PyutDisplayMethods
 
 from untanglepyut import XmlConstants
 
@@ -79,6 +80,10 @@ class UnTanglePyut:
             self._attrId:                str = XmlConstants.V10_ATTR_ID
             self._attrStereoType:        str = XmlConstants.V10_ATTR_STEREOTYPE
             self._attrDisplayMethods:    str = XmlConstants.V10_ATTR_DISPLAY_METHODS
+
+            self._attrDisplayConstructor   = XmlConstants.V11_ATTR_DISPLAY_CONSTRUCTOR      # V10 never had these
+            self._attrDisplayDunderMethods = XmlConstants.V11_ATTR_DISPLAY_DUNDER_METHODS   # and will never have them
+
             self._attrDisplayParameters: str = XmlConstants.V10_ATTR_DISPLAY_PARAMETERS
             self._attrDisplayFields:     str = XmlConstants.V10_ATTR_DISPLAY_FIELDS
             self._attrDisplayStereoType: str = XmlConstants.V10_ATTR_DISPLAY_STEREOTYPE
@@ -100,12 +105,14 @@ class UnTanglePyut:
             self._elementMethod         = XmlConstants.V11_ELEMENT_METHOD
             self._elementField          = XmlConstants.V11_ELEMENT_FIELD
 
-            self._attrId                = XmlConstants.V11_ATTR_ID
-            self._attrStereoType        = XmlConstants.V11_ATTR_STEREOTYPE
-            self._attrDisplayMethods    = XmlConstants.V11_ATTR_DISPLAY_METHODS
-            self._attrDisplayParameters = XmlConstants.V11_ATTR_DISPLAY_PARAMETERS
-            self._attrDisplayFields     = XmlConstants.V11_ATTR_DISPLAY_FIELDS
-            self._attrDisplayStereoType = XmlConstants.V11_ATTR_DISPLAY_STEREOTYPE
+            self._attrId                   = XmlConstants.V11_ATTR_ID
+            self._attrStereoType           = XmlConstants.V11_ATTR_STEREOTYPE
+            self._attrDisplayMethods       = XmlConstants.V11_ATTR_DISPLAY_METHODS
+            self._attrDisplayParameters    = XmlConstants.V11_ATTR_DISPLAY_PARAMETERS
+            self._attrDisplayConstructor   = XmlConstants.V11_ATTR_DISPLAY_CONSTRUCTOR
+            self._attrDisplayDunderMethods = XmlConstants.V11_ATTR_DISPLAY_DUNDER_METHODS
+            self._attrDisplayFields        = XmlConstants.V11_ATTR_DISPLAY_FIELDS
+            self._attrDisplayStereoType    = XmlConstants.V11_ATTR_DISPLAY_STEREOTYPE
 
             self._attrCardinalitySource      = XmlConstants.V11_ATTR_CARDINALITY_SOURCE
             self._attrCardinalityDestination = XmlConstants.V11_ATTR_CARDINALITY_DESTINATION
@@ -132,17 +139,23 @@ class UnTanglePyut:
 
         pyutClass = cast(PyutClass, self._addPyutObjectAttributes(pyutElement=classElement, pyutObject=pyutClass))
 
-        # displayParameters: PyutDisplayParameters = PyutDisplayParameters.toEnum(classElement[self._attrDisplayParameters])
-        displayStr: str = classElement[self._attrDisplayParameters]
-        displayParameters: PyutDisplayParameters = PyutDisplayParameters(displayStr)
+        displayStr:              str                   = classElement[self._attrDisplayParameters]
+        displayParameters:       PyutDisplayParameters = PyutDisplayParameters(displayStr)
+        displayConstructorStr:   str                   = classElement[self._attrDisplayConstructor]
+        displayDunderMethodsStr: str                   = classElement[self._attrDisplayDunderMethods]
 
-        showStereotype:    bool = bool(classElement[self._attrDisplayStereoType])
-        showFields:        bool = bool(classElement[self._attrDisplayFields])
-        showMethods:       bool = bool(classElement[self._attrDisplayMethods])
-        stereotypeStr:     str  = classElement[self._attrStereoType]
-        fileName:          str  = classElement[self._attrFileName]
+        displayConstructor:   PyutDisplayMethods = self._securePyutDisplayMethods(displayStr=displayConstructorStr)
+        displayDunderMethods: PyutDisplayMethods = self._securePyutDisplayMethods(displayStr=displayDunderMethodsStr)
 
-        pyutClass.displayParameters = displayParameters
+        showStereotype:     bool = bool(classElement[self._attrDisplayStereoType])
+        showFields:         bool = bool(classElement[self._attrDisplayFields])
+        showMethods:        bool = bool(classElement[self._attrDisplayMethods])
+        stereotypeStr:      str  = classElement[self._attrStereoType]
+        fileName:           str  = classElement[self._attrFileName]
+
+        pyutClass.displayParameters    = displayParameters
+        pyutClass.displayConstructor   = displayConstructor
+        pyutClass.displayDunderMethods = displayDunderMethods
 
         pyutClass.displayStereoType = showStereotype
         pyutClass.showFields        = showFields
@@ -477,3 +490,12 @@ class UnTanglePyut:
         pyutObject.fileName = pyutElement[self._attrFileName]
 
         return pyutObject
+
+    def _securePyutDisplayMethods(self, displayStr: str) -> PyutDisplayMethods:
+
+        if displayStr is not None:
+            pyutDisplayMethods: PyutDisplayMethods = PyutDisplayMethods(displayStr)
+        else:
+            pyutDisplayMethods = PyutDisplayMethods.UNSPECIFIED
+
+        return pyutDisplayMethods

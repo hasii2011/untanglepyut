@@ -44,11 +44,13 @@ V11_ELEMENT_NOTE:       str = 'OglNote'
 V11_ELEMENT_TEXT:       str = 'OglText'
 
 
-V11_ATTR_STEREOTYPE:         str = 'stereotype'
-V11_ATTR_DISPLAY_STEREOTYPE: str = 'displayStereotype'
-V11_ATTR_DISPLAY_METHODS:    str = 'displayMethods'
-V11_ATTR_DISPLAY_FIELDS:     str = 'displayFields'
-V11_ATTR_DISPLAY_PARAMETERS: str = 'displayParameters'
+V11_ATTR_STEREOTYPE:             str = 'stereotype'
+V11_ATTR_DISPLAY_STEREOTYPE:     str = 'displayStereotype'
+V11_ATTR_DISPLAY_METHODS:        str = 'displayMethods'
+V11_ATTR_DISPLAY_FIELDS:         str = 'displayFields'
+V11_ATTR_DISPLAY_PARAMETERS:     str = 'displayParameters'
+V11_ATTR_DISPLAY_CONSTRUCTOR:    str = 'displayConstructor'
+V11_ATTR_DISPLAY_DUNDER_METHODS: str = 'displayDunderMethods'
 
 V11_ATTR_ID:                 str = V10_ATTR_ID
 V11_ATTR_NAME:               str = 'name'

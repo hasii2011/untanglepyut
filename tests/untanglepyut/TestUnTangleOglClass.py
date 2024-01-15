@@ -4,6 +4,7 @@ from typing import cast
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
+from pyutmodelv2.enumerations.PyutDisplayMethods import PyutDisplayMethods
 from untangle import Element
 from untangle import parse
 
@@ -66,6 +67,23 @@ V11_OGL_CLASS_DOCUMENT: str = """
             <PyutField name="privateField" visibility="PRIVATE" type="float" defaultValue="42.0" />
             <PyutField name="protectedField" visibility="PROTECTED" type="str" defaultValue="Ozzee" />
         </PyutClass>
+    </OglClass>
+</PyutDocument>
+"""
+
+V11_OGL_CLASS_NO_DISPLAY_ATTRIBUTES_DOCUMENT: str = """
+<PyutDocument type="CLASS_DIAGRAM" title="SingleClassDiagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+    <OglClass width="429" height="145" x="300" y="175">
+        <PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="DisplayParameters" displayFields="True" displayStereotype="True" description="">
+        </PyutClass>
+    </OglClass>
+</PyutDocument>
+"""
+
+V11_OGL_CLASS_WITH_DISPLAY_ATTRIBUTES_DOCUMENT: str = """
+<PyutDocument type="CLASS_DIAGRAM" title="SingleClassDiagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+    <OglClass width="429" height="145" x="300" y="175">
+        <PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="DisplayParameters" displayFields="True" displayStereotype="True" displayConstructor="Display" displayDunderMethods="Do Not Display" description=""/>
     </OglClass>
 </PyutDocument>
 """
@@ -136,6 +154,35 @@ class TestUnTangleOglClass(TestBase):
 
         self.assertEqual(175, x, '')
         self.assertEqual(100, y, '')
+
+    def testV11OglClassNoDisplayAttributes(self):
+
+        root:          Element = parse(V11_OGL_CLASS_NO_DISPLAY_ATTRIBUTES_DOCUMENT)
+        classDocument: Element = root.PyutDocument
+
+        unTangleOglClass:    UnTangleOglClasses = UnTangleOglClasses(xmlVersion=XmlVersion.V11)
+        unTangledOglClasses: UntangledOglClasses = unTangleOglClass.unTangle(pyutDocument=classDocument)
+
+        oglClass:  OglClass  = unTangledOglClasses[0]
+        pyutClass: PyutClass = oglClass.pyutObject
+        """
+        If they are not in the XML we should default them to UnSpecified
+        """
+        self.assertEqual(PyutDisplayMethods.UNSPECIFIED, pyutClass.displayConstructor, 'Constructor display attribute is incorrect')
+        self.assertEqual(PyutDisplayMethods.UNSPECIFIED, pyutClass.displayDunderMethods, 'Dunder method display attribute is incorrect')
+
+    def testV11OglClassWithDisplayAttributes(self):
+        root:          Element = parse(V11_OGL_CLASS_WITH_DISPLAY_ATTRIBUTES_DOCUMENT)
+        classDocument: Element = root.PyutDocument
+
+        unTangleOglClass:    UnTangleOglClasses = UnTangleOglClasses(xmlVersion=XmlVersion.V11)
+        unTangledOglClasses: UntangledOglClasses = unTangleOglClass.unTangle(pyutDocument=classDocument)
+
+        oglClass:  OglClass  = unTangledOglClasses[0]
+        pyutClass: PyutClass = oglClass.pyutObject
+
+        self.assertEqual(PyutDisplayMethods.DISPLAY,        pyutClass.displayConstructor,   'Constructor display attribute is incorrect')
+        self.assertEqual(PyutDisplayMethods.DO_NOT_DISPLAY, pyutClass.displayDunderMethods, 'Dunder method display attribute is incorrect')
 
     def testV11OglClass(self):
 
