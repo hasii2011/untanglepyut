@@ -11,6 +11,7 @@ from os import linesep as osLineSep
 from untangle import Element
 
 from codeallybasic.SecureConversions import SecureConversions
+from codeallybasic.Common import XML_END_OF_LINE_MARKER
 
 from pyutmodelv2.PyutField import PyutField
 from pyutmodelv2.PyutField import PyutFields
@@ -64,8 +65,6 @@ class UnTanglePyut:
     """
     Converts pyutmodel Version 11 XML to Pyut Objects
     """
-    # https://www.codetable.net/hex/a
-    END_OF_LINE_MARKER: str = '&#xA;'
 
     def __init__(self, xmlVersion: XmlVersion):
 
@@ -188,7 +187,7 @@ class UnTanglePyut:
         pyutText.id  = int(textElement[self._attrId])
 
         rawContent:   str = textElement['content']
-        cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
+        cleanContent: str = rawContent.replace(XML_END_OF_LINE_MARKER, osLineSep)
         pyutText.content = cleanContent
 
         return pyutText
@@ -213,7 +212,7 @@ class UnTanglePyut:
 
         # TODO:  Update when code-ally-basic has common code
         rawContent:   str = noteElement['content']
-        cleanContent: str = rawContent.replace(UnTanglePyut.END_OF_LINE_MARKER, osLineSep)
+        cleanContent: str = rawContent.replace(XML_END_OF_LINE_MARKER, osLineSep)
         pyutNote.content = cleanContent
 
         return pyutNote
