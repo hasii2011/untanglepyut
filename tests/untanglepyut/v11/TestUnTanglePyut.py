@@ -171,6 +171,16 @@ class TestUnTanglePyut(TestBase):
     def tearDown(self):
         super().tearDown()
 
+    def testNoteNameNone(self):
+
+        rootElement:    Element = parse(V11_PYUT_NOTE)
+        oglNoteElement: Element = rootElement.OglNote
+
+        untanglepyut: UnTanglePyut = UnTanglePyut(xmlVersion=XmlVersion.V11)
+        pyutNote:     PyutNote     = untanglepyut.noteToPyutNote(graphicNote=oglNoteElement)
+
+        self.assertIsNotNone(pyutNote.name, 'Where is my update!')
+
     def testPyutClass(self):
         root:     Element = parse(V11_PYUT_CLASS)
         oglClass: Element = root.OglClass

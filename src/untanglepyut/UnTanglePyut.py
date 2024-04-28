@@ -65,6 +65,8 @@ class UnTanglePyut:
     """
     Converts pyutmodel Version 11 XML to Pyut Objects
     """
+    NOTE_NAME:   str = 'Note'
+    noteCounter: int = 0
 
     def __init__(self, xmlVersion: XmlVersion):
 
@@ -483,10 +485,13 @@ class UnTanglePyut:
         Returns:  The updated pyutObject as
         """
 
-        pyutObject.id      = int(pyutElement[self._attrId])    # TODO revisit this when we start using UUIDs
-        pyutObject.name    = pyutElement['name']
+        pyutObject.id       = int(pyutElement[self._attrId])    # TODO revisit this when we start using UUIDs
+        pyutObject.name     = pyutElement['name']
         pyutObject.fileName = pyutElement[self._attrFileName]
 
+        if pyutObject.name is None:
+            UnTanglePyut.noteCounter += 1
+            pyutObject.name = f'{UnTanglePyut.NOTE_NAME}-{UnTanglePyut.noteCounter}'
         return pyutObject
 
     def _securePyutDisplayMethods(self, displayStr: str) -> PyutDisplayMethods:
