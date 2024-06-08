@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<PyutProject version="11" CodePath="">
+    <PyutDocument type="CLASS_DIAGRAM" title="SampleIFace" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglClass width="66" height="60" x="120" y="60">
+            <PyutClass id="3" name="NameA" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="method" visibility="PUBLIC" returnType="">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutField name="field" visibility="PRIVATE" type="" defaultValue="" />
+            </PyutClass>
+        </OglClass>
+        <OglClass width="114" height="60" x="150" y="250">
+            <PyutClass id="4" name="SouthLollipopClass" stereotype="noStereotype" displayMethods="True" displayParameters="Unspecified" displayConstructor="Unspecified" displayDunderMethods="Unspecified" displayFields="True" displayStereotype="True" fileName="" description="">
+                <PyutMethod name="method" visibility="PUBLIC" returnType="">
+                    <SourceCode />
+                </PyutMethod>
+                <PyutField name="field" visibility="PRIVATE" type="" defaultValue="" />
+            </PyutClass>
+        </OglClass>
+        <OglInterface2 attachmentPoint="WEST" x="120" y="90">
+            <PyutInterface id="9" name="IWest" description="">
+                <PyutMethod name="MethodName1" visibility="PUBLIC" returnType="int">
+                    <SourceCode />
+                    <PyutParameter name="parameter1" type="str" defaultValue="bogus" />
+                </PyutMethod>
+                <Implementor implementingClassName="NameA" />
+                <Implementor implementingClassName="SouthLollipopClass" />
+            </PyutInterface>
+        </OglInterface2>
+        <OglInterface2 attachmentPoint="WEST" x="150" y="280">
+            <PyutInterface id="9" name="IWest" description="">
+                <PyutMethod name="MethodName1" visibility="PUBLIC" returnType="int">
+                    <SourceCode />
+                    <PyutParameter name="parameter1" type="str" defaultValue="bogus" />
+                </PyutMethod>
+                <Implementor implementingClassName="NameA" />
+                <Implementor implementingClassName="SouthLollipopClass" />
+            </PyutInterface>
+        </OglInterface2>
+    </PyutDocument>
+</PyutProject>

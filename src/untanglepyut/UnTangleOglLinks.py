@@ -218,11 +218,8 @@ class UnTangleOglLinks:
 
         assert len(linkableOglObjects) != 0, 'Developer forgot to create dictionary'
 
-        #
-        # TODO: Do not use these x,y positions;  They are diagram relative
-        #
-        # x: int = int(graphicLollipop['x'])
-        # y: int = int(graphicLollipop['y'])
+        x: int = int(graphicLollipop['x'])
+        y: int = int(graphicLollipop['y'])
         attachmentLocationStr: str            = graphicLollipop['attachmentPoint']
         attachmentSide:        AttachmentSide = AttachmentSide.toEnum(attachmentLocationStr)
 
@@ -231,13 +228,19 @@ class UnTangleOglLinks:
 
         pyutInterface:    PyutInterface = self._untanglePyut.interfaceToPyutInterface(oglInterface2=graphicLollipop)
 
-        oglClass:    OglClass    = self._getOglClassFromName(pyutInterface.implementors[0], linkableOglObjects)
+        self.logger.debug(f'{pyutInterface.name} {pyutInterface.id=} {pyutInterface.implementors=}')
+
+        # oglClass:    OglClass    = self._getOglClassFromName(pyutInterface.implementors[0], linkableOglObjects)
+
+        oglClass:    OglClass    = self._determineAttachedToClass(x=x, y=y, linkableOglObjects=linkableOglObjects)
         oglPosition: OglPosition = self._determineAttachmentPoint(attachmentSide, oglClass)
-        self.logger.debug(f'{oglPosition.x=},{oglPosition.y=}')
+
+        self.logger.debug(f'{oglClass.id=} {oglPosition.x=} {oglPosition.y=}')
 
         anchorPoint:      SelectAnchorPoint = SelectAnchorPoint(x=oglPosition.x, y=oglPosition.y, attachmentSide=attachmentSide, parent=oglClass)
         oglInterface2:    OglInterface2     = OglInterface2(pyutInterface=pyutInterface, destinationAnchor=anchorPoint)
 
+        self.logger.debug(f'{oglInterface2.id=} {oglInterface2.destinationAnchor=}')
         return oglInterface2
 
     def _getOglClassFromName(self, className: str, linkableOglObjects: LinkableOglObjects) -> OglClass:
@@ -377,3 +380,26 @@ class UnTangleOglLinks:
         oglAssociationLabel: OglAssociationLabel = OglAssociationLabel(x=x, y=y, text=updatedLabelText, parent=parentAssociation)
 
         return oglAssociationLabel
+
+    def _determineAttachedToClass(self, x: int, y: int, linkableOglObjects: LinkableOglObjects) -> OglClass:
+        """
+        I cannot store a pointer to the class the lollipop is attached to.  However, I need to know the lollipop's
+        parent because of
+        Args:
+            x:
+            y:
+            linkableOglObjects:
+
+        Returns: The OglClass that the lollipop is attached to
+        """
+
+        foundClass: OglClass = cast(OglClass, None)
+
+        for linkableObject in linkableOglObjects.values():
+            oglClass: OglClass = cast(OglClass, linkableObject)
+            if oglClass.Inside(x=x, y=y) is True:
+                foundClass = oglClass
+                break
+
+        assert foundClass is not None, 'XML must be in error'
+        return foundClass
