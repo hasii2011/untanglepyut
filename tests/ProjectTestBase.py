@@ -9,7 +9,7 @@ DIAGRAM_NAME_2:    DocumentTitle = DocumentTitle('Diagram-2')
 TEST_XML_FILENAME: str           = 'MultiDocumentProject.xml'
 
 
-class TestBase(UnitTestBaseW):
+class ProjectTestBase(UnitTestBaseW):
 
     V10_TEST_FILES_PACKAGE_NAME:  str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.v10'
     V11_TEST_FILES_PACKAGE_NAME:  str = f'{UnitTestBase.RESOURCES_PACKAGE_NAME}.v11'

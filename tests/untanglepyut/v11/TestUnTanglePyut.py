@@ -33,7 +33,7 @@ from untanglepyut.XmlVersion import XmlVersion
 from untanglepyut.UnTanglePyut import ConvolutedPyutSDMessageInformation
 from untanglepyut.UnTanglePyut import UnTanglePyut
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 
 V11_PYUT_CLASS: str = """
@@ -158,7 +158,7 @@ MethodDictionary = NewType('MethodDictionary', Dict[str, PyutMethod])
 FieldDictionary  = NewType('FieldDictionary',  Dict[str, PyutField])
 
 
-class TestUnTanglePyut(TestBase):
+class TestUnTanglePyut(ProjectTestBase):
     """
     """
     @classmethod

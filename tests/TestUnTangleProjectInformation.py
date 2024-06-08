@@ -2,13 +2,13 @@
 from unittest import TestSuite
 from unittest import main as unitTestMain
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 from untanglepyut.Types import ProjectInformation
 from untanglepyut.UnTangleProjectInformation import UnTangleProjectInformation
 from untanglepyut.UnsupportedFileTypeException import UnsupportedFileTypeException
 
 
-class TestUnTangleProjectInformation(TestBase):
+class TestUnTangleProjectInformation(ProjectTestBase):
     """
     """
 
@@ -28,14 +28,14 @@ class TestUnTangleProjectInformation(TestBase):
             unTangleProjectInformation: UnTangleProjectInformation = UnTangleProjectInformation(fqFileName='HokeyXmlFileName.opie')
 
     def testV10ProjectInformation(self):
-        self._testProjectInformation(package=TestBase.V10_TEST_FILES_PACKAGE_NAME, fileName='EmptyDiagram.xml', expectedVersion='10')
+        self._testProjectInformation(package=ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, fileName='EmptyDiagram.xml', expectedVersion='10')
 
     def testV11ProjectInformation(self):
-        self._testProjectInformation(package=TestBase.V11_TEST_FILES_PACKAGE_NAME, fileName='EmptyDiagram.xml', expectedVersion='11')
+        self._testProjectInformation(package=ProjectTestBase.V11_TEST_FILES_PACKAGE_NAME, fileName='EmptyDiagram.xml', expectedVersion='11')
 
     def _testProjectInformation(self, package: str, fileName: str, expectedVersion: str):
 
-        fqFileName:                 str                         = TestBase.getFullyQualifiedResourceFileName(package=package, fileName=fileName)
+        fqFileName:                 str                         = ProjectTestBase.getFullyQualifiedResourceFileName(package=package, fileName=fileName)
         unTangleProjectInformation: UnTangleProjectInformation  = UnTangleProjectInformation(fqFileName=fqFileName)
         projectInformation:         ProjectInformation          = unTangleProjectInformation.projectInformation
 

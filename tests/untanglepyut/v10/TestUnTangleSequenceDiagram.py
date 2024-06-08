@@ -25,10 +25,10 @@ from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangler import UnTangler
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 
-class TestUnTangleSequenceDiagram(TestBase):
+class TestUnTangleSequenceDiagram(ProjectTestBase):
     """
     """
     def setUp(self):
@@ -96,7 +96,7 @@ class TestUnTangleSequenceDiagram(TestBase):
 
     def _retrieveSequenceDiagramDocument(self) -> Document:
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SequenceDiagram.xml')
+        fqFileName: str       = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, 'SequenceDiagram.xml')
         untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)

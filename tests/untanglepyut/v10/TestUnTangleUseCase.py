@@ -16,10 +16,10 @@ from untanglepyut.XmlVersion import XmlVersion
 
 from untanglepyut.UnTangler import UnTangler
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 
-class TestUnTangleUseCase(TestBase):
+class TestUnTangleUseCase(ProjectTestBase):
     """
     """
     @classmethod
@@ -33,7 +33,7 @@ class TestUnTangleUseCase(TestBase):
         super().tearDown()
 
     def testUseCaseDiagramNotesTexts(self):
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCasesTextNotes.xml')
+        fqFileName: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCasesTextNotes.xml')
         untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -71,7 +71,7 @@ class TestUnTangleUseCase(TestBase):
 
     def _retrieveUseCaseDocument(self) -> Document:
 
-        fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCaseDiagram.xml')
+        fqFileName: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, 'UseCaseDiagram.xml')
         untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)

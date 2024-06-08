@@ -12,7 +12,7 @@ from untanglepyut.Types import UntangledOglTexts
 from untanglepyut.UnTangleOglTexts import UnTangleOglTexts
 from untanglepyut.XmlVersion import XmlVersion
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 V10_MANY_TEXTS_DOCUMENT: str = """
 <PyutDocument type="CLASS_DIAGRAM" title="Lots Of Text" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
@@ -43,7 +43,7 @@ V11_MANY_TEXTS_DOCUMENT: str = """
 """
 
 
-class TestUnTangleOglTexts(TestBase):
+class TestUnTangleOglTexts(ProjectTestBase):
     """
     """
 

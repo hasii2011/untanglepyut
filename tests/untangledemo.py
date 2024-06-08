@@ -3,9 +3,9 @@ from pkg_resources import resource_filename
 
 import untangle
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
-fqFileName = resource_filename(TestBase.RESOURCES_PACKAGE_NAME, 'MultiDocumentProject.xml')
+fqFileName = resource_filename(ProjectTestBase.RESOURCES_PACKAGE_NAME, 'MultiDocumentProject.xml')
 
 with open(fqFileName, "r") as xmlFile:
     xmlString: str = xmlFile.read()

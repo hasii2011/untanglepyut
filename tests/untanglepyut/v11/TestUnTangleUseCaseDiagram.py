@@ -8,7 +8,7 @@ from untangle import parse
 from ogl.OglActor import OglActor
 from ogl.OglUseCase import OglUseCase
 
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 from untanglepyut.Types import UntangledOglActors
 from untanglepyut.Types import UntangledOglUseCases
@@ -39,7 +39,7 @@ V11_USE_CASE_DOCUMENT: str = """
 """
 
 
-class TestUnTangleUseCaseDiagram(TestBase):
+class TestUnTangleUseCaseDiagram(ProjectTestBase):
 
     @classmethod
     def setUpClass(cls):

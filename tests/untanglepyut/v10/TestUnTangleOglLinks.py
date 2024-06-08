@@ -25,7 +25,7 @@ from pyutmodelv2.enumerations.PyutLinkType import PyutLinkType
 from tests.ProjectTestBase import DIAGRAM_NAME_1
 from tests.ProjectTestBase import DIAGRAM_NAME_2
 from tests.ProjectTestBase import TEST_XML_FILENAME
-from tests.ProjectTestBase import TestBase
+from tests.ProjectTestBase import ProjectTestBase
 
 from untanglepyut.Types import Document
 from untanglepyut.Types import DocumentTitle
@@ -36,7 +36,7 @@ from untanglepyut.XmlVersion import XmlVersion
 from untanglepyut.UnTangler import UnTangler
 
 
-class TestUnTangleOglLinks(TestBase):
+class TestUnTangleOglLinks(ProjectTestBase):
     """
     """
     SIMPLE_DIAGRAM_NAME: DocumentTitle = DocumentTitle('Simple')
@@ -44,7 +44,7 @@ class TestUnTangleOglLinks(TestBase):
     def setUp(self):
 
         super().setUp()
-        self._fqFileName: str = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, TEST_XML_FILENAME)
+        self._fqFileName: str = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, TEST_XML_FILENAME)
 
         self._mockDC: MagicMock = MagicMock()
 
@@ -52,7 +52,7 @@ class TestUnTangleOglLinks(TestBase):
         super().tearDown()
 
     def testNoGraphicLinks(self):
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
+        fqFileName: str       = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, 'ScaffoldDiagram.xml')
         untangler:  UnTangler = UnTangler(xmlVersion=XmlVersion.V10)
 
         untangler.untangleFile(fqFileName)
@@ -69,7 +69,7 @@ class TestUnTangleOglLinks(TestBase):
 
     def testSimpleInheritance(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleInheritance.xml')
+        fqFileName: str       = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleInheritance.xml')
         untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName=fqFileName)
@@ -162,7 +162,7 @@ class TestUnTangleOglLinks(TestBase):
 
     def testGetAssociationLabelPositions(self):
 
-        fqFileName: str       = TestBase.getFullyQualifiedResourceFileName(TestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
+        fqFileName: str       = ProjectTestBase.getFullyQualifiedResourceFileName(ProjectTestBase.V10_TEST_FILES_PACKAGE_NAME, 'SimpleGraphicLinkTest.xml')
         untangler:  UnTangler = UnTangler(XmlVersion.V10)
 
         untangler.untangleFile(fqFileName)
