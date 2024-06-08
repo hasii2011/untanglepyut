@@ -76,7 +76,7 @@ class UnTangler(BaseUnTangle):
         """
         Untangle the input Xml string to Ogl
         Args:
-            fqFileName:  The file name from which the XML came frame
+            fqFileName:  The file name from which the XML came from
             xmlString: The string with the raw XML
         """
         root:        Element = parse(xmlString)
