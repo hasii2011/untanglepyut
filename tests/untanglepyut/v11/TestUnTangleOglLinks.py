@@ -222,7 +222,7 @@ class TestUnTangleOglLinks(ProjectTestBase):
 
     def _checkAnchor(self, anchorPoint: AnchorPoint, expectedX: int, expectedY: int):
 
-        x, y = anchorPoint.GetModel().GetPosition()
+        x, y = anchorPoint.model.GetPosition()
         self.assertEqual(expectedX, x, '')
         self.assertEqual(expectedY, y, '')
 

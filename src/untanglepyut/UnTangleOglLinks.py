@@ -150,22 +150,22 @@ class UnTangleOglLinks:
         srcAnchor.SetPosition(gla.srcX, gla.srcY)
         dstAnchor.SetPosition(gla.dstX, gla.dstY)
 
-        srcModel = srcAnchor.GetModel()
+        srcModel = srcAnchor.model
         srcModel.SetPosition(x=gla.srcX, y=gla.srcY)
-        dstModel = dstAnchor.GetModel()
+        dstModel = dstAnchor.model
         dstModel.SetPosition(x=gla.dstX, y=gla.dstY)
 
         # add the control points to the line
         line   = srcAnchor.GetLines()[0]     # only 1 line per anchor in Pyut
-        parent = line.sourceAnchor.GetParent()
-        selfLink: bool = parent is oglLink.destinationAnchor.GetParent()
+        parent = line.sourceAnchor.parent
+        selfLink: bool = parent is oglLink.destinationAnchor.parent
 
         controlPoints: UntangledControlPoints = self._generateControlPoints(graphicLink=graphicLink)
         for controlPoint in controlPoints:
             oglLink.AddControl(control=controlPoint, after=None)
             if selfLink:
                 x, y = controlPoint.GetPosition()
-                controlPoint.SetParent(parent)
+                controlPoint.parent = parent
                 controlPoint.SetPosition(x, y)
 
         if isinstance(oglLink, OglAssociation):

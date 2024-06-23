@@ -31,7 +31,7 @@ class BaseUnTangle(UnTangleIO):
 
         Returns:  The updated shape model as a way of documenting that we updated it
         """
-        model: ShapeModel = oglObject.GetModel()
+        model: ShapeModel = oglObject.model
         model.SetPosition(x=graphicInformation.x, y=graphicInformation.y)
 
         return model
