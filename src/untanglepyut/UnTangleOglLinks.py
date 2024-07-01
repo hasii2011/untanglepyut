@@ -156,7 +156,7 @@ class UnTangleOglLinks:
         dstModel.SetPosition(x=gla.dstX, y=gla.dstY)
 
         # add the control points to the line
-        line   = srcAnchor.GetLines()[0]     # only 1 line per anchor in Pyut
+        line   = srcAnchor.lines[0]     # only 1 line per anchor in Pyut
         parent = line.sourceAnchor.parent
         selfLink: bool = parent is oglLink.destinationAnchor.parent
 

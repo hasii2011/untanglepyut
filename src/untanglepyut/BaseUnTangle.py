@@ -2,7 +2,7 @@
 from logging import Logger
 from logging import getLogger
 
-from miniogl.ShapeModel import ShapeModel
+from miniogl.models.ShapeModel import ShapeModel
 
 from ogl.OglObject import OglObject
 
