@@ -33,10 +33,10 @@ jobs:
             pip install html-testRunner~=1.2.1
             pip install attrdict3
             pip install -U -f https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04  wxPython
-            pip install codeallybasic>=1.3.2
-            pip install codeallyadvanced>=1.3.1
-            pip install pyutmodelv2>=2.1.6
-            pip install ogl>=3.0.0
+            pip install codeallybasic>=1.7.0
+            pip install codeallyadvanced>=1.3.2
+            pip install pyutmodelv2>=2.2.0
+            pip install ogl>=3.1.0
             pip install untangle==1.2.1
             pip install buildlackey==1.6.3
       - run:
