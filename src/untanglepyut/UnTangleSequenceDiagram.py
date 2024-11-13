@@ -102,8 +102,9 @@ class UnTangleSequenceDiagram(BaseUnTangle):
 
             oglSDMessage: OglSDMessage = OglSDMessage(srcSDInstance=srcInstance, pyutSDMessage=pyutSDMessage, dstSDInstance=dstInstance)
 
-            srcInstance.addLink(link=oglSDMessage)
-            dstInstance.addLink(link=oglSDMessage)
+            # This is done by the constructor above
+            # srcInstance.addLink(link=oglSDMessage)
+            # dstInstance.addLink(link=oglSDMessage)
 
             oglSDMessages[pyutSDMessage.id] = oglSDMessage
 
