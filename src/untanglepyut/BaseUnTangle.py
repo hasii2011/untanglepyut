@@ -5,6 +5,7 @@ from logging import getLogger
 from miniogl.models.ShapeModel import ShapeModel
 
 from ogl.OglObject import OglObject
+from ogl.sd.OglSDInstance import OglSDInstance
 
 from untanglepyut.Types import GraphicInformation
 
@@ -20,7 +21,7 @@ class BaseUnTangle(UnTangleIO):
 
         self._xmlVersion = xmlVersion
 
-    def _updateModel(self, oglObject: OglObject, graphicInformation: GraphicInformation) -> ShapeModel:
+    def _updateModel(self, oglObject: OglObject | OglSDInstance, graphicInformation: GraphicInformation) -> ShapeModel:
         """
         This is necessary if it is never added to a diagram
         and immediately serialized

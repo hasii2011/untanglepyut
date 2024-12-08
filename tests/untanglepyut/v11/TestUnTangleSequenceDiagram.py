@@ -81,8 +81,8 @@ class TestUnTangleSequenceDiagram(ProjectTestBase):
 
         oglSDInstance: OglSDInstance = oglSDInstances[3]
 
-        self.assertEqual('OzzeeInstance', oglSDInstance.pyutObject.instanceName, 'Incorrect instance name')
-        self.assertEqual(200, oglSDInstance.pyutObject.instanceLifeLineLength,           '')
+        self.assertEqual('OzzeeInstance', oglSDInstance.pyutSDInstance.instanceName, 'Incorrect instance name')
+        self.assertEqual(200, oglSDInstance.pyutSDInstance.instanceLifeLineLength,           '')
 
     def testOnlySingleLinksCreated(self):
 
@@ -92,13 +92,13 @@ class TestUnTangleSequenceDiagram(ProjectTestBase):
 
         for sdInstance in oglSDInstances.values():
             oglSDInstance: OglSDInstance = cast(OglSDInstance, sdInstance)
-            instanceName: str = oglSDInstance.pyutObject.instanceName
+            instanceName: str = oglSDInstance.pyutSDInstance.instanceName
             if instanceName == 'hasiiInstance':
-                self.assertEqual(1, len(oglSDInstance.links), f'`{instanceName}` Should have a single message')
+                self.assertEqual(1, len(oglSDInstance.messages), f'`{instanceName}` Should have a single message')
             elif instanceName == 'franInstance':
-                self.assertEqual(3, len(oglSDInstance.links), f'`{instanceName}` Should have a single message')
+                self.assertEqual(3, len(oglSDInstance.messages), f'`{instanceName}` Should have a single message')
             elif instanceName == 'OzzeeInstance':
-                self.assertEqual(2, len(oglSDInstance.links), f'`{instanceName}` Should have a single message')
+                self.assertEqual(2, len(oglSDInstance.messages), f'`{instanceName}` Should have a single message')
 
     def _untangleSequenceDiagramDocument(self) -> UnTangleSequenceDiagram:
 

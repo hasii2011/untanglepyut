@@ -95,16 +95,10 @@ class UnTangleSequenceDiagram(BaseUnTangle):
             srcInstance: OglSDInstance = self._oglSDInstances[bogus.sourceId]
             dstInstance: OglSDInstance = self._oglSDInstances[bogus.destinationId]
 
-            # pyutSDMessage.setSource(srcInstance.pyutObject)          # Ugh, time was set by sdMessageToPyutSDMessage
-            # pyutSDMessage.setDestination(dstInstance.pyutObject)     # This "split" functionality must be fixed
-            pyutSDMessage.source      = srcInstance.pyutObject         # Ugh, time was set by sdMessageToPyutSDMessage
-            pyutSDMessage.destination = dstInstance.pyutObject         # This "split" functionality must be fixed
+            pyutSDMessage.source      = srcInstance.pyutSDInstance         # Ugh, time was set by sdMessageToPyutSDMessage
+            pyutSDMessage.destination = dstInstance.pyutSDInstance         # This "split" functionality must be fixed
 
             oglSDMessage: OglSDMessage = OglSDMessage(srcSDInstance=srcInstance, pyutSDMessage=pyutSDMessage, dstSDInstance=dstInstance)
-
-            # This is done by the constructor above
-            # srcInstance.addLink(link=oglSDMessage)
-            # dstInstance.addLink(link=oglSDMessage)
 
             oglSDMessages[pyutSDMessage.id] = oglSDMessage
 

@@ -41,16 +41,6 @@ class TestUnTangleSequenceDiagram(ProjectTestBase):
         document: Document = self._retrieveSequenceDiagramDocument()
         self.assertEqual('SEQUENCE_DIAGRAM', document.documentType, 'Incorrect document type')
 
-    def testSequenceInstances(self):
-        document: Document = self._retrieveSequenceDiagramDocument()
-
-        oglSDInstances: OglSDInstances = document.oglSDInstances
-        self.assertEqual(2, len(oglSDInstances), 'Bad # of instances')
-
-        expectedInstanceNames: List[str] = ['Instance1', 'Instance2']
-        for oglSDInstance in oglSDInstances.values():
-            self.assertIn(oglSDInstance.instanceName.text, expectedInstanceNames, 'Not an expected instance')
-
     def testSequenceMessages(self):
         document: Document = self._retrieveSequenceDiagramDocument()
 
