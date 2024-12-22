@@ -41,8 +41,7 @@ oglTexts: UntangledOglTexts = document.oglTexts
 
 The following is the UML diagram for the Pyut Untangler
 
-![UntanglePyut](https://github.com/hasii2011/untanglepyut/blob/master/docs/UntanglePyut.png)
-
+![UntanglePyut](./docs/UntanglePyut.png)
 
 ___
 
