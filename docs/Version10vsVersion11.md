@@ -26,7 +26,7 @@ is now
 is now
 
 ```xml
-<PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="Display" displayFields="True" displayStereotype="True" description="I am a single class">
+<PyutClass id="1" name="SingleClass" stereotype="noStereotype" displayMethods="True" displayParameters="Display" displayFields="True" displayStereotype="True" description="I am a single class" fileName="">
 ```
 
 ## GraphicLink → OglLink
@@ -170,8 +170,8 @@ is now
 
 Attribute renames
 
-srcTime → sourceX
-dstTime → destinationY
+srcTime → sourceTime
+dstTime → destinationTime
 srcID → sourceID
 dstId → destinationID`
 
