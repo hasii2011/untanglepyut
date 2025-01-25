@@ -65,12 +65,8 @@ I urge you to read about the
 [Give up GitHub](https://GiveUpGitHub.org) campaign from
 [the Software Freedom Conservancy](https://sfconservancy.org).
 
-While I do not advocate for all the issues listed there I do not like that
-a company like Microsoft may profit from open source projects.
+While I do not advocate for all the issues listed there I do not like that a company like Microsoft may profit from open source projects.
 
-I continue to use GitHub because it offers the services I need for free.  But, I continue
-to monitor their terms of service.
+I continue to use GitHub because it offers the services I need for free.  But, I continue to monitor their terms of service.
 
-Any use of this project's code by GitHub Copilot, past or present, is done
-without my permission.  I do not consent to GitHub's use of this project's
-code in Copilot.
+Any use of this project's code by GitHub Copilot, past or present, is done  without my permission.  I do not consent to GitHub's use of this project's  code in Copilot.
