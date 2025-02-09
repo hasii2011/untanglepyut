@@ -105,6 +105,8 @@ class UnTangler(BaseUnTangle):
                 untangleSequenceDiagram.unTangle(pyutDocument=pyutDocument)
                 document.oglSDInstances = untangleSequenceDiagram.oglSDInstances
                 document.oglSDMessages  = untangleSequenceDiagram.oglSDMessages
+                document.oglActors      = untangleSequenceDiagram.oglActors
+                document.oglLinks       = untangleSequenceDiagram.oglLinks
 
             elif document.documentType == 'USECASE_DIAGRAM':
 

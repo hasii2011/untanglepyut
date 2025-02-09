@@ -13,6 +13,8 @@ from ogl.sd.OglSDMessage import OglSDMessage
 from untanglepyut.Types import OglSDInstances
 
 from untanglepyut.Types import OglSDMessages
+from untanglepyut.Types import UntangledOglActors
+from untanglepyut.Types import UntangledOglLinks
 
 from untanglepyut.XmlVersion import XmlVersion
 
@@ -42,6 +44,31 @@ V11_SEQUENCE_DIAGRAM_DOCUMENT: str = """
 </PyutDocument>
 """
 
+V11_SEQUENCE_DIAGRAM_WITH_ACTOR_LINKS: str = """
+
+    <PyutDocument type="SEQUENCE_DIAGRAM" title="Seq Diagram" scrollPositionX="0" scrollPositionY="0" pixelsPerUnitX="20" pixelsPerUnitY="20">
+        <OglLink sourceAnchorX="155" sourceAnchorY="225" destinationAnchorX="360" destinationAnchorY="250" spline="False">
+            <LabelCenter x="0" y="0" />
+            <LabelSource x="-102" y="-25" />
+            <LabelDestination x="88" y="19" />
+            <PyutLink name="" type="ASSOCIATION" cardinalitySource="" cardinalityDestination="" bidirectional="False" sourceId="3" destinationId="1" />
+        </OglLink>
+        <OglActor width="80" height="100" x="75" y="175">
+            <PyutActor id="3" name="ActorName" fileName="" />
+        </OglActor>
+        <OglSDInstance width="100" height="400" x="360" y="50">
+            <PyutSDInstance id="1" instanceName="Instance1" lifeLineLength="200" />
+        </OglSDInstance>
+        <OglSDInstance width="100" height="400" x="781" y="50">
+            <PyutSDInstance id="2" instanceName="Instance2" lifeLineLength="200" />
+        </OglSDInstance>
+        <OglSDMessage>
+            <PyutSDMessage id="3" message="testMessage()" sourceTime="149" destinationTime="150" sourceId="1" destinationId="2" />
+        </OglSDMessage>
+    </PyutDocument>
+
+"""
+
 
 class TestUnTangleSequenceDiagram(ProjectTestBase):
     """
@@ -58,6 +85,21 @@ class TestUnTangleSequenceDiagram(ProjectTestBase):
 
     def tearDown(self):
         super().tearDown()
+
+    def testSequenceDiagramWithActorLink(self):
+
+        root:                    Element = parse(V11_SEQUENCE_DIAGRAM_WITH_ACTOR_LINKS)
+        sequenceDiagramDocument: Element = root.PyutDocument
+
+        unTangleSequenceDiagram: UnTangleSequenceDiagram = UnTangleSequenceDiagram(xmlVersion=XmlVersion.V11)
+
+        unTangleSequenceDiagram.unTangle(pyutDocument=sequenceDiagramDocument)
+
+        oglActors: UntangledOglActors = unTangleSequenceDiagram.oglActors
+        oglLinks:  UntangledOglLinks  = unTangleSequenceDiagram.oglLinks
+
+        self.assertEqual(1, len(oglActors), 'Oops not enough Uml Actors')
+        self.assertEqual(1, len(oglLinks), 'Oops not enough association links')
 
     def testOglSdMessage(self):
         unTangleSequenceDiagram: UnTangleSequenceDiagram = self._untangleSequenceDiagramDocument()

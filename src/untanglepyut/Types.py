@@ -135,11 +135,6 @@ class Document:
 
 Documents     = NewType('Documents', dict[DocumentTitle, Document])
 
-# @dataclass
-# class SDDocument(Document):
-#     oglSDInstances:  OglSDInstances = field(default_factory=createOglSDInstances)
-#     oglSDMessages:   OGLSDMessages  = field(default_factory=createOGLSDMessages)
-
 LinkableOglObject = Union[OglClass, OglNote, OglActor, OglUseCase]
 
 LinkableOglObjects = NewType('LinkableOglObjects',   Dict[int, LinkableOglObject])
